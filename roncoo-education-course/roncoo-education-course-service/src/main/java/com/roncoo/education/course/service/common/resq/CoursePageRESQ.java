@@ -2,7 +2,6 @@ package com.roncoo.education.course.service.common.resq;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -124,10 +123,4 @@ public class CoursePageRESQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "是否已添加专区课程(1:存在，0:不存在)")
 	private Integer isAddZoneCourse;
-
-	/**
-	 * 课程章节集合
-	 */
-	@ApiModelProperty(value = "课程分类集合")
-	private List<CoursePageRESQ> children;
 }

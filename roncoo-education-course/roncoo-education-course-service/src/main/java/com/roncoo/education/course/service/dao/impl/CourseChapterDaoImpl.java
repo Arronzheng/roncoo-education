@@ -1,7 +1,9 @@
 package com.roncoo.education.course.service.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import com.roncoo.education.util.tools.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +22,7 @@ public class CourseChapterDaoImpl implements CourseChapterDao {
 
 	@Override
 	public int save(CourseChapter record) {
+		record.setId(IdWorker.getId());
 		return this.courseChapterMapper.insertSelective(record);
 	}
 
@@ -31,7 +34,7 @@ public class CourseChapterDaoImpl implements CourseChapterDao {
 	@Override
 	public int updateById(CourseChapter record) {
 		record.setGmtCreate(null);
-		record.setGmtModified(null);
+		record.setGmtModified(new Date());
 		return this.courseChapterMapper.updateByPrimaryKeySelective(record);
 	}
 
