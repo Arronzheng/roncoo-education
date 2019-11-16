@@ -27,7 +27,7 @@ public class SysUpdateRESQ implements Serializable {
 	/**
 	 * 视频存储平台（1保利威视，2七牛）
 	 */
-	@ApiModelProperty(value = "视频存储平台（1保利威视，2七牛）")
+	@ApiModelProperty(value = "视频存储平台（1保利威视，2腾讯）")
 	private Integer videoType;
 	/**
 	 * useid
@@ -52,7 +52,7 @@ public class SysUpdateRESQ implements Serializable {
 	/**
 	 * 文件存储类型（1阿里云，2七牛）
 	 */
-	@ApiModelProperty(value = "文件存储类型（1阿里云，2七牛）")
+	@ApiModelProperty(value = "文件存储类型（1阿里云，2七牛，4腾讯）")
 	private Integer fileType;
 	/**
 	 * access_key_id
@@ -84,6 +84,11 @@ public class SysUpdateRESQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "短信签名")
 	private String signName;
+	/**
+	 * 腾讯cos区域，阿里的oas_vault
+	 */
+	@ApiModelProperty(value = "oas_vault")
+	private String aliyunOasVault;
 	/**
 	 * 支付通道（1龙果支付，2其他）
 	 */

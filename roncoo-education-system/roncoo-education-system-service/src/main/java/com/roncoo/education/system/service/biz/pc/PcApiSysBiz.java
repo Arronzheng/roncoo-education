@@ -53,9 +53,6 @@ public class PcApiSysBiz {
 			return Result.error("id不能为空");
 		}
 		Sys record = BeanUtil.copyProperties(resq, Sys.class);
-		if (VideoTypeEnum.QINIU.getCode().equals(record.getVideoType())) {
-			throw new BaseException("视频存储暂未支持七牛");
-		}
 		if (SysTypeEnum.OTHERPAYMENT.getCode().equals(record.getPayType())) {
 			throw new BaseException("支付通道暂时只支持龙果支付");
 		}

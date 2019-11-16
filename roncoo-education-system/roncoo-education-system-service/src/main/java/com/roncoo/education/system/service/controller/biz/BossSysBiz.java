@@ -36,9 +36,6 @@ public class BossSysBiz {
 
 	public int save(SysQO qo) {
 		Sys record = BeanUtil.copyProperties(qo, Sys.class);
-		if (VideoTypeEnum.QINIU.getCode().equals(record.getVideoType())) {
-			throw new BaseException("视频存储暂未支持七牛");
-		}
 		if (FileTypeEnum.QINIU.getCode().equals(record.getFileType())) {
 			throw new BaseException("文件存储暂未支持七牛");
 		}
@@ -59,9 +56,6 @@ public class BossSysBiz {
 
 	public int updateById(SysQO qo) {
 		Sys record = BeanUtil.copyProperties(qo, Sys.class);
-		if (VideoTypeEnum.QINIU.getCode().equals(record.getVideoType())) {
-			throw new BaseException("视频存储暂未支持七牛");
-		}
 		if (FileTypeEnum.QINIU.getCode().equals(record.getFileType())) {
 			throw new BaseException("文件存储暂未支持七牛");
 		}

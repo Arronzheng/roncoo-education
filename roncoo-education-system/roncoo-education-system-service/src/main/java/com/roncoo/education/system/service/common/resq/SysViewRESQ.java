@@ -85,6 +85,11 @@ public class SysViewRESQ implements Serializable {
 	@ApiModelProperty(value = "短信签名")
 	private String signName;
 	/**
+	 * 腾讯cos区域，阿里的oas_vault
+	 */
+	@ApiModelProperty(value = "oas_vault")
+	private String aliyunOasVault;
+	/**
 	 * 支付通道（1龙果支付，2其他）
 	 */
 	@ApiModelProperty(value = "支付通道（1龙果支付，2其他）")
