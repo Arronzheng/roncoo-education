@@ -459,4 +459,17 @@ public final class DateUtil {
 		return new DateTime(cal.getTime());
 	}
 
+	/**
+	 * 返回时分秒
+	 * @param second
+	 * @return
+	 */
+	public static String secondToTime(long second) {
+		long hours = second / 3600;//转换小时数
+		second = second % 3600;//剩余秒数
+		long minutes = second / 60;//转换分钟
+		second = second % 60;//剩余秒数
+		return hours+":"+minutes+":"+second;
+	}
+
 }

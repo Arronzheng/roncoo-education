@@ -7,12 +7,12 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
-import com.qiniu.util.StringUtils;
-import com.roncoo.education.util.aliyun.Aliyun;
+import com.roncoo.education.util.enums.CatalogueEnum;
 import com.roncoo.education.util.enums.PlatformEnum;
 import com.roncoo.education.util.tools.IdWorker;
 import com.roncoo.education.util.tools.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -48,12 +48,12 @@ public class QiniuUtil {
     }
 
 
-    public static String uploadPic(PlatformEnum platformEnum, String imgUrl, MultipartFile picFile, Qiniu qiniu) {
+    public static String uploadPic(CatalogueEnum catalogueEnum, String imgUrl, MultipartFile picFile, Qiniu qiniu) {
         Configuration cfg = new Configuration();
         UploadManager uploadManager = new UploadManager(cfg);
         Long fileNo = IdWorker.getId();
-        String key = platformEnum.name().toLowerCase()+"/"+fileNo;
-        if(!StringUtils.isNullOrEmpty(imgUrl)){
+        String key = catalogueEnum.name().toLowerCase()+"/"+fileNo;
+        if(!StringUtils.isEmpty(imgUrl)){
             try {
                 deletePic(imgUrl,qiniu);
             } catch (QiniuException e) {
@@ -70,8 +70,6 @@ public class QiniuUtil {
                 Response response = uploadManager.put(inputStream, key, upToken, null, null);
                 //解析上传成功的结果
                 putRet = JSONUtil.parseObject(response.bodyString(), DefaultPutRet.class);
-                System.out.println("key:"+putRet.key);
-                System.out.println("hash:"+putRet.hash);
             }catch(QiniuException ex){
                 Response r = ex.response;
                 log.error("上传失败", r.toString());

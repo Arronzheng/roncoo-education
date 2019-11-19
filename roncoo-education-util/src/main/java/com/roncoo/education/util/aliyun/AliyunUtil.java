@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
+import com.roncoo.education.util.enums.CatalogueEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,11 +64,11 @@ public final class AliyunUtil {
 		return file;
 	}
 
-	public static String uploadPic(PlatformEnum platformEnum, File file, Aliyun aliyun) {
+	public static String uploadPic(CatalogueEnum catalogueEnum, File file, Aliyun aliyun) {
 		// 上传
 		try {
 			String name = file.getName();
-			String filePath = platformEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
+			String filePath = catalogueEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
 			getOssClient(SystemUtil.ALIYUN_OSS_ENDPOINT, aliyun.getAliyunAccessKeyId(), aliyun.getAliyunAccessKeySecret()).putObject(aliyun.getAliyunOssBucket(), filePath, file);
 			return aliyun.getAliyunOssUrl() + filePath;
 		} catch (Exception e) {
@@ -76,13 +77,13 @@ public final class AliyunUtil {
 		}
 	}
 
-	public static String uploadPic(PlatformEnum platformEnum, MultipartFile file, Aliyun aliyun) {
+	public static String uploadPic(CatalogueEnum catalogueEnum, MultipartFile file, Aliyun aliyun) {
 		// 上传
 		InputStream in = null;
 		try {
 			in = file.getInputStream();
 			String name = file.getOriginalFilename();
-			String filePath = platformEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
+			String filePath = catalogueEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
 			getOssClient(SystemUtil.ALIYUN_OSS_ENDPOINT, aliyun.getAliyunAccessKeyId(), aliyun.getAliyunAccessKeySecret()).putObject(aliyun.getAliyunOssBucket(), filePath, in);
 			return aliyun.getAliyunOssUrl() + filePath;
 		} catch (Exception e) {
@@ -98,11 +99,11 @@ public final class AliyunUtil {
 		}
 	}
 
-	public static String uploadDoc(PlatformEnum platformEnum, File file, Aliyun aliyun) {
+	public static String uploadDoc(CatalogueEnum catalogueEnum, File file, Aliyun aliyun) {
 		// 上传
 		try {
 			String name = file.getName();
-			String filePath = platformEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
+			String filePath = catalogueEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
 			putObjectForFile(SystemUtil.ALIYUN_OSS_ENDPOINT, aliyun.getAliyunAccessKeyId(), aliyun.getAliyunAccessKeySecret(), aliyun.getAliyunOssBucket(), filePath, new FileInputStream(file), file.getName());
 			return aliyun.getAliyunOssUrl() + filePath;
 		} catch (Exception e) {
@@ -111,13 +112,13 @@ public final class AliyunUtil {
 		}
 	}
 
-	public static String uploadDoc(PlatformEnum platformEnum, MultipartFile file, Aliyun aliyun) {
+	public static String uploadDoc(CatalogueEnum catalogueEnum, MultipartFile file, Aliyun aliyun) {
 		InputStream in = null;
 		// 上传
 		try {
 			in = file.getInputStream();
 			String name = file.getOriginalFilename();
-			String filePath = platformEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
+			String filePath = catalogueEnum.name().toLowerCase() + "/" + StrUtil.get32UUID() + name.substring(name.lastIndexOf("."));
 			putObjectForFile(SystemUtil.ALIYUN_OSS_ENDPOINT, aliyun.getAliyunAccessKeyId(), aliyun.getAliyunAccessKeySecret(), aliyun.getAliyunOssBucket(), filePath, in, file.getOriginalFilename());
 			return aliyun.getAliyunOssUrl() + filePath;
 		} catch (Exception e) {

@@ -58,4 +58,5 @@ public final class SystemUtil {
 
 	public static final String DOC_STORAGE_PATH = getProperty("doc_storage_path");
 	public static final String PIC_STORAGE_PATH = getProperty("pic_storage_path");
+	public static final String VIDEO_STORAGE_PATH = getProperty("video_storage_path");
 }
