@@ -41,6 +41,14 @@ public class CourseAudit implements Serializable {
 
     private Integer isPutaway;
 
+    private Integer courseSort;
+
+    private Integer countBuy;
+
+    private Integer countStudy;
+
+    private Integer periodTotal;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -187,6 +195,38 @@ public class CourseAudit implements Serializable {
         this.isPutaway = isPutaway;
     }
 
+    public Integer getCourseSort() {
+        return courseSort;
+    }
+
+    public void setCourseSort(Integer courseSort) {
+        this.courseSort = courseSort;
+    }
+
+    public Integer getCountBuy() {
+        return countBuy;
+    }
+
+    public void setCountBuy(Integer countBuy) {
+        this.countBuy = countBuy;
+    }
+
+    public Integer getCountStudy() {
+        return countStudy;
+    }
+
+    public void setCountStudy(Integer countStudy) {
+        this.countStudy = countStudy;
+    }
+
+    public Integer getPeriodTotal() {
+        return periodTotal;
+    }
+
+    public void setPeriodTotal(Integer periodTotal) {
+        this.periodTotal = periodTotal;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -211,9 +251,15 @@ public class CourseAudit implements Serializable {
         sb.append(", courseOriginal=").append(courseOriginal);
         sb.append(", courseDiscount=").append(courseDiscount);
         sb.append(", isPutaway=").append(isPutaway);
+        sb.append(", courseSort=").append(courseSort);
+        sb.append(", countBuy=").append(countBuy);
+        sb.append(", countStudy=").append(countStudy);
+        sb.append(", periodTotal=").append(periodTotal);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+
+
     }
 
     public void transferSet(int i,Long l){

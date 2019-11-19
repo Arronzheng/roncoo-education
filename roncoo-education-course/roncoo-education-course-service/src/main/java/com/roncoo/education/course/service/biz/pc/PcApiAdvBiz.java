@@ -5,6 +5,8 @@ import com.roncoo.education.system.common.bean.vo.SysVO;
 import com.roncoo.education.util.enums.FileTypeEnum;
 import com.roncoo.education.util.qiniu.Qiniu;
 import com.roncoo.education.util.qiniu.QiniuUtil;
+import com.roncoo.education.util.tencentcloud.Tencent;
+import com.roncoo.education.util.tencentcloud.TencentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -94,7 +96,18 @@ public class PcApiAdvBiz {
 			return Result.error("找不到广告信息");
 		}
 		if (StringUtils.hasText(req.getAdvImg()) && !adv.getAdvImg().equals(req.getAdvImg())) {
-			AliyunUtil.delete(adv.getAdvImg(), BeanUtil.copyProperties(bossSys.getSys(), Aliyun.class));
+			SysVO sys = bossSys.getSys();
+			if(sys.getFileType().equals(FileTypeEnum.ALIYUN.getCode())){
+				AliyunUtil.delete(adv.getAdvImg(), BeanUtil.copyProperties(sys, Aliyun.class));
+			}else if(sys.getFileType().equals(FileTypeEnum.QINIU.getCode())){
+				try {
+					QiniuUtil.deletePic(adv.getAdvImg(), BeanUtil.copyProperties(sys, Qiniu.class));
+				} catch (QiniuException e) {
+					return Result.error(e.code(),e.response.toString());
+				}
+			}else{
+				TencentUtil.deleteFile(adv.getAdvImg(), BeanUtil.copyProperties(sys, Tencent.class));
+			}
 		}
 		Adv record = BeanUtil.copyProperties(req, Adv.class);
 		record.setBeginTime(DateUtil.parseDate(req.getBeginTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -123,18 +136,20 @@ public class PcApiAdvBiz {
 		SysVO sys = bossSys.getSys();
 		if(sys.getFileType().equals(FileTypeEnum.ALIYUN.getCode())){
 			AliyunUtil.delete(adv.getAdvImg(), BeanUtil.copyProperties(sys, Aliyun.class));
-		}else{
+		}else if(sys.getFileType().equals(FileTypeEnum.QINIU.getCode())){
 			try {
 				QiniuUtil.deletePic(adv.getAdvImg(), BeanUtil.copyProperties(sys, Qiniu.class));
 			} catch (QiniuException e) {
 				return Result.error(e.code(),e.response.toString());
 			}
+		}else{
+			TencentUtil.deleteFile(adv.getAdvImg(), BeanUtil.copyProperties(sys, Tencent.class));
 		}
 		int results = dao.deleteById(req.getId());
 		if (results > 0) {
 			return Result.success(results);
 		}
-		return Result.error(ResultEnum.COURSE_DELETE_FAIL);
+		return Result.error(ResultEnum.SYSTEM_DELETE_FAIL);
 	}
 
 	/**

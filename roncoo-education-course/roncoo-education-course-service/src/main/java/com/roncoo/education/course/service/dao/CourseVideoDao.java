@@ -13,6 +13,8 @@ public interface CourseVideoDao {
 
 	int updateById(CourseVideo record);
 
+	int updateByExampleSelective(CourseVideo record);
+
 	CourseVideo getById(Long id);
 
 	Page<CourseVideo> listForPage(int pageCurrent, int pageSize, CourseVideoExample example);

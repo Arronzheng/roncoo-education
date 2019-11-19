@@ -7,8 +7,11 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.qiniu.Qiniu;
 import com.roncoo.education.util.qiniu.QiniuUtil;
+import com.roncoo.education.util.tencentcloud.Tencent;
+import com.roncoo.education.util.tencentcloud.TencentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,10 +31,6 @@ import com.roncoo.education.util.aliyun.AliyunUtil;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.Result;
 import com.roncoo.education.util.config.SystemUtil;
-import com.roncoo.education.util.enums.FileStorageTypeEnum;
-import com.roncoo.education.util.enums.FileTypeEnum;
-import com.roncoo.education.util.enums.PlatformEnum;
-import com.roncoo.education.util.enums.VideoStatusEnum;
 import com.roncoo.education.util.polyv.PolyvUtil;
 import com.roncoo.education.util.polyv.UploadFile;
 import com.roncoo.education.util.polyv.UploadFileResult;
@@ -90,8 +89,10 @@ public class ApiUploadBiz extends BaseBiz {
 		Long videoNo = IdWorker.getId(); // 当作存储到本地的文件名，方便定时任务的处理
 
 		// 1、上传到本地
+//		File targetFile = new File(
+//				SystemUtil.PERIOD_VIDEO_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Linux系统
 		File targetFile = new File(
-				SystemUtil.PERIOD_VIDEO_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));
+				SystemUtil.VIDEO_STORAGE_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Windows系统
 		targetFile.setLastModified(System.currentTimeMillis());// 设置最后修改时间
 		// 判断文件目录是否存在，不存在就创建文件目录
 		if (!targetFile.getParentFile().exists()) {
@@ -139,7 +140,7 @@ public class ApiUploadBiz extends BaseBiz {
 					courseVideoDao.updateById(courseVideo);
 
 					// 3、异步上传到阿里云
-					String videoOasId = AliyunUtil.uploadDoc(PlatformEnum.COURSE, targetFile,
+					String videoOasId = AliyunUtil.uploadDoc(CatalogueEnum.VIDEO, targetFile,
 							BeanUtil.copyProperties(sys, Aliyun.class));
 					courseVideo.setVideoOasId(videoOasId);
 					courseVideoDao.updateById(courseVideo);
@@ -222,10 +223,13 @@ public class ApiUploadBiz extends BaseBiz {
 				}
 			}else if(sys.getFileType().equals(FileTypeEnum.ALIYUN.getCode())){
 				//2 上传阿里云
-				return Result.success(AliyunUtil.uploadPic(PlatformEnum.COURSE, picFile, BeanUtil.copyProperties(bossSys.getSys(), Aliyun.class)));
-			}else{
+				return Result.success(AliyunUtil.uploadPic(CatalogueEnum.IMAGE, picFile, BeanUtil.copyProperties(bossSys.getSys(), Aliyun.class)));
+			}else if(sys.getFileType().equals(FileTypeEnum.QINIU.getCode())){
 				//3 上传七牛
-				return Result.success(QiniuUtil.uploadPic(PlatformEnum.COURSE, imgUrl, picFile,BeanUtil.copyProperties(sys, Qiniu.class)));
+				return Result.success(QiniuUtil.uploadPic(CatalogueEnum.IMAGE, imgUrl, picFile,BeanUtil.copyProperties(sys, Qiniu.class)));
+			}else{
+				//3 上传腾讯
+				return Result.success(TencentUtil.uploadFile(CatalogueEnum.IMAGE, imgUrl, picFile,BeanUtil.copyProperties(sys, Tencent.class)));
 			}
 		}
 		return Result.error("请选择上传的图片");
@@ -267,7 +271,7 @@ public class ApiUploadBiz extends BaseBiz {
 					return Result.error("上传文件出错，请重新上传");
 				}
 			}
-			return Result.success(AliyunUtil.uploadDoc(PlatformEnum.COURSE, docFile,
+			return Result.success(AliyunUtil.uploadDoc(CatalogueEnum.DOC, docFile,
 					BeanUtil.copyProperties(bossSys.getSys(), Aliyun.class)));
 		}
 		return Result.error("请选择上传的文件");

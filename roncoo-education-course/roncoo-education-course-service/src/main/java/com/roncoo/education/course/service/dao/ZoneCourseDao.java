@@ -37,4 +37,5 @@ public interface ZoneCourseDao {
 
 	ZoneCourse getZoneIdAndCourseId(Long courseId, Long zoneId);
 
+    Integer deleteByCourseId(Long id);
 }

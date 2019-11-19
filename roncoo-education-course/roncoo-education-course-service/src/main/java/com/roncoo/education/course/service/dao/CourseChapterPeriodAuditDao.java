@@ -2,6 +2,7 @@ package com.roncoo.education.course.service.dao;
 
 import java.util.List;
 
+import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriod;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriodAudit;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriodAuditExample;
 import com.roncoo.education.util.base.Page;
@@ -49,14 +50,6 @@ public interface CourseChapterPeriodAuditDao {
 	List<CourseChapterPeriodAudit> listByIsDocAndPeriodId(Integer isDoc, Long periodId);
 
 	/**
-	 * 根据视频编号查询课时审核信息
-	 *
-	 * @param videoNo
-	 * @author wuyun
-	 */
-	CourseChapterPeriodAudit getByVideoNo(Long videoNo);
-
-	/**
 	 * 根据课程编号删除课时信息
 	 * 
 	 * @param courseId
@@ -81,4 +74,19 @@ public interface CourseChapterPeriodAuditDao {
 	 * @author kyh
 	 */
 	List<CourseChapterPeriodAudit> listByVideoNo(Long videoNo);
+	/**
+	 * 根据章节ID获取课时信息
+	 *
+	 * @param chapterId
+	 */
+	List<CourseChapterPeriodAudit> listByChapterId(Long chapterId);
+
+	/**
+	 * 根据课时编号查找课时信息集合
+	 *
+	 * @param videoNo
+	 * @return
+	 * @author wuyun
+	 */
+	CourseChapterPeriodAudit getByVideoNo(Long videoNo);
 }

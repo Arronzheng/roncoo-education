@@ -2,6 +2,8 @@ package com.roncoo.education.course.service.biz;
 
 import java.util.List;
 
+import com.roncoo.education.course.service.dao.*;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -30,16 +32,7 @@ import com.roncoo.education.course.service.common.dto.LecturerDTO;
 import com.roncoo.education.course.service.common.es.EsCourse;
 import com.roncoo.education.course.service.common.es.EsPageUtil;
 import com.roncoo.education.course.service.common.es.ResultMapperExt;
-import com.roncoo.education.course.service.dao.CourseChapterDao;
-import com.roncoo.education.course.service.dao.CourseChapterPeriodDao;
-import com.roncoo.education.course.service.dao.CourseDao;
-import com.roncoo.education.course.service.dao.CourseIntroduceDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapter;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriod;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseExample.Criteria;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseIntroduce;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
 import com.roncoo.education.user.feign.IBossLecturer;
 import com.roncoo.education.util.base.Page;
@@ -61,13 +54,13 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 public class ApiCourseBiz {
 
 	@Autowired
-	private CourseDao courseDao;
+	private CourseAuditDao courseAuditDao;
 	@Autowired
 	private CourseIntroduceDao courseIntroduceDao;
 	@Autowired
-	private CourseChapterDao courseChapterDao;
+	private CourseChapterAuditDao courseChapterAuditDao;
 	@Autowired
-	private CourseChapterPeriodDao courseChapterPeriodDao;
+	private CourseChapterPeriodAuditDao courseChapterPeriodAuditDao;
 	@Autowired
 	private IBossLecturer bossLecturer;
 
@@ -80,7 +73,7 @@ public class ApiCourseBiz {
 	/**
 	 * 课程详情接口
 	 * 
-	 * @param courseView
+	 * @param courseVideoBO
 	 * @return
 	 */
 	public Result<CourseViewDTO> view(CourseVideoBO courseVideoBO) {
@@ -88,11 +81,11 @@ public class ApiCourseBiz {
 			return Result.error("课程ID不能为空");
 		}
 		// 课程信息
-		Course course = courseDao.getById(courseVideoBO.getCourseId());
-		if (course == null) {
+		CourseAudit courseAudit = courseAuditDao.getById(courseVideoBO.getCourseId());
+		if (courseAudit == null) {
 			return Result.error("找不到该课程信息");
 		}
-		CourseViewDTO data = BeanUtil.copyProperties(course, CourseViewDTO.class);
+		CourseViewDTO data = BeanUtil.copyProperties(courseAudit, CourseViewDTO.class);
 
 		// 课程介绍
 		CourseIntroduce courseIntroduce = courseIntroduceDao.getById(data.getIntroduceId());
@@ -108,16 +101,16 @@ public class ApiCourseBiz {
 		data.setLecturer(BeanUtil.copyProperties(lecturerVO, LecturerDTO.class));
 
 		// 章节信息
-		List<CourseChapter> courseChapterList = courseChapterDao.listByCourseIdAndStatusId(courseVideoBO.getCourseId(), StatusIdEnum.YES.getCode());
-		if (CollectionUtil.isNotEmpty(courseChapterList)) {
-			data.setChapterList(PageUtil.copyList(courseChapterList, CourseChapterDTO.class));
+		List<CourseChapterAudit> courseChapterAuditList = courseChapterAuditDao.listByCourseIdAndStatusId(courseVideoBO.getCourseId(), StatusIdEnum.YES.getCode());
+		if (CollectionUtil.isNotEmpty(courseChapterAuditList)) {
+			data.setChapterList(PageUtil.copyList(courseChapterAuditList, CourseChapterDTO.class));
 		}
 
 		// 课时信息
 		if (CollectionUtil.isNotEmpty(data.getChapterList())) {
 			for (CourseChapterDTO courseChapterDTO : data.getChapterList()) {
-				List<CourseChapterPeriod> courseChapterPeriodList = courseChapterPeriodDao.listByChapterIdAndStatusId(courseChapterDTO.getId(), StatusIdEnum.YES.getCode());
-				courseChapterDTO.setPeriodList(PageUtil.copyList(courseChapterPeriodList, CourseChapterPeriodDTO.class));
+				List<CourseChapterPeriodAudit> courseChapterPeriodAuditList = courseChapterPeriodAuditDao.listByChapterIdAndStatusId(courseChapterDTO.getId(), StatusIdEnum.YES.getCode());
+				courseChapterDTO.setPeriodList(PageUtil.copyList(courseChapterPeriodAuditList, CourseChapterPeriodDTO.class));
 			}
 		}
 		return Result.success(data);
@@ -131,8 +124,8 @@ public class ApiCourseBiz {
 	 * @author wuyun
 	 */
 	public Result<Page<CourseInfoPageDTO>> list(CourseInfoPageBO courseInfoPageBO) {
-		CourseExample example = new CourseExample();
-		Criteria c = example.createCriteria();
+		CourseAuditExample example = new CourseAuditExample();
+		CourseAuditExample.Criteria c = example.createCriteria();
 		c.andStatusIdEqualTo(StatusIdEnum.YES.getCode());
 		c.andIsPutawayEqualTo(IsPutawayEnum.YES.getCode());
 		if (!StringUtils.isEmpty(courseInfoPageBO.getCategoryId1())) {
@@ -151,14 +144,14 @@ public class ApiCourseBiz {
 			c.andCourseNameLike(PageUtil.rightLike(SqlUtil.checkSql(courseInfoPageBO.getCourseName())));
 		}
 		example.setOrderByClause(" course_sort desc, id desc ");
-		Page<Course> page = courseDao.listForPage(courseInfoPageBO.getPageCurrent(), courseInfoPageBO.getPageSize(), example);
+		Page<CourseAudit> page = courseAuditDao.listForPage(courseInfoPageBO.getPageCurrent(), courseInfoPageBO.getPageSize(), example);
 		return Result.success(PageUtil.transform(page, CourseInfoPageDTO.class));
 	}
 
 	/**
 	 * 课程搜索列表接口
 	 * 
-	 * @param courseInfoSearchBO
+	 * @param bo
 	 * @author wuyun
 	 */
 	public Result<Page<CourseInfoSearchPageDTO>> searchList(CourseInfoSearchBO bo) {

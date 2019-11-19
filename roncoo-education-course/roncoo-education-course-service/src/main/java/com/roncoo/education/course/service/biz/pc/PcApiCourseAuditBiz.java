@@ -3,42 +3,22 @@ package com.roncoo.education.course.service.biz.pc;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.roncoo.education.course.service.common.req.*;
+import com.roncoo.education.course.service.dao.*;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.util.enums.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.roncoo.education.course.service.common.req.CourseAuditAuditStatusREQ;
-import com.roncoo.education.course.service.common.req.CourseAuditGetREQ;
-import com.roncoo.education.course.service.common.req.CourseAuditPageREQ;
-import com.roncoo.education.course.service.common.req.CourseAuditUpdateREQ;
-import com.roncoo.education.course.service.common.req.CourseAuditViewREQ;
 import com.roncoo.education.course.service.common.resq.CourseAuditGetRESQ;
 import com.roncoo.education.course.service.common.resq.CourseAuditPageRESQ;
 import com.roncoo.education.course.service.common.resq.CourseAuditViewRESQ;
 import com.roncoo.education.course.service.common.resq.CourseChapterAuditViewRESQ;
 import com.roncoo.education.course.service.common.resq.CourseChapterPeriodAuditViewRESQ;
-import com.roncoo.education.course.service.dao.CourseAuditDao;
-import com.roncoo.education.course.service.dao.CourseCategoryDao;
-import com.roncoo.education.course.service.dao.CourseChapterAuditDao;
-import com.roncoo.education.course.service.dao.CourseChapterDao;
-import com.roncoo.education.course.service.dao.CourseChapterPeriodAuditDao;
-import com.roncoo.education.course.service.dao.CourseChapterPeriodDao;
-import com.roncoo.education.course.service.dao.CourseDao;
-import com.roncoo.education.course.service.dao.CourseIntroduceAuditDao;
-import com.roncoo.education.course.service.dao.CourseIntroduceDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAuditExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAuditExample.Criteria;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseCategory;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapter;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterAudit;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriod;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriodAudit;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseIntroduce;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseIntroduceAudit;
 import com.roncoo.education.system.feign.IBossSys;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
 import com.roncoo.education.user.feign.IBossLecturer;
@@ -48,11 +28,6 @@ import com.roncoo.education.util.base.BaseException;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.base.Result;
-import com.roncoo.education.util.enums.AuditStatusEnum;
-import com.roncoo.education.util.enums.IsDocEnum;
-import com.roncoo.education.util.enums.IsFreeEnum;
-import com.roncoo.education.util.enums.ResultEnum;
-import com.roncoo.education.util.enums.StatusIdEnum;
 import com.roncoo.education.util.tools.BeanUtil;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 
@@ -85,6 +60,8 @@ public class PcApiCourseAuditBiz {
 	private CourseIntroduceDao courseIntroduceDao;
 	@Autowired
 	private CourseIntroduceAuditDao courseIntroduceAuditDao;
+	@Autowired
+	private ZoneCourseDao zoneCourseDao;
 
 	public Result<Page<CourseAuditPageRESQ>> list(CourseAuditPageREQ req) {
 		CourseAuditExample example = new CourseAuditExample();
@@ -96,9 +73,8 @@ public class PcApiCourseAuditBiz {
 		if (req.getStatusId() != null) {
 			c.andStatusIdEqualTo(req.getStatusId());
 		}
-		if (req.getAuditStatus() == null) {
-			c.andAuditStatusNotEqualTo(AuditStatusEnum.SUCCESS.getCode());
-		} else {
+		if (req.getAuditStatus() != null) {
+//			c.andAuditStatusNotEqualTo(AuditStatusEnum.SUCCESS.getCode());默认不查审核通过
 			c.andAuditStatusEqualTo(req.getAuditStatus());
 		}
 		if (req.getIsFree() != null) { 
@@ -113,6 +89,21 @@ public class PcApiCourseAuditBiz {
 		Page<CourseAuditPageRESQ> listForPage = PageUtil.transform(page, CourseAuditPageRESQ.class);
 		// 获取分类名称
 		for (CourseAuditPageRESQ resq : listForPage.getList()) {
+			if (req.getZoneId() != null) {
+				// 校验专区是否存在课程
+				ZoneCourse zoneCourse = zoneCourseDao.getZoneIdAndCourseId(resq.getId(), req.getZoneId());
+				if (ObjectUtil.isNull(zoneCourse)) {
+					// 不存在
+					resq.setIsAddZoneCourse(0);
+				} else {
+					// 存在
+					resq.setIsAddZoneCourse(1);
+				}
+			}
+			LecturerVO lecturer = bossLecturer.getByLecturerUserNo(resq.getLecturerUserNo());
+			if (ObjectUtil.isNotNull(lecturer)) {
+				resq.setLecturerName(lecturer.getLecturerName());
+			}
 			if (resq.getCategoryId1() != null && resq.getCategoryId1() != 0) {
 				CourseCategory courseCategory = courseCategoryDao.getById(resq.getCategoryId1());
 				if (!StringUtils.isEmpty(courseCategory)) {
@@ -150,9 +141,15 @@ public class PcApiCourseAuditBiz {
 		if (ObjectUtil.isNull(courseAudit)) {
 			return Result.error("找不到课程信息");
 		}
-		if (IsFreeEnum.FREE.getCode().equals(req.getIsFree())) {
-			req.setCourseOriginal(BigDecimal.ZERO);
-			req.setCourseDiscount(BigDecimal.ZERO);
+		// 课程收费但价格为空
+		if (IsFreeEnum.CHARGE.getCode().equals(req.getIsFree())) {
+			if (req.getCourseOriginal() == null) {
+				return Result.error("价格不能为空");
+			}
+		}
+		// 原价小于0
+		if (req.getCourseOriginal().compareTo(BigDecimal.valueOf(0)) == -1) {
+			return Result.error("售价不能小于0");
 		}
 		CourseAudit record = BeanUtil.copyProperties(req, CourseAudit.class);
 		record.setAuditStatus(AuditStatusEnum.WAIT.getCode());
@@ -420,4 +417,57 @@ public class PcApiCourseAuditBiz {
 		}
 	}
 
+	public Result<Integer> save(CourseAuditSaveREQ courseAuditSaveREQ) {
+		// 原价小于0
+		if (courseAuditSaveREQ.getCourseOriginal().compareTo(BigDecimal.valueOf(0)) == -1) {
+			return Result.error("售价不能小于0");
+		}
+		// 课程收费但价格为空
+		if (IsFreeEnum.CHARGE.getCode().equals(courseAuditSaveREQ.getIsFree())) {
+			if (courseAuditSaveREQ.getCourseOriginal() == null) {
+				return Result.error("价格不能为空");
+			}
+		}
+
+		// 课程介绍
+		CourseIntroduceAudit courseIntroduceAudit = new CourseIntroduceAudit();
+		courseIntroduceAudit.setIntroduce(courseAuditSaveREQ.getCourseDesc());
+		courseIntroduceAuditDao.save(courseIntroduceAudit);
+
+		// 课程
+		CourseAudit record = BeanUtil.copyProperties(courseAuditSaveREQ, CourseAudit.class);
+		if (IsFreeEnum.FREE.getCode().equals(courseAuditSaveREQ.getIsFree())) {
+			// 课程免费就设置价格为0(原价、优惠价)
+			record.setCourseOriginal(BigDecimal.valueOf(0));
+			record.setCourseDiscount(BigDecimal.valueOf(0));
+		}
+		record.setStatusId(StatusIdEnum.YES.getCode());
+		record.setIsPutaway(IsPutawayEnum.YES.getCode());
+		record.setAuditStatus(AuditStatusEnum.WAIT.getCode());
+		record.setIntroduceId(courseIntroduceAudit.getId());
+		record.setCourseDiscount(courseAuditSaveREQ.getCourseOriginal());
+		record.setLecturerUserNo(courseAuditSaveREQ.getLecturerUserNo());
+		for (int i = 0; i < courseAuditSaveREQ.getCategorys().size(); i++) {
+			record.transferSet(i,Long.valueOf(courseAuditSaveREQ.getCategorys().get(i)));
+		}
+		// 查询更新后的课程审核信息
+		int i = dao.save(record);
+		if (i > 0) {
+			return Result.success(i);
+		}
+		return Result.error(ResultEnum.COURSE_SAVE_FAIL);
+	}
+
+	public Result<Integer> delete(CourseAuditDeleteREQ courseAuditDeleteREQ) {
+		if(StringUtils.isEmpty(courseAuditDeleteREQ.getId())){
+			return Result.error("ID不能为空");
+		}
+		Integer result = dao.deleteById(courseAuditDeleteREQ.getId());
+		if(result > 0){
+			//同步删除专区课程
+			zoneCourseDao.deleteByCourseId(courseAuditDeleteREQ.getId());
+			return Result.success(result);
+		}
+		return Result.error(ResultEnum.COURSE_DELETE_FAIL);
+	}
 }

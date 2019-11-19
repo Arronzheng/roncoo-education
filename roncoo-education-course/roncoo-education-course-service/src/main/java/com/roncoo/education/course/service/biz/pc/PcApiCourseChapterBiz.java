@@ -1,20 +1,31 @@
 package com.roncoo.education.course.service.biz.pc;
 
+import com.qiniu.common.QiniuException;
 import com.roncoo.education.course.service.common.req.*;
 import com.roncoo.education.course.service.common.resq.CourseCategoryPageRESQ;
 import com.roncoo.education.course.service.common.resq.CourseCategoryViewRESQ;
+import com.roncoo.education.course.service.common.resq.CourseChapterAuditPageRESQ;
 import com.roncoo.education.course.service.common.resq.CourseChapterPageRESQ;
 import com.roncoo.education.course.service.common.req.CourseChapterUpdateREQ;
+import com.roncoo.education.course.service.dao.CourseChapterAuditDao;
 import com.roncoo.education.course.service.dao.CourseChapterDao;
 import com.roncoo.education.course.service.dao.CourseChapterPeriodDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapter;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterExample;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriod;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.system.common.bean.vo.SysVO;
+import com.roncoo.education.system.feign.IBossSys;
+import com.roncoo.education.util.aliyun.Aliyun;
+import com.roncoo.education.util.aliyun.AliyunUtil;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.base.Result;
+import com.roncoo.education.util.enums.AuditStatusEnum;
+import com.roncoo.education.util.enums.FileTypeEnum;
 import com.roncoo.education.util.enums.ResultEnum;
+import com.roncoo.education.util.enums.StatusIdEnum;
+import com.roncoo.education.util.qiniu.Qiniu;
+import com.roncoo.education.util.qiniu.QiniuUtil;
 import com.roncoo.education.util.tools.BeanUtil;
+import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,6 +46,8 @@ public class PcApiCourseChapterBiz {
 
 	@Autowired
 	private CourseChapterPeriodDao courseChapterPeriodDao;
+	@Autowired
+	private IBossSys bossSys;
 
 	/**
 	 * 章节分类-分页列出
@@ -85,9 +98,14 @@ public class PcApiCourseChapterBiz {
 		if (StringUtils.isEmpty(req.getId())) {
 			return Result.error("ID不能为空");
 		}
-		List<CourseChapterPeriod> list = courseChapterPeriodDao.listByChapterId(req.getId());
-		if (CollectionUtils.isNotEmpty(list)) {
-			return Result.error("请先删除下级分类");
+		CourseChapter chapter = dao.getById(req.getId());
+		if (ObjectUtil.isNull(chapter)) {
+			return Result.error("找不到章节信息");
+		}else{
+			List<CourseChapterPeriod> list = courseChapterPeriodDao.listByChapterIdAndStatusId(req.getId(), StatusIdEnum.YES.getCode());
+			if (CollectionUtils.isNotEmpty(list)) {
+				return Result.error("请先删除下级分类");
+			}
 		}
 		int results = dao.deleteById(req.getId());
 		if (results > 0) {

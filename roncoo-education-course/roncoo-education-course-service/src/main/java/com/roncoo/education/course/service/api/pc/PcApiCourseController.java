@@ -79,13 +79,24 @@ public class PcApiCourseController extends BaseController {
 	/**
 	 * 课程查看接口
 	 * 
-	 * @param courseUpdateREQ
+	 * @param courseViewREQ
 	 * @return
 	 */
 	@ApiOperation(value = "课程查看详情接口", notes = "课程查看详情接口")
 	@RequestMapping(value = "/view", method = RequestMethod.POST)
 	public Result<CourseViewRESQ> view(@RequestBody CourseViewREQ courseViewREQ) {
 		return biz.view(courseViewREQ);
+	}
+	/**
+	 * 课程删除接口
+	 *
+	 * @param courseDeleteREQ
+	 * @return
+	 */
+	@ApiOperation(value = "课程查看详情接口", notes = "课程查看详情接口")
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public Result<Integer> delete(@RequestBody CourseDeleteREQ courseDeleteREQ) {
+		return biz.delete(courseDeleteREQ);
 	}
 
 }

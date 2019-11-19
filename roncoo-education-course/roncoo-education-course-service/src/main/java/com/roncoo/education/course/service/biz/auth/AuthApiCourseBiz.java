@@ -2,6 +2,8 @@ package com.roncoo.education.course.service.biz.auth;
 
 import java.util.List;
 
+import com.roncoo.education.course.service.dao.*;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -14,20 +16,6 @@ import com.roncoo.education.course.service.common.dto.CourseIntroduceDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseSignDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseViewDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthLecturerDTO;
-import com.roncoo.education.course.service.dao.CourseChapterDao;
-import com.roncoo.education.course.service.dao.CourseChapterPeriodDao;
-import com.roncoo.education.course.service.dao.CourseDao;
-import com.roncoo.education.course.service.dao.CourseIntroduceDao;
-import com.roncoo.education.course.service.dao.CourseUserStudyDao;
-import com.roncoo.education.course.service.dao.CourseUserStudyLogDao;
-import com.roncoo.education.course.service.dao.OrderInfoDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapter;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriod;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseIntroduce;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseUserStudy;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseUserStudyLog;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo;
 import com.roncoo.education.system.common.bean.vo.SysVO;
 import com.roncoo.education.system.feign.IBossSys;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
@@ -56,13 +44,13 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 public class AuthApiCourseBiz extends BaseBiz {
 
 	@Autowired
-	private CourseDao courseDao;
+	private CourseAuditDao courseAuditDao;
 	@Autowired
-	private CourseChapterDao courseChapterDao;
+	private CourseChapterAuditDao courseChapterAuditDao;
 	@Autowired
-	private CourseChapterPeriodDao courseChapterPeriodDao;
+	private CourseChapterPeriodAuditDao courseChapterPeriodAuditDao;
 	@Autowired
-	private CourseIntroduceDao courseIntroduceDao;
+	private CourseIntroduceAuditDao courseIntroduceAuditDao;
 	@Autowired
 	private CourseUserStudyDao courseUserStudyDao;
 	@Autowired
@@ -87,37 +75,37 @@ public class AuthApiCourseBiz extends BaseBiz {
 		}
 
 		// 课时信息
-		CourseChapterPeriod courseChapterPeriod = courseChapterPeriodDao.getById(authCourseSignBO.getPeriodId());
-		if (StringUtils.isEmpty(courseChapterPeriod)) {
+		CourseChapterPeriodAudit courseChapterPeriodAudit = courseChapterPeriodAuditDao.getById(authCourseSignBO.getPeriodId());
+		if (StringUtils.isEmpty(courseChapterPeriodAudit)) {
 			return Result.error("找不到课时信息");
 		}
 		// 章节信息
-		CourseChapter courseChapter = courseChapterDao.getById(courseChapterPeriod.getChapterId());
-		if (ObjectUtil.isNull(courseChapter)) {
+		CourseChapterAudit courseChapterAudit = courseChapterAuditDao.getById(courseChapterPeriodAudit.getChapterId());
+		if (ObjectUtil.isNull(courseChapterAudit)) {
 			return Result.error("找不到章节信息");
 		}
 		// 课程信息
-		Course course = courseDao.getById(courseChapterPeriod.getCourseId());
-		if (StringUtils.isEmpty(course)) {
+		CourseAudit courseAudit = courseAuditDao.getById(courseChapterPeriodAudit.getCourseId());
+		if (StringUtils.isEmpty(courseAudit)) {
 			return Result.error("找不到课程信息");
 		}
 
 		// 免费：课时免费，章节免费，课程免费
-		if (IsFreeEnum.FREE.getCode().equals(courseChapterPeriod.getIsFree()) || IsFreeEnum.FREE.getCode().equals(courseChapter.getIsFree()) || IsFreeEnum.FREE.getCode().equals(course.getIsFree())) {
+		if (IsFreeEnum.FREE.getCode().equals(courseChapterPeriodAudit.getIsFree()) || IsFreeEnum.FREE.getCode().equals(courseChapterAudit.getIsFree()) || IsFreeEnum.FREE.getCode().equals(courseAudit.getIsFree())) {
 			AuthCourseSignDTO authCourseSignDTO = getSgin(authCourseSignBO);
-			callbackExecutor.execute(new StudyLog(authCourseSignBO, courseChapterPeriod, course, courseChapter));
+			callbackExecutor.execute(new StudyLog(authCourseSignBO, courseChapterPeriodAudit, courseAudit, courseChapterAudit));
 			return Result.success(authCourseSignDTO);
 		}
 
 		// 收费：订单是否存在并且判断订单是否支付成功
-		OrderInfo orderInfo = orderInfoDao.getByUserNoAndCourseId(authCourseSignBO.getUserNo(), courseChapterPeriod.getCourseId());
+		OrderInfo orderInfo = orderInfoDao.getByUserNoAndCourseId(authCourseSignBO.getUserNo(), courseChapterPeriodAudit.getCourseId());
 		if (orderInfo == null || !OrderStatusEnum.SUCCESS.getCode().equals(orderInfo.getOrderStatus())) {
 			return Result.error("收费课程，请先购买");
 		}
 
 		// 成功
 		AuthCourseSignDTO authCourseSignDTO = getSgin(authCourseSignBO);
-		callbackExecutor.execute(new StudyLog(authCourseSignBO, courseChapterPeriod, course, courseChapter));
+		callbackExecutor.execute(new StudyLog(authCourseSignBO, courseChapterPeriodAudit, courseAudit, courseChapterAudit));
 		return Result.success(authCourseSignDTO);
 	}
 
@@ -130,14 +118,14 @@ public class AuthApiCourseBiz extends BaseBiz {
 		}
 
 		// 查询课程信息
-		Course course = courseDao.getById(authCourseViewBO.getCourseId());
-		if (course == null) {
+		CourseAudit courseAudit = courseAuditDao.getById(authCourseViewBO.getCourseId());
+		if (courseAudit == null) {
 			return Result.error("找不到该课程");
 		}
-		AuthCourseViewDTO dto = BeanUtil.copyProperties(course, AuthCourseViewDTO.class);
+		AuthCourseViewDTO dto = BeanUtil.copyProperties(courseAudit, AuthCourseViewDTO.class);
 
 		// 查询课程介绍
-		CourseIntroduce courseIntroduce = courseIntroduceDao.getById(course.getIntroduceId());
+		CourseIntroduceAudit courseIntroduce = courseIntroduceAuditDao.getById(courseAudit.getIntroduceId());
 		dto.setIntroduce(BeanUtil.copyProperties(courseIntroduce, CourseIntroduceDTO.class).getIntroduce());
 
 		// 先假设为收费课程且用户未付款
@@ -152,12 +140,12 @@ public class AuthApiCourseBiz extends BaseBiz {
 			dto.setIsPay(IsPayEnum.YES.getCode());
 		}
 		// 如果课程为免费课程则设置为已付费
-		if (IsFreeEnum.FREE.getCode().equals(course.getIsFree())) {
+		if (IsFreeEnum.FREE.getCode().equals(courseAudit.getIsFree())) {
 			dto.setIsPay(IsPayEnum.YES.getCode());
 		}
 
 		// 此处用于测试支付课程，无论怎样都是未购买
-		if (SystemUtil.TEST_COURSE.equals(course.getId().toString())) {
+		if (SystemUtil.TEST_COURSE.equals(courseAudit.getId().toString())) {
 			dto.setIsPay(IsPayEnum.NO.getCode());
 		}
 
@@ -166,16 +154,16 @@ public class AuthApiCourseBiz extends BaseBiz {
 		dto.setLecturer(BeanUtil.copyProperties(lecturerVO, AuthLecturerDTO.class));
 
 		// 查询章节信息
-		List<CourseChapter> courseChapterList = courseChapterDao.listByCourseIdAndStatusId(authCourseViewBO.getCourseId(), StatusIdEnum.YES.getCode());
+		List<CourseChapterAudit> courseChapterAuditList = courseChapterAuditDao.listByCourseIdAndStatusId(authCourseViewBO.getCourseId(), StatusIdEnum.YES.getCode());
 		// 如果为空就直接返回
-		if (courseChapterList.isEmpty()) {
+		if (courseChapterAuditList.isEmpty()) {
 			return Result.success(dto);
 		}
-		dto.setChapterList(PageUtil.copyList(courseChapterList, CourseChapterDTO.class));
+		dto.setChapterList(PageUtil.copyList(courseChapterAuditList, CourseChapterDTO.class));
 
 		// 课时信息
 		for (CourseChapterDTO courseChapterDTO : dto.getChapterList()) {
-			List<CourseChapterPeriod> courseChapterPeriodList = courseChapterPeriodDao.listByChapterId(courseChapterDTO.getId());
+			List<CourseChapterPeriodAudit> courseChapterPeriodList = courseChapterPeriodAuditDao.listByChapterId(courseChapterDTO.getId());
 			courseChapterDTO.setPeriodList(PageUtil.copyList(courseChapterPeriodList, CourseChapterPeriodDTO.class));
 		}
 
@@ -185,7 +173,7 @@ public class AuthApiCourseBiz extends BaseBiz {
 	/**
 	 * 获取播放sign值
 	 * 
-	 * @param bo
+	 * @param authCourseSignBO
 	 * @return
 	 */
 	private AuthCourseSignDTO getSgin(AuthCourseSignBO authCourseSignBO) {
@@ -219,75 +207,76 @@ public class AuthApiCourseBiz extends BaseBiz {
 
 	class StudyLog implements Runnable {
 		private AuthCourseSignBO authCourseSignBO;
-		private CourseChapterPeriod courseChapterPeriod;
-		private Course course;
-		private CourseChapter courseChapter;
+		private CourseChapterPeriodAudit courseChapterPeriodAudit;
+		private CourseAudit courseAudit;
+		private CourseChapterAudit courseChapterAudit;
 
-		public StudyLog(AuthCourseSignBO authCourseSignBO, CourseChapterPeriod courseChapterPeriod, Course course, CourseChapter courseChapter) {
+		public StudyLog(AuthCourseSignBO authCourseSignBO, CourseChapterPeriodAudit courseChapterPeriodAudit, CourseAudit courseAudit, CourseChapterAudit courseChapterAudit) {
 			this.authCourseSignBO = authCourseSignBO;
-			this.courseChapterPeriod = courseChapterPeriod;
-			this.course = course;
+			this.courseChapterPeriodAudit = courseChapterPeriodAudit;
+			this.courseAudit = courseAudit;
+			this.courseChapterAudit = courseChapterAudit;
 		}
 
 		@Override
 		public void run() {
 			// 更新学习人数
-			updateCount(course);
+			updateCount(courseAudit);
 
 			// 学习日志与统计
-			studyCount(authCourseSignBO, courseChapterPeriod, course, courseChapter);
+			studyCount(authCourseSignBO, courseChapterPeriodAudit, courseAudit, courseChapterAudit);
 		}
 
 		/**
 		 * 更新学习人数
 		 */
-		private Integer updateCount(Course course) {
-			Course record = new Course();
-			record.setId(course.getId());
-			record.setCountStudy(course.getCountStudy() + 1);
-			return courseDao.updateById(record);
+		private Integer updateCount(CourseAudit courseAudit) {
+			CourseAudit record = new CourseAudit();
+			record.setId(courseAudit.getId());
+			record.setCountStudy(courseAudit.getCountStudy() + 1);
+			return courseAuditDao.updateById(record);
 		}
 
-		private void studyCount(AuthCourseSignBO authCourseSignBO, CourseChapterPeriod courseChapterPeriod, Course course, CourseChapter courseChapter) {
+		private void studyCount(AuthCourseSignBO authCourseSignBO, CourseChapterPeriodAudit courseChapterPeriodAudit, CourseAudit courseAudit, CourseChapterAudit courseChapterAudit) {
 			// 查找课程用户关联表
-			CourseUserStudy courseUserStudy = courseUserStudyDao.getByUserNoAndCourseId(authCourseSignBO.getUserNo(), courseChapterPeriod.getCourseId());
+			CourseUserStudy courseUserStudy = courseUserStudyDao.getByUserNoAndCourseId(authCourseSignBO.getUserNo(), courseChapterPeriodAudit.getCourseId());
 			// 如果不存在记录
 			if (null == courseUserStudy) {
 				courseUserStudy = new CourseUserStudy();
-				courseUserStudy.setCourseId(course.getId());
+				courseUserStudy.setCourseId(courseAudit.getId());
 				courseUserStudy.setUserNo(authCourseSignBO.getUserNo());
-				courseUserStudy.setPeriodTotal(course.getPeriodTotal());
+				courseUserStudy.setPeriodTotal(courseAudit.getPeriodTotal());
 				courseUserStudy.setPeriodStudy(1);
 				courseUserStudyDao.save(courseUserStudy);
 
 				CourseUserStudyLog courseUserStudyLog = new CourseUserStudyLog();
-				courseUserStudyLog.setPeriodId(courseChapterPeriod.getId());
-				courseUserStudyLog.setPeriodName(courseChapterPeriod.getPeriodName());
-				courseUserStudyLog.setChapterId(courseChapterPeriod.getChapterId());
-				courseUserStudyLog.setChapterName(courseChapter.getChapterName());
-				courseUserStudyLog.setCourseId(courseChapterPeriod.getCourseId());
-				courseUserStudyLog.setCourseName(course.getCourseName());
+				courseUserStudyLog.setPeriodId(courseChapterPeriodAudit.getId());
+				courseUserStudyLog.setPeriodName(courseChapterPeriodAudit.getPeriodName());
+				courseUserStudyLog.setChapterId(courseChapterPeriodAudit.getChapterId());
+				courseUserStudyLog.setChapterName(courseChapterAudit.getChapterName());
+				courseUserStudyLog.setCourseId(courseChapterPeriodAudit.getCourseId());
+				courseUserStudyLog.setCourseName(courseAudit.getCourseName());
 				courseUserStudyLog.setUserNo(authCourseSignBO.getUserNo());
 				courseUserStudyLogDao.save(courseUserStudyLog);
 			} else {
-				CourseUserStudyLog courseUserStudyLog = courseUserStudyLogDao.getByUserNoAndPeriodId(authCourseSignBO.getUserNo(), courseChapterPeriod.getId());
+				CourseUserStudyLog courseUserStudyLog = courseUserStudyLogDao.getByUserNoAndPeriodId(authCourseSignBO.getUserNo(), courseChapterPeriodAudit.getId());
 				if (courseUserStudyLog == null) {
 					// 记录
 					courseUserStudyLog = new CourseUserStudyLog();
-					courseUserStudyLog.setPeriodId(courseChapterPeriod.getId());
-					courseUserStudyLog.setPeriodName(courseChapterPeriod.getPeriodName());
-					courseUserStudyLog.setChapterId(courseChapterPeriod.getChapterId());
-					courseUserStudyLog.setChapterName(courseChapter.getChapterName());
-					courseUserStudyLog.setCourseId(courseChapterPeriod.getCourseId());
-					courseUserStudyLog.setCourseName(course.getCourseName());
+					courseUserStudyLog.setPeriodId(courseChapterPeriodAudit.getId());
+					courseUserStudyLog.setPeriodName(courseChapterPeriodAudit.getPeriodName());
+					courseUserStudyLog.setChapterId(courseChapterPeriodAudit.getChapterId());
+					courseUserStudyLog.setChapterName(courseChapterAudit.getChapterName());
+					courseUserStudyLog.setCourseId(courseChapterPeriodAudit.getCourseId());
+					courseUserStudyLog.setCourseName(courseAudit.getCourseName());
 					courseUserStudyLog.setUserNo(authCourseSignBO.getUserNo());
 					courseUserStudyLogDao.save(courseUserStudyLog);
 
-					courseUserStudy.setPeriodTotal(course.getPeriodTotal());
+					courseUserStudy.setPeriodTotal(courseAudit.getPeriodTotal());
 					courseUserStudy.setPeriodStudy(courseUserStudy.getPeriodStudy() + 1);
 					courseUserStudyDao.updateById(courseUserStudy);
 				} else {
-					courseUserStudy.setPeriodTotal(course.getPeriodTotal());
+					courseUserStudy.setPeriodTotal(courseAudit.getPeriodTotal());
 					courseUserStudy.setPeriodStudy(courseUserStudy.getPeriodStudy() + 1);
 					courseUserStudyDao.updateById(courseUserStudy);
 				}

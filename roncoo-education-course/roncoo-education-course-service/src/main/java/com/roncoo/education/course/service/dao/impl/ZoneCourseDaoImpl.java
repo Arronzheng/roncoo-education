@@ -84,4 +84,13 @@ public class ZoneCourseDaoImpl implements ZoneCourseDao {
 		return list.get(0);
 	}
 
+	@Override
+	public Integer deleteByCourseId(Long id) {
+		ZoneCourseExample example = new ZoneCourseExample();
+		Criteria c = example.createCriteria();
+		c.andCourseIdEqualTo(id);
+		Integer result = this.zoneCourseMapper.deleteByExample(example);
+		return result;
+	}
+
 }

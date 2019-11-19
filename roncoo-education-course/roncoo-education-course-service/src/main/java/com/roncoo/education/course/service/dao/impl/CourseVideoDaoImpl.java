@@ -36,6 +36,14 @@ public class CourseVideoDaoImpl implements CourseVideoDao {
 	}
 
 	@Override
+	public int updateByExampleSelective(CourseVideo record) {
+		CourseVideoExample example = new CourseVideoExample();
+		CourseVideoExample.Criteria c = example.createCriteria();
+		c.andVideoNoEqualTo(record.getVideoNo());
+		return this.courseVideoMapper.updateByExampleSelective(record, example);
+	}
+
+	@Override
 	public CourseVideo getById(Long id) {
 		return this.courseVideoMapper.selectByPrimaryKey(id);
 	}

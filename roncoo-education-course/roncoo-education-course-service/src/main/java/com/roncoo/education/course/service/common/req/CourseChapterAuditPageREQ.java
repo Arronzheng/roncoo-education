@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-public class CourseChapterPageREQ implements Serializable {
+public class CourseChapterAuditPageREQ implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

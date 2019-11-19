@@ -3,9 +3,19 @@ package com.roncoo.education.course.service.biz.pc;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.qiniu.common.QiniuException;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseAuditSaveDTO;
 import com.roncoo.education.course.service.common.req.*;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.system.common.bean.vo.SysVO;
+import com.roncoo.education.system.feign.IBossSys;
+import com.roncoo.education.util.aliyun.Aliyun;
+import com.roncoo.education.util.aliyun.AliyunUtil;
 import com.roncoo.education.util.enums.*;
+import com.roncoo.education.util.qiniu.Qiniu;
+import com.roncoo.education.util.qiniu.QiniuUtil;
+import com.roncoo.education.util.tencentcloud.Tencent;
+import com.roncoo.education.util.tencentcloud.TencentUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,16 +35,7 @@ import com.roncoo.education.course.service.dao.CourseDao;
 import com.roncoo.education.course.service.dao.CourseIntroduceAuditDao;
 import com.roncoo.education.course.service.dao.CourseIntroduceDao;
 import com.roncoo.education.course.service.dao.ZoneCourseDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseCategory;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapter;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriod;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseExample.Criteria;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseIntroduce;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseIntroduceAudit;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneCourse;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
 import com.roncoo.education.user.feign.IBossLecturer;
 import com.roncoo.education.util.base.Page;
@@ -68,6 +69,8 @@ public class PcApiCourseBiz {
 	private CourseCategoryDao courseCategoryDao;
 	@Autowired
 	private CourseChapterPeriodDao courseChapterPeriodDao;
+	@Autowired
+	private IBossSys bossSys;
 
 	/**
 	 * 分页列出
@@ -317,4 +320,38 @@ public class PcApiCourseBiz {
 		}
 		return Result.error(ResultEnum.COURSE_SAVE_FAIL);
 	}
+
+    public Result<Integer> delete(CourseDeleteREQ req) {
+		if (StringUtils.isEmpty(req.getId())) {
+			return Result.error("ID不能为空");
+		}
+		Course course = dao.getById(req.getId());
+		if (ObjectUtil.isNull(course)) {
+			return Result.error("找不到课程信息");
+		}else{
+			List<CourseChapter> ChapterList = courseChapterDao.listByCourseIdAndStatusId(req.getId(),
+					StatusIdEnum.YES.getCode());
+			if (CollectionUtils.isNotEmpty(ChapterList)) {
+				return Result.error("请先删除下级分类");
+			}
+		}
+
+		SysVO sys = bossSys.getSys();
+		if(sys.getFileType().equals(FileTypeEnum.TENCENT)){
+			TencentUtil.deleteFile(course.getCourseLogo(), BeanUtil.copyProperties(sys, Tencent.class));
+		}else if(sys.getFileType().equals(FileTypeEnum.QINIU)){
+			try {
+				QiniuUtil.deletePic(course.getCourseLogo(), BeanUtil.copyProperties(sys, Qiniu.class));
+			} catch (QiniuException e) {
+				return Result.error(e.code(),e.response.toString());
+			}
+		}else{
+			AliyunUtil.delete(course.getCourseLogo(), BeanUtil.copyProperties(sys, Aliyun.class));
+		}
+		int results = dao.deleteById(req.getId());
+		if (results > 0) {
+			return Result.success(results);
+		}
+		return Result.error(ResultEnum.COURSE_DELETE_FAIL);
+    }
 }

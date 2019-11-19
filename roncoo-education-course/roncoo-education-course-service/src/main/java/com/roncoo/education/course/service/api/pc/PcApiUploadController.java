@@ -28,9 +28,22 @@ public class PcApiUploadController extends BaseController {
 	private PcApiUploadBiz biz;
 
 	/**
+	 * 上传视频接口
+	 *
+	 * @param videoFile
+	 * @param url  原视频路径
+	 */
+	@ApiOperation(value = "上传视频接口", notes = "上传视频")
+	@RequestMapping(value = "/video", method = RequestMethod.POST)
+	public Result<String> uploadVideo(@RequestParam(value = "videoFile", required = false) MultipartFile videoFile, @RequestParam(value = "url", required = false) String url) {
+		return biz.uploadVideo(videoFile,url);
+	}
+
+	/**
 	 * 上传图片接口
 	 * 
 	 * @param picFile
+	 * @param imgUrl  原图片路径
 	 */
 	@ApiOperation(value = "上传图片接口", notes = "上传图片")
 	@RequestMapping(value = "/pic", method = RequestMethod.POST)
@@ -45,8 +58,8 @@ public class PcApiUploadController extends BaseController {
 	 */
 	@ApiOperation(value = "上传文档接口", notes = "上传文档")
 	@RequestMapping(value = "/doc", method = RequestMethod.POST)
-	public Result<String> uploadDoc(@RequestParam(name = "docFile", required = false) MultipartFile docFile) {
-		return biz.uploadDoc(docFile);
+	public Result<String> uploadDoc(@RequestParam(name = "docFile", required = false) MultipartFile docFile, @RequestParam(name = "url", required = false) String url) {
+		return biz.uploadDoc(docFile, url);
 	}
 
 }

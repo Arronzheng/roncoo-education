@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  */
 @Data
 @Accessors(chain = true)
-public class ChapterPeriodPageRESQ implements Serializable {
+public class ChapterPeriodAuditPageRESQ implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,10 +86,20 @@ public class ChapterPeriodPageRESQ implements Serializable {
 	 * 是否存在视频
 	 */
 	@ApiModelProperty(value = "是否存在视频")
-	private Integer isVideo;
+	private String isVideo;
 	/**
 	 * 视频名称
 	 */
 	@ApiModelProperty(value = "视频名称")
 	private String videoName;
+	/**
+	 * 审核状态
+	 */
+	@ApiModelProperty(value = "审核状态")
+	private Integer auditStatus;
+	/**
+	 * 审核意见
+	 */
+	@ApiModelProperty(value = "审核意见")
+	private String auditOpinion;
 }

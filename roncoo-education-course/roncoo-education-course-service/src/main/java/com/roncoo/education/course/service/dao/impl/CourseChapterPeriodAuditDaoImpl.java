@@ -2,6 +2,7 @@ package com.roncoo.education.course.service.dao.impl;
 
 import com.roncoo.education.course.service.dao.CourseChapterPeriodAuditDao;
 import com.roncoo.education.course.service.dao.impl.mapper.CourseChapterPeriodAuditMapper;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriod;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriodAudit;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriodAuditExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseChapterPeriodAuditExample.Criteria;
@@ -128,6 +129,13 @@ public class CourseChapterPeriodAuditDaoImpl implements CourseChapterPeriodAudit
 		CourseChapterPeriodAuditExample example = new CourseChapterPeriodAuditExample();
 		Criteria c = example.createCriteria();
 		c.andVideoNoEqualTo(videoNo);
+		return this.courseChapterPeriodAuditMapper.selectByExample(example);
+	}
+
+	@Override
+	public List<CourseChapterPeriodAudit> listByChapterId(Long chapterId) {
+		CourseChapterPeriodAuditExample example = new CourseChapterPeriodAuditExample();
+		example.createCriteria().andChapterIdEqualTo(chapterId);
 		return this.courseChapterPeriodAuditMapper.selectByExample(example);
 	}
 }

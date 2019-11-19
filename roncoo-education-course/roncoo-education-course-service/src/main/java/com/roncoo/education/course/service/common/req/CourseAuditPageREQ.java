@@ -57,4 +57,9 @@ public class CourseAuditPageREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "审核状态(0:待审核,1:审核通过,2:审核不通过)", required = false)
 	private Integer auditStatus;
+	/**
+	 * 专区编号
+	 */
+	@ApiModelProperty(value = "专区编号", required = false)
+	private Long zoneId;
 }
