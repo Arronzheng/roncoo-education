@@ -142,11 +142,15 @@ public class FilterPre extends ZuulFilter {
 		}
 
 		// 单点登录处理，注意，登录的时候必须要放入缓存
-		/*
-		 * if (!stringRedisTemplate.hasKey(userNo.toString())) { // 不存在，则登录异常，有效期为1小时 throw new BaseException(ResultEnum.TOKEN_PAST); }
-		 * 
-		 * // 存在，判断是否token相同 String tk = stringRedisTemplate.opsForValue().get(userNo.toString()); if (!token.equals(tk)) { // 不同则为不同的用户登录，这时候提示异地登录 throw new BaseException(ResultEnum.REMOTE_ERROR); }
-		 */
+//		if (!stringRedisTemplate.hasKey(userNo.toString())) { // 不存在，则登录异常，有效期为1小时
+//			throw new BaseException(ResultEnum.TOKEN_PAST);
+//		}
+		 // 存在，判断是否token相同
+//		 String tk = stringRedisTemplate.opsForValue().get(userNo.toString());
+//		if (!token.equals(tk)) {
+//			// 不同则为不同的用户登录，这时候提示异地登录
+//			 throw new BaseException(ResultEnum.REMOTE_ERROR);
+//		}
 
 		// 更新时间，使token不过期
 		stringRedisTemplate.opsForValue().set(userNo.toString(), token, 1, TimeUnit.HOURS);

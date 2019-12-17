@@ -1,9 +1,13 @@
 package com.roncoo.education.course.service.biz.auth;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
 import com.roncoo.education.course.service.dao.*;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.user.feign.IBossUserExt;
+import com.roncoo.education.util.enums.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -24,10 +28,6 @@ import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.base.Result;
 import com.roncoo.education.util.config.SystemUtil;
-import com.roncoo.education.util.enums.IsFreeEnum;
-import com.roncoo.education.util.enums.IsPayEnum;
-import com.roncoo.education.util.enums.OrderStatusEnum;
-import com.roncoo.education.util.enums.StatusIdEnum;
 import com.roncoo.education.util.polyv.PolyvCode;
 import com.roncoo.education.util.polyv.PolyvSign;
 import com.roncoo.education.util.polyv.PolyvSignResult;
@@ -59,6 +59,10 @@ public class AuthApiCourseBiz extends BaseBiz {
 	private IBossLecturer bossLecturer;
 	@Autowired
 	private OrderInfoDao orderInfoDao;
+	@Autowired
+	private CourseCommentDao courseCommentDao;
+	@Autowired
+	private IBossUserExt bossUserExt;
 
 	@Autowired
 	private IBossSys bossSys;
@@ -70,9 +74,9 @@ public class AuthApiCourseBiz extends BaseBiz {
 		if (ObjectUtil.isNull(authCourseSignBO.getPeriodId())) {
 			return Result.error("periodId不能为空");
 		}
-		if (StringUtils.isEmpty(authCourseSignBO.getVideoVid())) {
-			return Result.error("videoVid不能为空");
-		}
+//		if (StringUtils.isEmpty(authCourseSignBO.getVideoVid())) {
+//			return Result.error("videoVid不能为空");
+//		}
 
 		// 课时信息
 		CourseChapterPeriodAudit courseChapterPeriodAudit = courseChapterPeriodAuditDao.getById(authCourseSignBO.getPeriodId());
@@ -160,13 +164,30 @@ public class AuthApiCourseBiz extends BaseBiz {
 			return Result.success(dto);
 		}
 		dto.setChapterList(PageUtil.copyList(courseChapterAuditList, CourseChapterDTO.class));
-
+		//评论信息
+		List<CourseComment> courseCommentList = courseCommentDao.getByCourseIdAndPid(authCourseViewBO.getCourseId());
+		List<AuthCourseCommentDTO> courseCommentDTOList = PageUtil.copyList(courseCommentList, AuthCourseCommentDTO.class);
+		for (AuthCourseCommentDTO courseCommentDTO : courseCommentDTOList) {
+			courseCommentDTO.setCourseAudit(courseAuditDao.getById(courseCommentDTO.getCourseId()));
+			courseCommentDTO.setUserExt(bossUserExt.getByUserNo(courseCommentDTO.getUserId()));
+			courseCommentDTO.setIsPackup(1);
+			List<CourseComment> childList = courseCommentDao.listByParentId(courseCommentDTO.getId());
+			List<AuthCourseCommentDTO> childDTOList = PageUtil.copyList(childList, AuthCourseCommentDTO.class);
+			for (AuthCourseCommentDTO childDTO: childDTOList) {
+				childDTO.setCourseAudit(courseAuditDao.getById(childDTO.getCourseId()));
+				childDTO.setUserExt(bossUserExt.getByUserNo(childDTO.getUserId()));
+				childDTO.setParentUserExt(bossUserExt.getByUserNo(childDTO.getParentNo()));
+			}
+			courseCommentDTO.setChildren(childDTOList);
+		}
+		dto.setCourseCommentList(courseCommentDTOList);
 		// 课时信息
 		for (CourseChapterDTO courseChapterDTO : dto.getChapterList()) {
 			List<CourseChapterPeriodAudit> courseChapterPeriodList = courseChapterPeriodAuditDao.listByChapterId(courseChapterDTO.getId());
 			courseChapterDTO.setPeriodList(PageUtil.copyList(courseChapterPeriodList, CourseChapterPeriodDTO.class));
 		}
-
+		SysVO sys = bossSys.getSys();
+		dto.setVideoType(sys.getVideoType());
 		return Result.success(dto);
 	}
 
@@ -203,6 +224,34 @@ public class AuthApiCourseBiz extends BaseBiz {
 		polyvCode.setUserNo(authCourseSignBO.getUserNo());
 		dto.setCode(PolyvUtil.getPolyvCode(polyvCode));
 		return dto;
+	}
+
+	public Result<AuthCourseSignDTO> playUrl(AuthCourseSignBO authCourseSignBO) {
+		SysVO sys = bossSys.getSys();
+		if (ObjectUtil.isNull(sys)) {
+			try {
+				throw new Exception("找不到系统配置信息");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		CourseChapterPeriodAudit courseChapterPeriodAudit = courseChapterPeriodAuditDao.getById(authCourseSignBO.getPeriodId());
+		if (ObjectUtil.isNull(courseChapterPeriodAudit)) {
+			try {
+				throw new Exception("找不到该课时信息");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		AuthCourseSignDTO dto = new AuthCourseSignDTO();
+		List<String> urls = new ArrayList<String>();
+		String suffix = courseChapterPeriodAudit.getVideoName().substring(courseChapterPeriodAudit.getVideoName().lastIndexOf("."));
+		String FHD = sys.getAliyunOssUrl()+CatalogueEnum.VIDEO.name().toLowerCase()+"/"+courseChapterPeriodAudit.getVideoNo()+suffix;//全高清
+		String HD = sys.getAliyunOssUrl()+CatalogueEnum.VIDEO.name().toLowerCase()+"/"+CatalogueEnum.TRANSCODE.name().toLowerCase()+"/"+courseChapterPeriodAudit.getVideoNo()+suffix;//高清
+		urls.add(HD);
+		urls.add(FHD);
+		dto.setUrl(urls);
+		return Result.success(dto);
 	}
 
 	class StudyLog implements Runnable {

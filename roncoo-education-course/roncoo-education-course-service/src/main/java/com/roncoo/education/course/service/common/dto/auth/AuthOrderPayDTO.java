@@ -26,4 +26,6 @@ public class AuthOrderPayDTO implements Serializable {
 
 	private Integer payType;
 
+	private String serialNumber;
+
 }

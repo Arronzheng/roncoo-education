@@ -74,4 +74,8 @@ public interface OrderInfoDao {
 	 * @author wuyun
 	 */
 	List<OrderReportVO> listForReport(OrderInfoQO orderInfoQO);
+
+    int updateByOrderNo(OrderInfo order);
+
+    OrderInfo getByUserNoAndCourseIdAndOrderStatus(Long userNo, Long courseId);
 }

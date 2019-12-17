@@ -2,8 +2,10 @@ package com.roncoo.education.course.service.biz;
 
 import java.util.List;
 
+import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
 import com.roncoo.education.course.service.dao.*;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.user.feign.IBossUserExt;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -32,7 +34,6 @@ import com.roncoo.education.course.service.common.dto.LecturerDTO;
 import com.roncoo.education.course.service.common.es.EsCourse;
 import com.roncoo.education.course.service.common.es.EsPageUtil;
 import com.roncoo.education.course.service.common.es.ResultMapperExt;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseExample.Criteria;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
 import com.roncoo.education.user.feign.IBossLecturer;
 import com.roncoo.education.util.base.Page;
@@ -69,6 +70,10 @@ public class ApiCourseBiz {
 
 	@Autowired
 	private ResultMapperExt resultMapperExt;
+	@Autowired
+	private CourseCommentDao courseCommentDao;
+	@Autowired
+    private IBossUserExt bossUserExt;
 
 	/**
 	 * 课程详情接口
@@ -105,7 +110,23 @@ public class ApiCourseBiz {
 		if (CollectionUtil.isNotEmpty(courseChapterAuditList)) {
 			data.setChapterList(PageUtil.copyList(courseChapterAuditList, CourseChapterDTO.class));
 		}
-
+		//评论信息
+		List<CourseComment> courseCommentList = courseCommentDao.getByCourseIdAndPid(courseVideoBO.getCourseId());
+		List<AuthCourseCommentDTO> courseCommentDTOList = PageUtil.copyList(courseCommentList, AuthCourseCommentDTO.class);
+		for (AuthCourseCommentDTO courseCommentDTO : courseCommentDTOList) {
+            courseCommentDTO.setCourseAudit(courseAuditDao.getById(courseCommentDTO.getCourseId()));
+            courseCommentDTO.setUserExt(bossUserExt.getByUserNo(courseCommentDTO.getUserId()));
+			courseCommentDTO.setIsPackup(1);
+            List<CourseComment> childList = courseCommentDao.listByParentId(courseCommentDTO.getId());
+            List<AuthCourseCommentDTO> childDTOList = PageUtil.copyList(childList, AuthCourseCommentDTO.class);
+            for (AuthCourseCommentDTO childDTO: childDTOList) {
+                childDTO.setCourseAudit(courseAuditDao.getById(childDTO.getCourseId()));
+                childDTO.setUserExt(bossUserExt.getByUserNo(childDTO.getUserId()));
+                childDTO.setParentUserExt(bossUserExt.getByUserNo(childDTO.getParentNo()));
+            }
+            courseCommentDTO.setChildren(childDTOList);
+		}
+		data.setCourseCommentList(courseCommentDTOList);
 		// 课时信息
 		if (CollectionUtil.isNotEmpty(data.getChapterList())) {
 			for (CourseChapterDTO courseChapterDTO : data.getChapterList()) {

@@ -50,6 +50,26 @@ public class Sys implements Serializable {
 
     private String signName;
 
+    private Integer msgAppid;
+
+    private String msgAppkey;
+
+    public void setMsgAppid(Integer msgAppid) {
+        this.msgAppid = msgAppid;
+    }
+
+    public void setMsgAppkey(String msgAppkey) {
+        this.msgAppkey = msgAppkey;
+    }
+
+    public Integer getMsgAppid() {
+        return msgAppid;
+    }
+
+    public String getMsgAppkey() {
+        return msgAppkey;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -265,6 +285,8 @@ public class Sys implements Serializable {
         sb.append(", notifyUrl=").append(notifyUrl);
         sb.append(", smsCode=").append(smsCode);
         sb.append(", signName=").append(signName);
+        sb.append(", msgAppid=").append(msgAppid);
+        sb.append(", msgAppkey=").append(msgAppkey);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

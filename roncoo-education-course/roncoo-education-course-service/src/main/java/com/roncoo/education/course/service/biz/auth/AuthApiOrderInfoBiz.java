@@ -1,14 +1,17 @@
 package com.roncoo.education.course.service.biz.auth;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+import com.alipay.api.response.AlipayTradePrecreateResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.roncoo.education.util.pay.AlipayUtil;
+import com.roncoo.education.util.pay.WeixinPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import com.github.abel533.echarts.Option;
@@ -149,15 +152,44 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		// 判断所要购买的课程是否已经购买------(如果课程为测试支付课程，可以重复下单，不提示已经购买，去掉后面一截判断即可正常使用)
-		if (!checkOrderInfo(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId()) && !SystemUtil.TEST_COURSE.equals(course.getId().toString())) {
-			return Result.error("已经购买该课程，请勿重复购买");
+//		if (!checkOrderInfo(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId()) && !SystemUtil.TEST_COURSE.equals(course.getId().toString())) {
+//			return Result.error("已经购买该课程，请勿重复购买");
+//		}
+		OrderInfo orderInfo = orderInfoDao.getByUserNoAndCourseIdAndOrderStatus(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId());
+		OrderPay orderPay = null;
+		if (ObjectUtil.isNull(orderInfo)) {
+			// 创建订单信息
+			orderInfo = createOrderInfo(authOrderPayBO, course, userextVO, lecturerVO);
+			// 创建支付订单
+			orderPay = createOrderPay(orderInfo);
+		}else{
+			if (OrderStatusEnum.SUCCESS.getCode().equals(orderInfo.getOrderStatus())) {
+				return Result.error("已经购买该课程，请勿重复购买");
+			}
+			orderPay = orderPayDao.getByOrderNo(orderInfo.getOrderNo());
+			if (ObjectUtil.isNull(orderPay)) {
+				return Result.error("orderNo不正确，没有找到流水号");
+			}
+
+			// 更新订单信息
+			orderInfo.setPayType(authOrderPayBO.getPayType());
+			orderInfo.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+			orderInfo.setGmtCreate(new Date());
+			orderInfo.setGmtModified(new Date());
+			orderInfoDao.updateById(orderInfo);
+
+			// 重新生成新的支付流水
+			orderPay.setPayType(authOrderPayBO.getPayType());
+			orderPay.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+			orderPay.setSerialNumber(NOUtil.getSerialNumber());
+			orderPay.setGmtCreate(new Date());
+			orderPayDao.updateById(orderPay);
 		}
 
 		// 创建订单信息
-		OrderInfo orderInfo = createOrderInfo(authOrderPayBO, course, userextVO, lecturerVO);
-
+		//OrderInfo orderInfo = createOrderInfo(authOrderPayBO, course, userextVO, lecturerVO);
 		// 创建支付订单
-		OrderPay orderPay = createOrderPay(orderInfo);
+		//OrderPay orderPay = createOrderPay(orderInfo);
 
 		// 查找系统配置信息
 		SysVO sys = bossSys.getSys();
@@ -169,25 +201,57 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		// 调用支付接口
-		String payMessage = PayUtil.roncooPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), orderInfo.getPayType(), sys.getPayKey(), sys.getPaySecret(), sys.getPayUrl(), sys.getNotifyUrl());
-		if (StringUtils.isEmpty(payMessage)) {
-			return Result.error("系统繁忙，请稍后再试");
+//		String payMessage = PayUtil.roncooPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), orderInfo.getPayType(), sys.getPayKey(), sys.getPaySecret(), sys.getPayUrl(), sys.getNotifyUrl());
+//		if (StringUtils.isEmpty(payMessage)) {
+//			return Result.error("系统繁忙，请稍后再试");
+//		}
+		if(authOrderPayBO.getPayType() == 1){
+			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl());
+			if(null == response){
+				return Result.error("调用微信支付失败，请联系商家");
+			}
+			// 返回实体
+			if("SUCCESS".equals(response.get("return_code"))){
+				AuthOrderPayDTO dto = new AuthOrderPayDTO();
+				if("SUCCESS".equals(response.get("result_code"))){
+					dto.setPayMessage(response.get("code_url"));
+				}else{
+					return Result.error("调用微信支付失败，请联系商家");
+				}
+				dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
+				dto.setSerialNumber(String.valueOf(orderPay.getSerialNumber()));
+				dto.setCourseName(orderInfo.getCourseName());
+				dto.setPayType(orderInfo.getPayType());
+				dto.setPrice(orderInfo.getPricePaid());
+				return Result.success(dto);
+			}else{
+				return Result.error("调用微信支付失败，请联系商家");
+			}
+		}else {
+			AlipayTradePrecreateResponse response = AlipayUtil.alipay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getPayUrl(), sys.getNotifyUrl());
+			if (null == response) {
+				return Result.error("调用支付宝支付失败，请联系商家");
+			}
+			// 返回实体
+			if (response.isSuccess()) {
+				AuthOrderPayDTO dto = new AuthOrderPayDTO();
+				dto.setPayMessage(response.getQrCode());
+				dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
+				dto.setSerialNumber(String.valueOf(orderPay.getSerialNumber()));
+				dto.setCourseName(orderInfo.getCourseName());
+				dto.setPayType(orderInfo.getPayType());
+				dto.setPrice(orderInfo.getPricePaid());
+				return Result.success(dto);
+			} else {
+				return Result.error("调用支付宝支付失败，请联系商家");
+			}
 		}
-
-		// 返回实体
-		AuthOrderPayDTO dto = new AuthOrderPayDTO();
-		dto.setPayMessage(payMessage);
-		dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
-		dto.setCourseName(orderInfo.getCourseName());
-		dto.setPayType(orderInfo.getPayType());
-		dto.setPrice(orderInfo.getPricePaid());
-		return Result.success(dto);
 	}
 
 	/**
 	 * 订单继续支付接口
 	 * 
-	 * @param orderInfoContinuePayBO
+	 * @param authOrderInfoContinuePayBO
 	 * @return
 	 */
 	@Transactional
@@ -227,9 +291,11 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		// 更新订单信息
 		orderInfo.setPayType(authOrderInfoContinuePayBO.getPayType());
 		orderInfo.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+		orderInfo.setRemark(null);
 		orderInfoDao.updateById(orderInfo);
 
 		// 重新生成新的支付流水
+		orderPay.setPayType(authOrderInfoContinuePayBO.getPayType());
 		orderPay.setOrderStatus(OrderStatusEnum.WAIT.getCode());
 		orderPay.setSerialNumber(NOUtil.getSerialNumber());
 		orderPayDao.updateById(orderPay);
@@ -244,25 +310,58 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		// 调用支付接口
-		String payMessage = PayUtil.roncooPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), orderInfo.getPayType(), sys.getPayKey(), sys.getPaySecret(), sys.getPayUrl(), sys.getNotifyUrl());
-		if (StringUtils.isEmpty(payMessage)) {
-			return Result.error("系统繁忙，请稍后再试");
-		}
+//		String payMessage = PayUtil.roncooPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), orderInfo.getPayType(), sys.getPayKey(), sys.getPaySecret(), sys.getPayUrl(), sys.getNotifyUrl());
+//		if (StringUtils.isEmpty(payMessage)) {
+//			return Result.error("系统繁忙，请稍后再试");
+//		}
+        if(authOrderInfoContinuePayBO.getPayType() == 1){
+            Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl());
+			if(CollectionUtils.isEmpty(response)){
+				return Result.error("调用微信支付失败，请联系商家");
+			}
+			// 返回实体
+			if("SUCCESS".equals(response.get("return_code"))){
+				AuthOrderPayDTO dto = new AuthOrderPayDTO();
+				if("SUCCESS".equals(response.get("result_code"))){
+					dto.setPayMessage(response.get("code_url"));
+				}else{
+					return Result.error("调用微信支付失败，请联系商家");
+				}
+				dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
+				dto.setSerialNumber(String.valueOf(orderPay.getSerialNumber()));
+				dto.setCourseName(orderInfo.getCourseName());
+				dto.setPayType(orderInfo.getPayType());
+				dto.setPrice(orderInfo.getPricePaid());
+				return Result.success(dto);
+			}else{
+				return Result.error("调用微信支付失败，请联系商家");
+			}
+        }else{
+		    AlipayTradePrecreateResponse response = AlipayUtil.alipay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getPayUrl(), sys.getNotifyUrl());
+            if(null == response){
+                return Result.error("调用支付宝支付失败，请联系商家");
+            }
+            // 返回实体
+            if(response.isSuccess()){
+                AuthOrderPayDTO dto = new AuthOrderPayDTO();
+                dto.setPayMessage(response.getQrCode());
+                dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
+                dto.setSerialNumber(String.valueOf(orderPay.getSerialNumber()));
+                dto.setCourseName(orderInfo.getCourseName());
+                dto.setPayType(orderInfo.getPayType());
+                dto.setPrice(orderInfo.getPricePaid());
+                return Result.success(dto);
+            }else{
+                return Result.error("调用支付宝支付失败，请联系商家");
+            }
+        }
 
-		// 返回实体
-		AuthOrderPayDTO dto = new AuthOrderPayDTO();
-		dto.setPayMessage(payMessage);
-		dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
-		dto.setCourseName(orderInfo.getCourseName());
-		dto.setPayType(orderInfo.getPayType());
-		dto.setPrice(orderInfo.getPricePaid());
-		return Result.success(dto);
 	}
 
 	/**
 	 * 关闭订单信息接口
 	 * 
-	 * @param continuePay
+	 * @param orderInfoCloseBO
 	 * @return
 	 */
 	@Transactional
@@ -278,6 +377,46 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		if (ObjectUtil.isNull(orderPay)) {
 			return Result.error("orderNo不正确,找不到流水号");
 		}
+		if(orderPay.getPayType() == 1){
+			Map<String, String> response = WeixinPayUtil.orderQuery(String.valueOf(orderPay.getSerialNumber()));
+			if(!CollectionUtils.isEmpty(response)){
+				if("SUCCESS".equals(response.get("return_code"))){
+					if("SUCCESS".equals(response.get("result_code"))){
+						if("SUCCESS".equals(response.get("trade_state"))){
+							//微信已交易成功,商户系统显示未交易成功，则修改商户系统订单状态
+							if(!OrderStatusEnum.SUCCESS.getCode().equals(orderPay.getOrderStatus())){
+								orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+								orderInfo.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
+								orderPay.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
+								orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+								orderInfoDao.updateById(orderInfo);
+								orderPayDao.updateById(orderPay);
+							}
+							return Result.error("订单已交易成功，不需要再处理");
+						}
+					}
+				}
+			}
+		}else{
+			AlipayTradeQueryResponse response = AlipayUtil.queryOrder(String.valueOf(orderPay.getSerialNumber()),null);
+			if(null != response) {
+				if (response.isSuccess()) {
+					//支付宝已交易成功
+					if("TRADE_SUCCESS".equals(response.getTradeStatus()) || "TRADE_FINISHED".equals(response.getTradeStatus())){
+						//商户系统显示未交易成功，则修改商户系统订单状态
+						if(!OrderStatusEnum.SUCCESS.getCode().equals(orderPay.getOrderStatus())){
+							orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+							orderInfo.setPayTime(response.getSendPayDate());
+							orderPay.setPayTime(response.getSendPayDate());
+							orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+							orderInfoDao.updateById(orderInfo);
+							orderPayDao.updateById(orderPay);
+						}
+						return Result.error("订单已交易成功，不需要再处理");
+					}
+				}
+			}
+		}
 		if (!OrderStatusEnum.WAIT.getCode().equals(orderInfo.getOrderStatus())) {
 			return Result.error("该订单已经处理完成，不需要再处理");
 		}
@@ -287,6 +426,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			return Result.error("根据传入的userNo没找到对应的用户信息!");
 		}
 		orderInfo.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+		orderInfo.setRemark("取消订单");
 		int orderNum = orderInfoDao.updateById(orderInfo);
 		if (orderNum < 1) {
 			throw new BaseException("订单信息更新失败");
@@ -302,17 +442,82 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	/**
 	 * 订单详情
 	 * 
-	 * @param orderInfoBO
+	 * @param authOrderInfoViewBO
 	 * @return
 	 */
+	@Transactional
 	public Result<AuthOrderInfoDTO> view(AuthOrderInfoViewBO authOrderInfoViewBO) {
 		if (StringUtils.isEmpty(authOrderInfoViewBO.getOrderNo())) {
-			return Result.error("orderNo不能为空");
+			return Result.error("订单号不能为空");
+		}
+		if (StringUtils.isEmpty(authOrderInfoViewBO.getSerialNumber())) {
+			return Result.error("流水号不能为空");
+		}
+		if(authOrderInfoViewBO.getPayType() == 1){
+			Map<String, String> response = WeixinPayUtil.orderQuery(String.valueOf(authOrderInfoViewBO.getSerialNumber()));
+			if(CollectionUtils.isEmpty(response)){
+				return Result.error("调用微信支付失败,请联系商家");
+			}
+			if("SUCCESS".equals(response.get("return_code"))){
+				if("SUCCESS".equals(response.get("result_code"))){
+					OrderInfo order = new OrderInfo();
+					OrderPay orderPay = new OrderPay();
+					order.setOrderNo(authOrderInfoViewBO.getOrderNo());
+					orderPay.setSerialNumber(authOrderInfoViewBO.getSerialNumber());
+					if("SUCCESS".equals(response.get("trade_state"))){
+						//微信已交易成功,商户系统显示未交易成功，则修改商户系统订单状态
+						if(!OrderStatusEnum.SUCCESS.getCode().equals(orderPay.getOrderStatus())){
+							order.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+							order.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
+							orderPay.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
+							orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+						}
+					}else if("NOTPAY".equals(response.get("trade_state"))){
+						if(!OrderStatusEnum.WAIT.getCode().equals(orderPay.getOrderStatus())){
+							order.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+							orderPay.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+						}
+					}else if("CLOSED".equals(response.get("trade_state"))){
+						if(!OrderStatusEnum.CLOSE.getCode().equals(orderPay.getOrderStatus())){
+							order.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+							orderPay.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+						}
+					}else if("PAYERROR".equals(response.get("trade_state"))){
+						if(!OrderStatusEnum.FAIL.getCode().equals(orderPay.getOrderStatus())){
+							order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+							orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+						}
+					}else{
+						if(!OrderStatusEnum.FAIL.getCode().equals(orderPay.getOrderStatus())){
+							order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+							orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+						}
+					}
+					orderInfoDao.updateByOrderNo(order);
+					orderPayDao.updateBySerialNumber(orderPay);
+				}else{
+					return Result.error("调用微信查询失败,请联系商家");
+				}
+			}else{
+				return Result.error("调用微信查询失败,请联系商家");
+			}
+		}else{
+			//查询支付宝交易结果
+			AlipayTradeQueryResponse response = AlipayUtil.queryOrder(String.valueOf(authOrderInfoViewBO.getSerialNumber()),null);
+			if(null != response){
+				if(response.isSuccess()){
+					OrderInfo order =  orderInfoDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
+					OrderPay orderPay = orderPayDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
+					handleQueryResponse(response, order, orderPay);
+					orderInfoDao.updateByOrderNo(order);
+					orderPayDao.updateBySerialNumber(orderPay);
+				}
+			}
 		}
 		// 根据订单编号查找订单信息
 		OrderInfo order = orderInfoDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
 		if (ObjectUtil.isNull(order)) {
-			return Result.error("orderNo不正确");
+			return Result.error("订单号不正确");
 		}
 		return Result.success(BeanUtil.copyProperties(order, AuthOrderInfoDTO.class));
 	}
@@ -418,7 +623,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	/**
 	 * 校验下单时传入的参数
 	 * 
-	 * @param orderInfoPayBO
+	 * @param authOrderPayBO
 	 */
 	private void verifyParam(AuthOrderPayBO authOrderPayBO) {
 		if (StringUtils.isEmpty(authOrderPayBO.getUserNo())) {
@@ -504,6 +709,31 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			info.setCountBuy(course.getCountBuy() + 1);
 			info.setId(course.getId());
 			courseDao.updateById(course);
+		}
+	}
+
+
+	public static void handleQueryResponse(AlipayTradeQueryResponse response, OrderInfo order, OrderPay orderPay){
+		if("WAIT_BUYER_PAY".equals(response.getTradeStatus())){
+			//交易创建，等待买家付款
+			if(!order.getOrderStatus().equals(OrderStatusEnum.WAIT.getCode()) && !orderPay.getOrderStatus().equals(OrderStatusEnum.WAIT.getCode())){
+				order.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+				orderPay.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+			}
+		}else if("TRADE_SUCCESS".equals(response.getTradeStatus()) || "TRADE_FINISHED".equals(response.getTradeStatus())){
+			//交易支付成功
+			if(!order.getOrderStatus().equals(OrderStatusEnum.SUCCESS.getCode()) && !orderPay.getOrderStatus().equals(OrderStatusEnum.SUCCESS.getCode())){
+				order.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+				order.setPayTime(response.getSendPayDate());
+				orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+				orderPay.setPayTime(response.getSendPayDate());
+			}
+		}else if("TRADE_CLOSED".equals(response.getTradeStatus())){
+			//未付款交易超时关闭，或支付完成后全额退款(交易失败)
+			if(!order.getOrderStatus().equals(OrderStatusEnum.FAIL.getCode()) && !orderPay.getOrderStatus().equals(OrderStatusEnum.FAIL.getCode())){
+				order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+				orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+			}
 		}
 	}
 

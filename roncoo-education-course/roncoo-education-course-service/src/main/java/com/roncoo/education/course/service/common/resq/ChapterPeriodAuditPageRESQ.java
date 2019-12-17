@@ -83,6 +83,11 @@ public class ChapterPeriodAuditPageRESQ implements Serializable {
 	@ApiModelProperty(value = "文档名称")
 	private String docName;
 	/**
+	 * 文档url
+	 */
+	@ApiModelProperty(value = "文档url")
+	private String docUrl;
+	/**
 	 * 是否存在视频
 	 */
 	@ApiModelProperty(value = "是否存在视频")
@@ -92,6 +97,16 @@ public class ChapterPeriodAuditPageRESQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "视频名称")
 	private String videoName;
+	/**
+	 * 视频名称
+	 */
+	@ApiModelProperty(value = "视频名称")
+	private Long videoNo;
+	/**
+	 * 视频url
+	 */
+	@ApiModelProperty(value = "视频url")
+	private String videoUrl;
 	/**
 	 * 审核状态
 	 */

@@ -137,6 +137,25 @@ public class OrderInfoDaoImpl implements OrderInfoDao {
 		return resultList;
 	}
 
+	@Override
+	public int updateByOrderNo(OrderInfo order) {
+		OrderInfoExample example = new OrderInfoExample();
+		example.createCriteria().andOrderNoEqualTo(order.getOrderNo());
+		return this.orderInfoMapper.updateByExampleSelective(order, example);
+	}
+
+	@Override
+	public OrderInfo getByUserNoAndCourseIdAndOrderStatus(Long userNo, Long courseId) {
+		OrderInfoExample example = new OrderInfoExample();
+		example.createCriteria().andUserNoEqualTo(userNo).andCourseIdEqualTo(courseId).andOrderStatusNotEqualTo(4);
+		example.setOrderByClause(" id desc ");
+		List<OrderInfo> list = this.orderInfoMapper.selectByExample(example);
+		if (list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
+	}
+
 	/**
 	 * 统计时间段内机构的总订单数
 	 */

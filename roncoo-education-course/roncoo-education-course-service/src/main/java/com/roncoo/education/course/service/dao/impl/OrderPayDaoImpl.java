@@ -69,4 +69,11 @@ public class OrderPayDaoImpl implements OrderPayDao {
 		}
 		return list.get(0);
 	}
+
+	@Override
+	public int updateBySerialNumber(OrderPay orderPay) {
+		OrderPayExample example = new OrderPayExample();
+		example.createCriteria().andSerialNumberEqualTo(orderPay.getSerialNumber());
+		return this.orderPayMapper.updateByExampleSelective(orderPay, example);
+	}
 }

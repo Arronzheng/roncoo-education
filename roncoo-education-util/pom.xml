@@ -42,6 +42,13 @@
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
 		</dependency>
+		<!--alipay-->
+		<!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+		<dependency>
+			<groupId>com.alipay.sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>4.8.73.ALL</version>
+		</dependency>
 
 		<!--qiniu-->
 		<dependency>
@@ -55,7 +62,28 @@
 			<artifactId>cos_api</artifactId>
 			<version>5.6.8</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/ws.schild/jave-all-deps -->
+		<dependency>
+			<groupId>com.qcloud</groupId>
+			<artifactId>vod_api</artifactId>
+			<version>2.1.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.github.qcloudsms</groupId>
+			<artifactId>qcloudsms</artifactId>
+			<version>1.0.6</version>
+		</dependency>
+		<!--wxPay-->
+		<dependency>
+			<groupId>com.github.wxpay</groupId>
+			<artifactId>wxpay-sdk</artifactId>
+			<version>0.0.3</version>
+		</dependency>
 		<dependency>
 			<groupId>ws.schild</groupId>
 			<artifactId>jave-all-deps</artifactId>
@@ -155,6 +183,12 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+		</dependency>
+		<!--mybatis-plus-generator -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-generator</artifactId>
+			<version>3.2.0</version>
 		</dependency>
 
 	</dependencies>

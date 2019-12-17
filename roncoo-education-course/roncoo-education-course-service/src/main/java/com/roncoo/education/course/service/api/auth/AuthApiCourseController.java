@@ -45,5 +45,13 @@ public class AuthApiCourseController extends BaseController {
 	public Result<AuthCourseSignDTO> sign(@RequestBody AuthCourseSignBO authCourseSignBO) {
 		return biz.sign(authCourseSignBO);
 	}
+	/**
+	 * 课时播放获取url接口
+	 */
+	@ApiOperation(value = "课时播放获取url接口", notes = "课时播放获取url接口")
+	@RequestMapping(value = "/playUrl", method = RequestMethod.POST)
+	public Result<AuthCourseSignDTO> playUrl(@RequestBody AuthCourseSignBO authCourseSignBO) {
+		return biz.playUrl(authCourseSignBO);
+	}
 
 }

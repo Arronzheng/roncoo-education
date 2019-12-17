@@ -85,6 +85,16 @@ public class SysUpdateRESQ implements Serializable {
 	@ApiModelProperty(value = "短信签名")
 	private String signName;
 	/**
+	 * 短信应用appid
+	 */
+	@ApiModelProperty(value = "短信应用appid")
+	private Integer msgAppid;
+	/**
+	 * 短信应用appkey
+	 */
+	@ApiModelProperty(value = "短信应用appkey")
+	private String msgAppkey;
+	/**
 	 * 腾讯cos区域，阿里的oas_vault
 	 */
 	@ApiModelProperty(value = "oas_vault")

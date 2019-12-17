@@ -65,11 +65,13 @@ public class QiniuUtil {
         String upToken = auth.uploadToken(qiniu.getAliyunOssBucket());
         DefaultPutRet putRet = null;
         {
+            InputStream inputStream = null;
             try {
-                InputStream inputStream = picFile.getInputStream();
+                inputStream = picFile.getInputStream();
                 Response response = uploadManager.put(inputStream, key, upToken, null, null);
                 //解析上传成功的结果
                 putRet = JSONUtil.parseObject(response.bodyString(), DefaultPutRet.class);
+                return qiniu.getAliyunOssUrl()+putRet.key;
             }catch(QiniuException ex){
                 Response r = ex.response;
                 log.error("上传失败", r.toString());
@@ -77,9 +79,15 @@ public class QiniuUtil {
             } catch (IOException e) {
                 log.error("上传失败", e);
                 return "";
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                    }
+                }
             }
         }
-        return qiniu.getAliyunOssUrl()+putRet.key;
     }
 
     public static void deletePic(String url, Qiniu qiniu) throws QiniuException {

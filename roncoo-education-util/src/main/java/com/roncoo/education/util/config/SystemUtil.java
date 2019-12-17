@@ -50,6 +50,8 @@ public final class SystemUtil {
 	public static final String POLYV_CODESECRETKEY = getProperty("polyv_codeSecretKey");
 	public static final String POLYV_GETTOKEN = getProperty("polyv_getToken");
 
+	public static final String TENCENT_DELETEVIDEO = getProperty("tencent_deleteVideo");
+
 	public static final String LECTURER_DEFAULT_PROPORTION = getProperty("lecturer_default_proportion");
 
 	public static final String CONTENT_LENGTH = getProperty("content_length");

@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -97,5 +98,10 @@ public class CourseViewDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "章节信息")
 	private List<CourseChapterDTO> chapterList;
+	/**
+	 * 课程评论
+	 */
+	@ApiModelProperty(value = "课程评论")
+	private List<AuthCourseCommentDTO> courseCommentList;
 
 }

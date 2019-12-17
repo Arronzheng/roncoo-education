@@ -82,7 +82,6 @@ public class PcApiUserLoginBiz {
 		loginLog(user.getUserNo(), req.getClientId(), LoginStatusEnum.SUCCESS, req.getIp());
 
 		// 用户菜单存入缓存, 时间
-		
 		redisTemplate.opsForValue().set(RedisPreEnum.ADMINI_MENU.getCode().concat(user.getUserNo().toString()), JSONUtil.toJSONString(menuList), 1, TimeUnit.DAYS);
 
 		UserLoginRESQ dto = new UserLoginRESQ();
@@ -91,8 +90,7 @@ public class PcApiUserLoginBiz {
 		dto.setToken(JWTUtil.create(user.getUserNo(), JWTUtil.DATE));
 
 		// 登录成功，存入缓存，单点登录使用
-		// redisTemplate.opsForValue().set(dto.getUserNo().toString(), dto.getToken(),
-		// 1, TimeUnit.DAYS);
+//	    redisTemplate.opsForValue().set(dto.getUserNo().toString(), dto.getToken(), 1, TimeUnit.DAYS);
 
 		return Result.success(dto);
 	}

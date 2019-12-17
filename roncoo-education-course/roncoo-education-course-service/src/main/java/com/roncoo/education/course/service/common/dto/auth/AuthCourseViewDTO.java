@@ -92,6 +92,11 @@ public class AuthCourseViewDTO implements Serializable {
 	@ApiModelProperty(value = "是否支付(1:已支付;0:未支付)")
 	private int isPay;
 	/**
+	 * 视频播放平台
+	 */
+	@ApiModelProperty(value = "视频播放平台(1:保利威视;2:腾讯)")
+	private int videoType;
+	/**
 	 * 章节信息
 	 */
 	@ApiModelProperty(value = "章节信息")
@@ -101,4 +106,9 @@ public class AuthCourseViewDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "课程学习进度")
 	private AuthCourseUserStudyLogDTO authCourseUserStudyLog;
+	/**
+	 * 课程评论
+	 */
+	@ApiModelProperty(value = "课程评论")
+	private List<AuthCourseCommentDTO> courseCommentList;
 }

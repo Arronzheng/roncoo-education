@@ -25,6 +25,8 @@
     <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR" />
     <result column="sms_code" property="smsCode" jdbcType="VARCHAR" />
     <result column="sign_name" property="signName" jdbcType="VARCHAR" />
+    <result column="msg_appid" property="msgAppid" jdbcType="INTEGER" />
+    <result column="msg_appkey" property="msgAppkey" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -88,7 +90,7 @@
     id, gmt_create, gmt_modified, status_id, sort, video_type, polyv_useid, polyv_writetoken, 
     polyv_readtoken, polyv_secretkey, file_type, aliyun_access_key_id, aliyun_access_key_secret, 
     aliyun_oss_url, aliyun_oss_bucket, aliyun_oas_vault, pay_type, pay_url, pay_key, pay_secret, notify_url,
-    sms_code, sign_name
+    sms_code, sign_name, msg_appid, msg_appkey
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.SysExample" >
     select
@@ -131,7 +133,7 @@
       aliyun_access_key_secret, aliyun_oss_url, aliyun_oss_bucket, 
       pay_type, pay_url, pay_key, 
       pay_secret, notify_url, sms_code, 
-      sign_name)
+      sign_name, msg_appid, msg_appkey)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{statusId,jdbcType=TINYINT}, #{sort,jdbcType=INTEGER}, #{videoType,jdbcType=TINYINT}, 
       #{polyvUseid,jdbcType=VARCHAR}, #{polyvWritetoken,jdbcType=VARCHAR}, #{polyvReadtoken,jdbcType=VARCHAR}, 
@@ -139,7 +141,7 @@
       #{aliyunAccessKeySecret,jdbcType=VARCHAR}, #{aliyunOssUrl,jdbcType=VARCHAR}, #{aliyunOssBucket,jdbcType=VARCHAR}, 
       #{payType,jdbcType=TINYINT}, #{payUrl,jdbcType=VARCHAR}, #{payKey,jdbcType=VARCHAR}, 
       #{paySecret,jdbcType=VARCHAR}, #{notifyUrl,jdbcType=VARCHAR}, #{smsCode,jdbcType=VARCHAR}, 
-      #{signName,jdbcType=VARCHAR})
+      #{signName,jdbcType=VARCHAR}, #{msgAppid,jdbcType=INTEGER}, #{msgAppkey,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.Sys" >
     insert into sys
@@ -210,6 +212,12 @@
       <if test="signName != null" >
         sign_name,
       </if>
+      <if test="msgAppid != null" >
+        msg_appid,
+      </if>
+      <if test="msgAppkey != null" >
+        msg_appkey,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -277,6 +285,12 @@
       </if>
       <if test="signName != null" >
         #{signName,jdbcType=VARCHAR},
+      </if>
+      <if test="msgAppid != null" >
+        #{msgAppid,jdbcType=INTEGER},
+      </if>
+      <if test="msgAppkey != null" >
+        #{msgAppkey,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -355,6 +369,12 @@
       <if test="record.signName != null" >
         sign_name = #{record.signName,jdbcType=VARCHAR},
       </if>
+      <if test="record.msgAppid != null" >
+        msg_appid = #{record.msgAppid,jdbcType=INTEGER},
+      </if>
+      <if test="record.msgAppkey != null" >
+        msg_appkey = #{record.msgAppkey,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -383,7 +403,9 @@
       pay_secret = #{record.paySecret,jdbcType=VARCHAR},
       notify_url = #{record.notifyUrl,jdbcType=VARCHAR},
       sms_code = #{record.smsCode,jdbcType=VARCHAR},
-      sign_name = #{record.signName,jdbcType=VARCHAR}
+      sign_name = #{record.signName,jdbcType=VARCHAR},
+      msg_appid = #{record.msgAppid,jdbcType=INTEGER},
+      msg_appkey = #{record.msgAppkey,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -457,6 +479,12 @@
       <if test="signName != null" >
         sign_name = #{signName,jdbcType=VARCHAR},
       </if>
+      <if test="msgAppid != null" >
+        msg_appid = #{msgAppid,jdbcType=INTEGER},
+      </if>
+      <if test="msgAppkey != null" >
+        msg_appkey = #{msgAppkey,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -483,7 +511,9 @@
       pay_secret = #{paySecret,jdbcType=VARCHAR},
       notify_url = #{notifyUrl,jdbcType=VARCHAR},
       sms_code = #{smsCode,jdbcType=VARCHAR},
-      sign_name = #{signName,jdbcType=VARCHAR}
+      sign_name = #{signName,jdbcType=VARCHAR},
+      msg_appid = #{msgAppid,jdbcType=INTEGER},
+      msg_appkey = #{msgAppkey,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

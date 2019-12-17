@@ -149,4 +149,20 @@ public class CourseVideoDaoImpl implements CourseVideoDao {
 		}
 		return list;
 	}
+
+	@Override
+	public int deleteByVideoNo(Long videoNo) {
+		CourseVideoExample example = new CourseVideoExample();
+		Criteria c = example.createCriteria();
+		c.andVideoNoEqualTo(videoNo);
+		return this.courseVideoMapper.deleteByExample(example);
+	}
+
+	@Override
+	public List<CourseVideo> getByPeriodId(Long id) {
+		CourseVideoExample example = new CourseVideoExample();
+		Criteria c = example.createCriteria();
+		c.andPeriodIdEqualTo(id);
+		return this.courseVideoMapper.selectByExample(example);
+	}
 }

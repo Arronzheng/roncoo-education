@@ -3,11 +3,9 @@
  */
 package com.roncoo.education.course.service.api.pc;
 
+import com.roncoo.education.course.service.common.req.FileDeleteREQ;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.roncoo.education.course.service.biz.pc.PcApiUploadBiz;
@@ -60,6 +58,17 @@ public class PcApiUploadController extends BaseController {
 	@RequestMapping(value = "/doc", method = RequestMethod.POST)
 	public Result<String> uploadDoc(@RequestParam(name = "docFile", required = false) MultipartFile docFile, @RequestParam(name = "url", required = false) String url) {
 		return biz.uploadDoc(docFile, url);
+	}
+
+	/**
+	 * 删除文件接口
+	 *
+	 * @param fileDeleteREQ
+	 */
+	@ApiOperation(value = "删除文件接口", notes = "删除文件")
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public Result<Integer> deleteFile(@RequestBody FileDeleteREQ fileDeleteREQ) {
+		return biz.deleteFile(fileDeleteREQ);
 	}
 
 }

@@ -41,7 +41,7 @@ public class VideoCrontab extends BaseController {
 
 		int videoSum = 0;
 
-		File file = new File(SystemUtil.PERIOD_VIDEO_PATH);
+		File file = new File(SystemUtil.VIDEO_STORAGE_PATH);
 		if (file.isDirectory()) {// isDirectory是否文件夹
 			File[] files = file.listFiles();// listFiles是获取该目录下所有文件和目录的绝对路径
 			for (File targetFile : files) {

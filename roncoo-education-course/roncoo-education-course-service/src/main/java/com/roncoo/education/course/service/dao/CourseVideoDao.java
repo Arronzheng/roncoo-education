@@ -88,4 +88,8 @@ public interface CourseVideoDao {
 	 * @author wuyun
 	 */
 	List<CourseVideo> listByChapterIdAndPeriodIdAndStatusId(Long chapterId, Long periodId, Integer statusId);
+
+    int deleteByVideoNo(Long videoNo);
+
+	List<CourseVideo> getByPeriodId(Long id);
 }

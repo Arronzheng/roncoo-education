@@ -38,7 +38,7 @@ public class SysVO implements Serializable {
 	 */
 	private Integer sort;
 	/**
-	 * 视频存储平台（1保利威视，2七牛）
+	 * 视频存储平台（1保利威视，2腾讯）
 	 */
 	private Integer videoType;
 	/**
@@ -117,5 +117,13 @@ public class SysVO implements Serializable {
 	 * signName
 	 */
 	private String signName;
+	/**
+	 * msgAppid
+	 */
+	private Integer msgAppid;
+	/**
+	 * msgAppkey
+	 */
+	private String msgAppkey;
 
 }

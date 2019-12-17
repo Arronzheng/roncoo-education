@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.roncoo.education.course.service.biz.auth.AuthApiOrderInfoBiz;
+import com.roncoo.education.util.pay.AlipayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -187,7 +190,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 		OrderInfoExample example = new OrderInfoExample();
 		Criteria c = example.createCriteria();
 		c.andOrderStatusEqualTo(OrderStatusEnum.WAIT.getCode());
-		c.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 3600000L));
+		c.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 1800000L));
 		example.setOrderByClause(" id desc ");
 		Page<OrderInfo> page = dao.listForPage(1, 10, example);
 		if (CollectionUtil.isNotEmpty(page.getList())) {
@@ -204,7 +207,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 		OrderPayExample orderPayExample = new OrderPayExample();
 		com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPayExample.Criteria orderPayCriteria = orderPayExample.createCriteria();
 		orderPayCriteria.andOrderStatusEqualTo(OrderStatusEnum.WAIT.getCode());
-		orderPayCriteria.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 3600000L));
+		orderPayCriteria.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 1800000L));
 		Page<OrderPay> orderPayPage = orderPayDao.listForPage(1, 10, orderPayExample);
 		if (CollectionUtil.isNotEmpty(orderPayPage.getList())) {
 			for (OrderPay orderPay : orderPayPage.getList()) {
@@ -212,6 +215,29 @@ public class BossOrderInfoBiz extends BaseBiz {
 				argOrderPay.setId(orderPay.getId());
 				argOrderPay.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
 				orderPayDao.updateById(argOrderPay);
+			}
+		}
+		//轮询支付宝or微信订单状态
+		OrderPayExample orderPayExample2 = new OrderPayExample();
+		com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPayExample.Criteria orderPayCriteria2 = orderPayExample2.createCriteria();
+		orderPayCriteria2.andOrderStatusEqualTo(OrderStatusEnum.WAIT.getCode());
+		orderPayCriteria2.andGmtCreateGreaterThan(new Date(System.currentTimeMillis() - 1800000L));
+		Page<OrderPay> orderPayPage2 = orderPayDao.listForPage(1, 10, orderPayExample2);
+		if (CollectionUtil.isNotEmpty(orderPayPage2.getList())) {
+			for (OrderPay orderPay : orderPayPage2.getList()) {
+				if(orderPay.getPayType() ==1){
+
+				}else{
+					AlipayTradeQueryResponse response = AlipayUtil.queryOrder(String.valueOf(orderPay.getSerialNumber()),null);
+					if(null != response){
+						if(response.isSuccess()){
+							OrderInfo order = dao.getByOrderNo(orderPay.getOrderNo());
+							AuthApiOrderInfoBiz.handleQueryResponse(response, order, orderPay);
+							dao.updateByOrderNo(order);
+							orderPayDao.updateBySerialNumber(orderPay);
+						}
+					}
+				}
 			}
 		}
 		return 1;

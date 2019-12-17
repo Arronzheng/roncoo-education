@@ -7,6 +7,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import com.qiniu.common.QiniuException;
+import com.roncoo.education.course.service.common.req.FileDeleteREQ;
 import com.roncoo.education.course.service.dao.CourseChapterPeriodAuditDao;
 import com.roncoo.education.course.service.dao.CourseChapterPeriodDao;
 import com.roncoo.education.course.service.dao.CourseVideoDao;
@@ -19,7 +21,7 @@ import com.roncoo.education.util.qiniu.Qiniu;
 import com.roncoo.education.util.qiniu.QiniuUtil;
 import com.roncoo.education.util.tencentcloud.Tencent;
 import com.roncoo.education.util.tencentcloud.TencentUtil;
-import com.roncoo.education.util.tools.VideoUtil;
+import com.roncoo.education.util.tools.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -33,9 +35,6 @@ import com.roncoo.education.util.aliyun.AliyunUtil;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.Result;
 import com.roncoo.education.util.config.SystemUtil;
-import com.roncoo.education.util.tools.BeanUtil;
-import com.roncoo.education.util.tools.IdWorker;
-import com.roncoo.education.util.tools.StrUtil;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
@@ -176,11 +175,14 @@ public class PcApiUploadBiz extends BaseBiz {
         }
         SysVO sys = bossSys.getSys();
         Long videoNo = 0L;
+        /*
+        * 通过传入上个视频的URL判断是新增课时视频还是修改课时视频
+        */
         if(StringUtils.isEmpty(url)){
             videoNo = IdWorker.getId(); // 当作存储到本地的文件名，方便定时任务的处理
         }else{
-            String key = url.replaceAll(sys.getAliyunOssUrl(), "");
-            videoNo = Long.valueOf(key.indexOf("/") > 0 ? key.substring((key.indexOf("/") + 1), key.indexOf(".")) : key.substring(0, key.indexOf(".")));
+            //String key = url.replaceAll(sys.getAliyunOssUrl(), "");
+            videoNo = UrlUtil.UrlToKey(url,sys.getAliyunOssUrl());//Long.valueOf(key.indexOf("/") > 0 ? key.substring((key.indexOf("/") + 1), key.indexOf(".")) : key.substring(0, key.indexOf(".")));
         }
         // 1、上传到本地
 //		File targetFile = new File(
@@ -211,15 +213,14 @@ public class PcApiUploadBiz extends BaseBiz {
         }else{
             result = courseVideoDao.updateByExampleSelective(courseVideo);
         }
-
-
         if (result > 0) {
             Long finalVideoNo = videoNo;
             callbackExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
                     // 获取系统配置信息
-                    if(sys.getVideoType().equals(VideoTypeEnum.POLYV)){
+                    int courseUpdateResult = 0;
+                    if(sys.getVideoType().equals(VideoTypeEnum.POLYV.getCode())){
                         // 2、异步上传到保利威视
                         UploadFile uploadFile = new UploadFile();
                         uploadFile.setTitle(fileName);
@@ -233,50 +234,46 @@ public class PcApiUploadBiz extends BaseBiz {
                             // 上传异常，不再进行处理，定时任务会继续进行处理
                             return;
                         }
+                        // 3、异步上传到阿里云
+                        String videoOasId = AliyunUtil.uploadDoc(CatalogueEnum.VIDEO, targetFile,
+                                BeanUtil.copyProperties(sys, Aliyun.class));
                         //更新课程视频信息
 //                        courseVideo.setVideoNo(result.getDuration());
                         courseVideo.setVideoLength(result.getDuration());
                         courseVideo.setVideoVid(result.getVid());
                         courseVideo.setVideoStatus(VideoStatusEnum.SUCCES.getCode());
-                        courseVideoDao.updateById(courseVideo);
-
-                        // 3、异步上传到阿里云
-                        String videoOasId = AliyunUtil.uploadDoc(CatalogueEnum.VIDEO, targetFile,
-                                BeanUtil.copyProperties(sys, Aliyun.class));
+//                        courseVideoDao.updateById(courseVideo);
                         courseVideo.setVideoOasId(videoOasId);
-                        courseVideoDao.updateById(courseVideo);
-
+                        courseUpdateResult = courseVideoDao.updateByExampleSelective(courseVideo);
                     }else{
                         //上传腾讯云
                         String result = TencentUtil.uploadFile(CatalogueEnum.VIDEO, url, targetFile, BeanUtil.copyProperties(sys, Tencent.class));
-                        if (result == null) {
+                        if (StringUtils.isEmpty(result)) {
                             // 上传异常，不再进行处理，定时任务会继续进行处理
                             return;
                         }
                         //更新课程视频信息
                         courseVideo.setVideoLength(VideoUtil.getVedioTime(targetFile));
                         courseVideo.setVideoStatus(VideoStatusEnum.SUCCES.getCode());
-                        courseVideoDao.updateById(courseVideo);
-
+                        courseUpdateResult = courseVideoDao.updateByExampleSelective(courseVideo);
                     }
                     // 根据视频编号、课时ID查询课程视频信息
-                    CourseVideo courseVideo = courseVideoDao.getByVideoNoAndPeriodId(finalVideoNo, Long.valueOf(0));
+//                    CourseVideo courseVideo = courseVideoDao.getByVideoNoAndPeriodId(finalVideoNo, Long.valueOf(0));
 
                     // 根据视频编号更新视频信息
-                    List<CourseVideo> list = courseVideoDao.listByVideoNo(finalVideoNo);
-                    for (CourseVideo video : list) {
-                        video.setVideoLength(courseVideo.getVideoLength());
-                        video.setVideoVid(courseVideo.getVideoVid());
-                        video.setVideoStatus(VideoStatusEnum.SUCCES.getCode());
-                        video.setVideoOasId(courseVideo.getVideoOasId());
-                        courseVideoDao.updateById(video);
-                    }
-
+//                    List<CourseVideo> list = courseVideoDao.listByVideoNo(finalVideoNo);
+//                    for (CourseVideo video : list) {
+//                        video.setVideoLength(courseVideo.getVideoLength());
+//                        video.setVideoVid(courseVideo.getVideoVid());
+//                        video.setVideoStatus(VideoStatusEnum.SUCCES.getCode());
+//                        video.setVideoOasId(courseVideo.getVideoOasId());
+//                        courseVideoDao.updateById(video);
+//                    }
                     // 更新课时审核表视频信息
                     List<CourseChapterPeriodAudit> periodAuditList = courseChapterPeriodAuditDao.listByVideoNo(finalVideoNo);
                     for (CourseChapterPeriodAudit periodAudit : periodAuditList) {
                         periodAudit.setVideoName(courseVideo.getVideoName());
-                        periodAudit.setVideoLength(courseVideo.getVideoLength());
+                        periodAudit.setVideoLength(VideoUtil.getVedioTime(targetFile));
                         periodAudit.setVideoVid(courseVideo.getVideoVid());
                         courseChapterPeriodAuditDao.updateById(periodAudit);
                     }
@@ -289,14 +286,44 @@ public class PcApiUploadBiz extends BaseBiz {
                         courseChapterPeriodDao.updateById(period);
                     }
                     // 4、成功删除本地文件
-                    if (targetFile.isFile() && targetFile.exists()) {
-                        targetFile.delete();
+                    if (targetFile.isFile() && targetFile.exists() && courseUpdateResult > 0) {
+                        Boolean r = targetFile.delete();
                     }
                 }
             });
         } else {
             return Result.error("系统异常，请重试");
         }
-        return Result.success(sys.getAliyunOssUrl()+CatalogueEnum.VIDEO+"/"+targetFile.getName());
+        return Result.success(sys.getAliyunOssUrl()+CatalogueEnum.VIDEO.name().toLowerCase()+"/"+targetFile.getName());
+    }
+
+    public Result<Integer> deleteFile(FileDeleteREQ fileDeleteREQ) {
+        SysVO sys = bossSys.getSys();
+        if(!StringUtils.isEmpty(fileDeleteREQ.getDocFileUrl())){
+            if(sys.getFileType().equals(FileTypeEnum.TENCENT.getCode())){
+                TencentUtil.deleteFile(fileDeleteREQ.getDocFileUrl(), BeanUtil.copyProperties(sys, Tencent.class));
+            }else if(sys.getFileType().equals(FileTypeEnum.ALIYUN.getCode())){
+                AliyunUtil.delete(fileDeleteREQ.getDocFileUrl(), BeanUtil.copyProperties(sys, Aliyun.class));
+            }else{
+                try {
+                    QiniuUtil.deletePic(fileDeleteREQ.getDocFileUrl(), BeanUtil.copyProperties(sys, Qiniu.class));
+                } catch (QiniuException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        int result = 0;
+        if(!StringUtils.isEmpty(fileDeleteREQ.getVideoFileUrl())){
+            if(sys.getVideoType().equals(VideoTypeEnum.TENCENT.getCode())){
+                TencentUtil.deleteFile(fileDeleteREQ.getVideoFileUrl(), BeanUtil.copyProperties(sys, Tencent.class));
+            }
+            Long videoNo = UrlUtil.UrlToKey(fileDeleteREQ.getVideoFileUrl(), sys.getAliyunOssUrl());
+            result = courseVideoDao.deleteByVideoNo(videoNo);
+        }
+        if(result > 0){
+            return Result.success(result);
+        }else{
+            return Result.error(ResultEnum.ERROR);
+        }
     }
 }

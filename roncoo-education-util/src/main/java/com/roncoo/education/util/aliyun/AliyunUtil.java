@@ -29,7 +29,6 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.roncoo.education.util.config.SystemUtil;
-import com.roncoo.education.util.enums.PlatformEnum;
 import com.roncoo.education.util.tools.StrUtil;
 
 import lombok.extern.slf4j.Slf4j;

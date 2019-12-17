@@ -4,6 +4,7 @@
 package com.roncoo.education.course.service.common.dto.auth;
 
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,5 +34,8 @@ public class AuthCourseSignDTO implements Serializable {
     
     @ApiModelProperty(value = "code值", required = true)
     private String code;
+
+    @ApiModelProperty(value = "url", required = true)
+    private List<String> url;
 
 }

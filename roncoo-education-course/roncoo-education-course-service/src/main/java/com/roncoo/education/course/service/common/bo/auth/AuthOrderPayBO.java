@@ -31,5 +31,5 @@ public class AuthOrderPayBO implements Serializable {
 
 	@ApiModelProperty(value = "用户备注", required = false)	
 	private String remarkCus;
-	
+
 }

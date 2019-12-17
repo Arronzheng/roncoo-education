@@ -3,6 +3,9 @@ package com.roncoo.education.user.service.biz;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import com.roncoo.education.util.enums.*;
+import com.roncoo.education.util.tencentcloud.Tencent;
+import com.roncoo.education.util.tencentcloud.TencentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -33,11 +36,6 @@ import com.roncoo.education.util.aliyun.AliyunUtil;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.BaseException;
 import com.roncoo.education.util.base.Result;
-import com.roncoo.education.util.enums.IsSuccessEnum;
-import com.roncoo.education.util.enums.LoginStatusEnum;
-import com.roncoo.education.util.enums.ResultEnum;
-import com.roncoo.education.util.enums.StatusIdEnum;
-import com.roncoo.education.util.enums.UserTypeEnum;
 import com.roncoo.education.util.tools.BeanUtil;
 import com.roncoo.education.util.tools.Constants;
 import com.roncoo.education.util.tools.JWTUtil;
@@ -163,8 +161,8 @@ public class ApiUserInfoBiz extends BaseBiz {
 		dto.setToken(JWTUtil.create(user.getUserNo(), JWTUtil.DATE));
 
 		// 登录成功，存入缓存，单点登录使用
-		// redisTemplate.opsForValue().set(dto.getUserNo().toString(), dto.getToken(),
-		// 1, TimeUnit.DAYS);
+		 redisTemplate.opsForValue().set(dto.getUserNo().toString(), dto.getToken(),
+		 1, TimeUnit.DAYS);
 
 		return Result.success(dto);
 	}
@@ -248,7 +246,12 @@ public class ApiUserInfoBiz extends BaseBiz {
 		sendSmsLog.setSmsCode(RandomUtil.randomNumbers(6));
 		try {
 			// 发送验证码
-			boolean result = AliyunUtil.sendMsg(userSendCodeBO.getMobile(), sendSmsLog.getSmsCode(), BeanUtil.copyProperties(sys, Aliyun.class));
+			boolean result = false;
+			if (sys.getFileType().equals(FileTypeEnum.ALIYUN.getCode())) {
+				result = AliyunUtil.sendMsg(userSendCodeBO.getMobile(), sendSmsLog.getSmsCode(), BeanUtil.copyProperties(sys, Aliyun.class));
+			} else {
+				result = TencentUtil.sendMsg(userSendCodeBO.getMobile(), sendSmsLog.getSmsCode(), BeanUtil.copyProperties(sys, Tencent.class));
+			}
 			// 发送成功，验证码存入缓存：5分钟有效
 			if (result) {
 				redisTemplate.opsForValue().set(userSendCodeBO.getClientId() + userSendCodeBO.getMobile(), sendSmsLog.getSmsCode(), 5, TimeUnit.MINUTES);
@@ -259,7 +262,7 @@ public class ApiUserInfoBiz extends BaseBiz {
 			// 发送失败
 			sendSmsLog.setIsSuccess(IsSuccessEnum.FAIL.getCode());
 			sendSmsLogDao.save(sendSmsLog);
-			throw new BaseException("发送失败");
+			return Result.error("发送失败");
 		} catch (ClientException e) {
 			sendSmsLog.setIsSuccess(IsSuccessEnum.FAIL.getCode());
 			sendSmsLogDao.save(sendSmsLog);

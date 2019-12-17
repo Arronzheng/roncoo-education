@@ -31,4 +31,6 @@ public interface OrderPayDao {
 	 * @author wuyun
 	 */
 	OrderPay getBySerialNumber(long serialNumber);
+
+    int updateBySerialNumber(OrderPay orderPay);
 }
