@@ -57,6 +57,7 @@ public class CourseUserStudyLogDaoImpl implements CourseUserStudyLogDao {
 		int totalPage = PageUtil.countTotalPage(count, pageSize);
 		example.setLimitStart(PageUtil.countOffset(pageCurrent, pageSize));
 		example.setPageSize(pageSize);
+		example.setOrderByClause("gmt_create desc");
 		return new Page<CourseUserStudyLog>(count, totalPage, pageCurrent, pageSize, this.courseUserStudyLogMapper.selectByExample(example));
 	}
 
@@ -185,5 +186,18 @@ public class CourseUserStudyLogDaoImpl implements CourseUserStudyLogDao {
 		}
 		sql.append("course_id = ? group by period_id order by periodId desc limit 0,5");
 		return queryForObjectList(sql.toString(), CourseUserStudyLog.class, courseId);
+	}
+
+	@Override
+	public CourseUserStudyLog getByCourseIdAndSortByTimeDesc(Long courseId) {
+		CourseUserStudyLogExample example = new CourseUserStudyLogExample();
+		CourseUserStudyLogExample.Criteria c = example.createCriteria();
+		c.andCourseIdEqualTo(courseId);
+		example.setOrderByClause("gmt_create desc");
+		List<CourseUserStudyLog> courseUserStudyLogList = this.courseUserStudyLogMapper.selectByExample(example);
+		if (courseUserStudyLogList.isEmpty()) {
+			return null;
+		}
+		return courseUserStudyLogList.get(0);
 	}
 }

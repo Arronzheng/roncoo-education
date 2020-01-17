@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.common.bo.auth;
 
 import java.io.Serializable;
@@ -11,7 +8,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 获取课时code值实体类
- * 
+ *
  * @author forest
  */
 @Data

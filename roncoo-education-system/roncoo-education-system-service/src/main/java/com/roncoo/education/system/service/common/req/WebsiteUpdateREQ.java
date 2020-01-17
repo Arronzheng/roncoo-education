@@ -1,6 +1,7 @@
 package com.roncoo.education.system.service.common.req;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -96,6 +97,16 @@ public class WebsiteUpdateREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "客服信息2")
 	private String service2;
+	/**
+	 * 是否开启vip
+	 */
+	@ApiModelProperty(value = "是否开启vip")
+	private Integer isEnableVip;
+	/**
+	 * 会员价格
+	 */
+	@ApiModelProperty(value = "会员价格")
+	private BigDecimal vipPrice;
 	/**
 	 * logoImg
 	 */

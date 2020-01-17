@@ -1,11 +1,8 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 /**
  * 常量工具类
- * 
+ *
  * @author wujing
  */
 public final class Constants {
@@ -19,7 +16,7 @@ public final class Constants {
 
 	/**
 	 * session
-	 * 
+	 *
 	 * @author wujing
 	 */
 	public interface Session {
@@ -31,7 +28,7 @@ public final class Constants {
 
 	/**
 	 * cookie
-	 * 
+	 *
 	 * @author wujing
 	 */
 	public interface Cookie {
@@ -40,7 +37,7 @@ public final class Constants {
 
 	/**
 	 * 日期类型
-	 * 
+	 *
 	 * @author wujing
 	 */
 	public interface DATE {

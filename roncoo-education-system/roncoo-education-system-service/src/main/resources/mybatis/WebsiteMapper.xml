@@ -23,6 +23,8 @@
     <result column="is_show_service" property="isShowService" jdbcType="TINYINT" />
     <result column="service1" property="service1" jdbcType="VARCHAR" />
     <result column="service2" property="service2" jdbcType="VARCHAR" />
+    <result column="is_enable_vip" property="isEnableVip" jdbcType="TINYINT" />
+    <result column="vip_price" property="vipPrice" jdbcType="DECIMAL" />
     <result column="user_agreement" property="userAgreement" jdbcType="VARCHAR" />
     <result column="recruit_title" property="recruitTitle" jdbcType="VARCHAR" />
     <result column="recruit_info" property="recruitInfo" jdbcType="VARCHAR" />
@@ -89,7 +91,7 @@
   <sql id="Base_Column_List" >
     id, gmt_create, gmt_modified, status_id, sort, logo_ico, logo_img, website_title, 
     website_keyword, website_desc, copyright, icp, prn, weixin, weixin_xcx, weibo, is_enable_statistics, 
-    statistics_code, is_show_service, service1, service2, user_agreement, recruit_title, 
+    statistics_code, is_show_service, service1, service2, is_enable_vip, vip_price, user_agreement, recruit_title,
     recruit_info, entry_agreement
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.WebsiteExample" >
@@ -132,7 +134,7 @@
       website_desc, copyright, icp, 
       prn, weixin, weixin_xcx, 
       weibo, is_enable_statistics, statistics_code, 
-      is_show_service, service1, service2, 
+      is_show_service, service1, service2, is_enable_vip, vip_price
       user_agreement, recruit_title, recruit_info, 
       entry_agreement)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
@@ -141,7 +143,7 @@
       #{websiteDesc,jdbcType=VARCHAR}, #{copyright,jdbcType=VARCHAR}, #{icp,jdbcType=VARCHAR}, 
       #{prn,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, #{weixinXcx,jdbcType=VARCHAR}, 
       #{weibo,jdbcType=VARCHAR}, #{isEnableStatistics,jdbcType=TINYINT}, #{statisticsCode,jdbcType=VARCHAR}, 
-      #{isShowService,jdbcType=TINYINT}, #{service1,jdbcType=VARCHAR}, #{service2,jdbcType=VARCHAR}, 
+      #{isShowService,jdbcType=TINYINT}, #{service1,jdbcType=VARCHAR}, #{service2,jdbcType=VARCHAR}, #{isEnableVip,jdbcType=TINYINT}, #{vipPrice,jdbcType=DECIMAL}
       #{userAgreement,jdbcType=VARCHAR}, #{recruitTitle,jdbcType=VARCHAR}, #{recruitInfo,jdbcType=VARCHAR}, 
       #{entryAgreement,jdbcType=VARCHAR})
   </insert>
@@ -210,6 +212,12 @@
       </if>
       <if test="service2 != null" >
         service2,
+      </if>
+      <if test="isEnableVip != null" >
+        is_enable_vip,
+      </if>
+      <if test="vipPrice != null" >
+        vip_price,
       </if>
       <if test="userAgreement != null" >
         user_agreement,
@@ -287,6 +295,12 @@
       </if>
       <if test="service2 != null" >
         #{service2,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnableVip != null" >
+        #{isEnableVip,jdbcType=TINYINT},
+      </if>
+      <if test="vipPrice != null" >
+        #{vipPrice,jdbcType=DECIMAL},
       </if>
       <if test="userAgreement != null" >
         #{userAgreement,jdbcType=VARCHAR},
@@ -374,6 +388,12 @@
       <if test="record.service2 != null" >
         service2 = #{record.service2,jdbcType=VARCHAR},
       </if>
+      <if test="record.isEnableVip != null" >
+        is_enable_vip = #{record.isEnableVip,jdbcType=TINYINT},
+      </if>
+      <if test="record.vipPrice != null" >
+        vip_price = #{record.vipPrice,jdbcType=DECIMAL},
+      </if>
       <if test="record.userAgreement != null" >
         user_agreement = #{record.userAgreement,jdbcType=VARCHAR},
       </if>
@@ -414,6 +434,8 @@
       is_show_service = #{record.isShowService,jdbcType=TINYINT},
       service1 = #{record.service1,jdbcType=VARCHAR},
       service2 = #{record.service2,jdbcType=VARCHAR},
+      is_enable_vip = #{record.isEnableVip,jdbcType=TINYINT},
+      vip_price = #{record.vipPrice,jdbcType=DECIMAL},
       user_agreement = #{record.userAgreement,jdbcType=VARCHAR},
       recruit_title = #{record.recruitTitle,jdbcType=VARCHAR},
       recruit_info = #{record.recruitInfo,jdbcType=VARCHAR},
@@ -485,6 +507,12 @@
       <if test="service2 != null" >
         service2 = #{service2,jdbcType=VARCHAR},
       </if>
+      <if test="isEnableVip != null" >
+        is_enable_vip = #{isEnableVip,jdbcType=TINYINT},
+      </if>
+      <if test="vipPrice != null" >
+        vip_price = #{vipPrice,jdbcType=DECIMAL},
+      </if>
       <if test="userAgreement != null" >
         user_agreement = #{userAgreement,jdbcType=VARCHAR},
       </if>
@@ -522,6 +550,8 @@
       is_show_service = #{isShowService,jdbcType=TINYINT},
       service1 = #{service1,jdbcType=VARCHAR},
       service2 = #{service2,jdbcType=VARCHAR},
+      is_enable_vip = #{isEnableVip,jdbcType=TINYINT},
+      vip_price = #{vipPrice,jdbcType=DECIMAL},
       user_agreement = #{userAgreement,jdbcType=VARCHAR},
       recruit_title = #{recruitTitle,jdbcType=VARCHAR},
       recruit_info = #{recruitInfo,jdbcType=VARCHAR},

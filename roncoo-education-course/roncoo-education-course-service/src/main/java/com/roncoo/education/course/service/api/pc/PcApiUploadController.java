@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.api.pc;
 
 import com.roncoo.education.course.service.common.req.FileDeleteREQ;
@@ -16,7 +13,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 上传接口
- * 
+ *
  */
 @RestController
 @RequestMapping(value = "/course/pc/api/upload")
@@ -39,7 +36,7 @@ public class PcApiUploadController extends BaseController {
 
 	/**
 	 * 上传图片接口
-	 * 
+	 *
 	 * @param picFile
 	 * @param imgUrl  原图片路径
 	 */
@@ -51,7 +48,7 @@ public class PcApiUploadController extends BaseController {
 
 	/**
 	 * 上传文档接口
-	 * 
+	 *
 	 * @param docFile
 	 */
 	@ApiOperation(value = "上传文档接口", notes = "上传文档")

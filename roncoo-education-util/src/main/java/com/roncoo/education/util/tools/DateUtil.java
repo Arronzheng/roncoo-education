@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 import java.sql.Timestamp;
@@ -16,7 +13,7 @@ import com.xiaoleilu.hutool.date.DateTime;
 
 /**
  * 日期处理工具类
- * 
+ *
  * @author wujing
  */
 public final class DateUtil {
@@ -29,12 +26,12 @@ public final class DateUtil {
 
 	/**
 	 * 时间转换：长整型转换为日期字符型
-	 * 
+	 *
 	 * @param format
 	 *            格式化类型：yyyy-MM-dd
 	 * @param time
 	 *            13位有效数字：1380123456789
-	 * 
+	 *
 	 * @return 格式化结果 (yyyy-MM-dd)
 	 */
 	public static String formatToString(String format, long time) {
@@ -46,10 +43,10 @@ public final class DateUtil {
 
 	/**
 	 * 时间转换：日期字符型转换为长整型
-	 * 
+	 *
 	 * @param format
 	 *            格式化类型：yyyy-MM-dd
-	 * 
+	 *
 	 * @return 13位有效数字 (1380123456789)
 	 */
 	public static long formatToLong(String format) {
@@ -59,7 +56,7 @@ public final class DateUtil {
 
 	/**
 	 * 获取当前年份
-	 * 
+	 *
 	 * @return yyyy (2016)
 	 */
 	public static int getYear() {
@@ -69,7 +66,7 @@ public final class DateUtil {
 
 	/**
 	 * 获取当前月份
-	 * 
+	 *
 	 * @return MM (06)
 	 */
 	public static String getMonth() {
@@ -79,7 +76,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：格式化日期
-	 * 
+	 *
 	 * @param dateStr
 	 *            String 字符型日期
 	 * @param format
@@ -104,7 +101,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：格式化日期
-	 * 
+	 *
 	 * @param dateStr
 	 *            String 字符型日期：YYYY-MM-DD 格式
 	 * @return Date
@@ -115,7 +112,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：格式化输出日期
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @param format
@@ -136,7 +133,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return
@@ -147,7 +144,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回年份
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return 返回年份
@@ -160,7 +157,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回月份
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return 返回月份
@@ -173,7 +170,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回日份
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return 返回日份
@@ -186,7 +183,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回小时
-	 * 
+	 *
 	 * @param date
 	 *            日期
 	 * @return 返回小时
@@ -199,7 +196,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回分钟
-	 * 
+	 *
 	 * @param date
 	 *            日期
 	 * @return 返回分钟
@@ -212,7 +209,7 @@ public final class DateUtil {
 
 	/**
 	 * 返回秒钟
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return 返回秒钟
@@ -225,7 +222,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回毫秒
-	 * 
+	 *
 	 * @param date
 	 *            日期
 	 * @return 返回毫秒
@@ -238,7 +235,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回字符型日期
-	 * 
+	 *
 	 * @param date
 	 *            日期
 	 * @return 返回字符型日期 yyyy-MM-dd 格式
@@ -249,7 +246,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回字符型时间
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return 返回字符型时间 HH:mm:ss 格式
@@ -260,7 +257,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：返回字符型日期时间
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return 返回字符型日期时间 yyyy-MM-dd HH:mm:ss 格式
@@ -271,7 +268,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：日期相加
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @param day
@@ -287,7 +284,7 @@ public final class DateUtil {
 
 	/**
 	 * 当前日期加上年
-	 * 
+	 *
 	 * @param date
 	 * @param year
 	 * @return
@@ -301,7 +298,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：日期相加
-	 * 
+	 *
 	 * @param date
 	 *            yyyy-MM-dd
 	 * @param day
@@ -318,7 +315,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：日期相减
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @param date1
@@ -331,7 +328,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：取得指定月份的第一天
-	 * 
+	 *
 	 * @param strdate
 	 *            String 字符型日期
 	 * @return String yyyy-MM-dd 格式
@@ -343,7 +340,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：取得指定月份的最后一天
-	 * 
+	 *
 	 * @param strdate
 	 *            String 字符型日期
 	 * @return String 日期字符串 yyyy-MM-dd格式
@@ -359,7 +356,7 @@ public final class DateUtil {
 
 	/**
 	 * 功能描述：常用的格式化日期
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @return String 日期字符串 yyyy-MM-dd格式
@@ -370,7 +367,7 @@ public final class DateUtil {
 
 	/**
 	 * 以指定的格式来格式化日期
-	 * 
+	 *
 	 * @param date
 	 *            Date 日期
 	 * @param format
@@ -392,7 +389,7 @@ public final class DateUtil {
 
 	/**
 	 * 计算日期之间的天数
-	 * 
+	 *
 	 * @param beginDate
 	 *            开始日期 yyy-MM-dd
 	 * @param endDate
@@ -409,7 +406,7 @@ public final class DateUtil {
 
 	/**
 	 * 计算日期之间的年数
-	 * 
+	 *
 	 * @param startYear
 	 *            开始日期 yyy-MM-dd
 	 * @param endYear
@@ -432,7 +429,7 @@ public final class DateUtil {
 
 	/**
 	 * 上个月
-	 * 
+	 *
 	 * @return 上个月
 	 */
 	public static DateTime lastMonth() {
@@ -441,7 +438,7 @@ public final class DateUtil {
 
 	/**
 	 * 偏移月
-	 * 
+	 *
 	 * @param date
 	 *            日期
 	 * @param offset

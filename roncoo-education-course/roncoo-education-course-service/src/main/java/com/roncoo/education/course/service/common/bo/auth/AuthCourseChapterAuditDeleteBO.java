@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.common.bo.auth;
 
 import java.io.Serializable;
@@ -11,7 +8,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 讲师章节审核信息删除
- * 
+ *
  * @author WY
  */
 @Data

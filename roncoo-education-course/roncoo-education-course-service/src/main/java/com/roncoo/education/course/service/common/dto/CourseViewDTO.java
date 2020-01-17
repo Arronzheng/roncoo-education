@@ -57,6 +57,16 @@ public class CourseViewDTO implements Serializable {
 	@ApiModelProperty(value = "是否免费：1免费，0收费")
 	private Integer isFree;
 	/**
+	 * 是否vip免费：1免费，0收费
+	 */
+	@ApiModelProperty(value = "是否vip免费：1免费，0收费")
+	private Integer isVipFree;
+	/**
+	 * 是否只有vip能买：1是，0否
+	 */
+	@ApiModelProperty(value = "是否只有vip能买：1是，0否")
+	private Integer isOnlyVipBuy;
+	/**
 	 * 原价
 	 */
 	@ApiModelProperty(value = "原价")
@@ -66,6 +76,16 @@ public class CourseViewDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "优惠价")
 	private BigDecimal courseDiscount;
+	/**
+	 * 会员价
+	 */
+	@ApiModelProperty(value = "会员价", required = false)
+	private BigDecimal courseSvipDiscount;
+	/**
+	 * 拼团价
+	 */
+	@ApiModelProperty(value = "拼团价", required = false)
+	private BigDecimal courseAssembleDiscount;
 	/**
 	 * 购买人数
 	 */

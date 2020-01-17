@@ -1,15 +1,28 @@
 package com.roncoo.education.course.service.controller.biz;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.roncoo.education.course.service.biz.auth.AuthApiOrderInfoBiz;
+import com.roncoo.education.course.service.dao.CourseAuditDao;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
+import com.roncoo.education.user.common.bean.vo.LecturerExtVO;
+import com.roncoo.education.user.common.bean.vo.LecturerVO;
+import com.roncoo.education.user.feign.IBossLecturer;
+import com.roncoo.education.user.feign.IBossLecturerExt;
+import com.roncoo.education.util.base.Result;
 import com.roncoo.education.util.pay.AlipayUtil;
+import com.roncoo.education.util.pay.WeixinPayUtil;
+import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.roncoo.education.course.common.bean.qo.OrderEchartsQO;
@@ -21,11 +34,7 @@ import com.roncoo.education.course.common.bean.vo.OrderReportVO;
 import com.roncoo.education.course.service.common.resq.CountIncomeRESQ;
 import com.roncoo.education.course.service.dao.OrderInfoDao;
 import com.roncoo.education.course.service.dao.OrderPayDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample.Criteria;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPay;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPayExample;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
@@ -46,6 +55,12 @@ public class BossOrderInfoBiz extends BaseBiz {
 	private OrderInfoDao dao;
 	@Autowired
 	private OrderPayDao orderPayDao;
+	@Autowired
+	private CourseAuditDao courseAuditDao;
+	@Autowired
+	private IBossLecturer bossLecturer;
+	@Autowired
+	private IBossLecturerExt bossLecturerExt;
 
 	public Page<OrderInfoVO> listForPage(OrderInfoQO qo) {
 		OrderInfoExample example = new OrderInfoExample();
@@ -180,7 +195,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	}
 
 	/**
-	 * 1小时后如果订单不支付，就关闭订单和标记订单支付日志，每次处理10条数据
+	 * 30分钟后如果订单不支付，就关闭订单和标记订单支付日志，每次处理10条数据
 	 * 
 	 * @return
 	 * @author wuyun
@@ -189,7 +204,10 @@ public class BossOrderInfoBiz extends BaseBiz {
 		// 1.订单信息的处理
 		OrderInfoExample example = new OrderInfoExample();
 		Criteria c = example.createCriteria();
-		c.andOrderStatusEqualTo(OrderStatusEnum.WAIT.getCode());
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(OrderStatusEnum.WAIT.getCode());
+		list.add(OrderStatusEnum.FAIL.getCode());
+		c.andOrderStatusIn(list);
 		c.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 1800000L));
 		example.setOrderByClause(" id desc ");
 		Page<OrderInfo> page = dao.listForPage(1, 10, example);
@@ -206,7 +224,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 		// 2.订单支付的处理
 		OrderPayExample orderPayExample = new OrderPayExample();
 		com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPayExample.Criteria orderPayCriteria = orderPayExample.createCriteria();
-		orderPayCriteria.andOrderStatusEqualTo(OrderStatusEnum.WAIT.getCode());
+		orderPayCriteria.andOrderStatusIn(list);
 		orderPayCriteria.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 1800000L));
 		Page<OrderPay> orderPayPage = orderPayDao.listForPage(1, 10, orderPayExample);
 		if (CollectionUtil.isNotEmpty(orderPayPage.getList())) {
@@ -217,30 +235,146 @@ public class BossOrderInfoBiz extends BaseBiz {
 				orderPayDao.updateById(argOrderPay);
 			}
 		}
-		//轮询支付宝or微信订单状态
+		//30分钟内轮询支付宝or微信订单状态
 		OrderPayExample orderPayExample2 = new OrderPayExample();
 		com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPayExample.Criteria orderPayCriteria2 = orderPayExample2.createCriteria();
-		orderPayCriteria2.andOrderStatusEqualTo(OrderStatusEnum.WAIT.getCode());
+		orderPayCriteria2.andOrderStatusIn(list);
 		orderPayCriteria2.andGmtCreateGreaterThan(new Date(System.currentTimeMillis() - 1800000L));
 		Page<OrderPay> orderPayPage2 = orderPayDao.listForPage(1, 10, orderPayExample2);
 		if (CollectionUtil.isNotEmpty(orderPayPage2.getList())) {
 			for (OrderPay orderPay : orderPayPage2.getList()) {
 				if(orderPay.getPayType() ==1){
-
+					Map<String, String> response = WeixinPayUtil.orderQuery(String.valueOf(orderPay.getSerialNumber()));
+					if(!CollectionUtils.isEmpty(response)){
+						if("SUCCESS".equals(response.get("return_code"))){
+							if("SUCCESS".equals(response.get("result_code"))){
+								if(!"NOTPAY".equals(response.get("trade_state"))){
+									OrderInfo order = dao.getByOrderNo(orderPay.getOrderNo());
+									if("SUCCESS".equals(response.get("trade_state"))){
+										//微信已交易成功
+										//处理课程信息
+										course(order, orderPay);
+									}else{
+										//微信支付失败
+										//更新订单信息
+										order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+										dao.updateById(order);
+										//更新订单支付信息
+										orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+										orderPayDao.updateById(orderPay);
+									}
+								}
+							}
+						}
+					}
 				}else{
 					AlipayTradeQueryResponse response = AlipayUtil.queryOrder(String.valueOf(orderPay.getSerialNumber()),null);
 					if(null != response){
 						if(response.isSuccess()){
-							OrderInfo order = dao.getByOrderNo(orderPay.getOrderNo());
-							AuthApiOrderInfoBiz.handleQueryResponse(response, order, orderPay);
-							dao.updateByOrderNo(order);
-							orderPayDao.updateBySerialNumber(orderPay);
+							if(!response.getTradeStatus().equals("WAIT_BUYER_PAY")){
+								OrderInfo order = dao.getByOrderNo(orderPay.getOrderNo());
+								// 订单状态为成功时处理
+								if (response.getTradeStatus().equals("TRADE_FINISHED") || response.getTradeStatus().equals("TRADE_SUCCESS")) {
+									//交易结束，不可退款 或 交易支付成功
+									// 处理课程信息
+									course(order, orderPay);
+								} else if(response.getTradeStatus().equals("WAIT_BUYER_PAY")){
+
+								}else{
+									// 更新订单信息
+									order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+									dao.updateById(order);
+									// 更新订单支付信息
+									orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+									orderPayDao.updateById(orderPay);
+								}
+							}
 						}
 					}
 				}
 			}
 		}
 		return 1;
+	}
+
+	/**
+	 * 课程处理
+	 *
+	 * @param orderInfo
+	 * @param orderPay
+	 * @return
+	 * @author wuyun
+	 */
+	private void course(OrderInfo orderInfo, OrderPay orderPay) {
+		// 根据课程No查找课程信息
+		CourseAudit courseAudit = courseAuditDao.getById(orderInfo.getCourseId());
+		if (StringUtils.isEmpty(courseAudit)) {
+			return;
+		}
+
+		// 根据讲师编号和机构编号查找讲师账户信息
+//		LecturerExtVO lecturerExtVO = bossLecturerExt.getByLecturerUserNo(courseAudit.getLecturerUserNo());
+//		if (StringUtils.isEmpty(lecturerExtVO)) {
+//			return;
+//		}
+//		LecturerVO lecturerVO = bossLecturer.getByLecturerUserNo(courseAudit.getLecturerUserNo());
+//		if (ObjectUtil.isNull(lecturerVO)) {
+//			return;
+//		}
+		// 计算讲师分润
+//		orderInfo = countProfit(orderInfo, lecturerExtVO, lecturerVO.getLecturerProportion());
+		// 更新讲师账户信息
+//		updateLecturerExtVO(orderInfo, lecturerExtVO);
+
+		// 更新课程信息的购买人数
+		courseAudit.setCountBuy(courseAudit.getCountBuy() + 1);
+		courseAuditDao.updateById(courseAudit);
+
+		// 更新订单信息
+		orderInfo.setPayTime(new Date());
+		orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+		dao.updateById(orderInfo);
+
+		// 更新订单支付信息
+		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+		orderPay.setPayTime(new Date());
+		orderPayDao.updateById(orderPay);
+	}
+
+	/**
+	 * 计算处理讲师分润信息
+	 *
+	 * @param orderInfo
+	 * @param lecturerExtVO
+	 * @param lecturerProportion
+	 * @return
+	 * @author wuyun
+	 */
+	private OrderInfo countProfit(OrderInfo orderInfo, LecturerExtVO lecturerExtVO, BigDecimal lecturerProportion) {
+		// 讲师收入 = 订单价格x讲师分成比例
+		BigDecimal lecturerProfit = orderInfo.getPricePaid().multiply(lecturerProportion).setScale(2, RoundingMode.DOWN);
+		// 平台收入 = 实付金额 - 讲师收入
+		BigDecimal platformIncome = orderInfo.getPricePaid().subtract(lecturerProfit).setScale(2, RoundingMode.DOWN);
+
+		orderInfo.setLecturerProfit(lecturerProfit);
+		orderInfo.setPlatformProfit(platformIncome);
+
+		return orderInfo;
+	}
+
+	/**
+	 * 更新讲师账户信息
+	 *
+	 * @param orderInfo
+	 * @param lecturerExtVO
+	 * @author wuyun
+	 */
+	private void updateLecturerExtVO(OrderInfo orderInfo, LecturerExtVO lecturerExtVO) {
+		LecturerExtQO lecturerExtQO = new LecturerExtQO();
+		lecturerExtQO.setLecturerUserNo(lecturerExtVO.getLecturerUserNo());
+		lecturerExtQO.setTotalIncome(orderInfo.getLecturerProfit());
+		lecturerExtQO.setEnableBalances(orderInfo.getLecturerProfit());
+		bossLecturerExt.updateTotalIncomeByLecturerUserNo(lecturerExtQO);
 	}
 
 }

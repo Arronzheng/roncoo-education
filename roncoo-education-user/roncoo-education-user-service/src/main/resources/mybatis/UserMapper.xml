@@ -7,6 +7,7 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="status_id" property="statusId" jdbcType="TINYINT" />
     <result column="user_no" property="userNo" jdbcType="BIGINT" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="mobile_salt" property="mobileSalt" jdbcType="VARCHAR" />
     <result column="mobile_psw" property="mobilePsw" jdbcType="VARCHAR" />
@@ -109,11 +110,11 @@
   </delete>
   <insert id="insert" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.User" >
     insert into user (id, gmt_create, gmt_modified, 
-      status_id, user_no, mobile, 
+      status_id, user_no, open_id, mobile,
       mobile_salt, mobile_psw, user_source
       )
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{statusId,jdbcType=TINYINT}, #{userNo,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, 
+      #{statusId,jdbcType=TINYINT}, #{userNo,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
       #{mobileSalt,jdbcType=VARCHAR}, #{mobilePsw,jdbcType=VARCHAR}, #{userSource,jdbcType=VARCHAR}
       )
   </insert>
@@ -134,6 +135,9 @@
       </if>
       <if test="userNo != null" >
         user_no,
+      </if>
+      <if test="openId != null" >
+        open_id,
       </if>
       <if test="mobile != null" >
         mobile,
@@ -163,6 +167,9 @@
       </if>
       <if test="userNo != null" >
         #{userNo,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null" >
         #{mobile,jdbcType=VARCHAR},
@@ -202,6 +209,9 @@
       <if test="record.userNo != null" >
         user_no = #{record.userNo,jdbcType=BIGINT},
       </if>
+      <if test="record.openId != null" >
+        open_id = #{record.openId,jdbcType=VARCHAR},
+      </if>
       <if test="record.mobile != null" >
         mobile = #{record.mobile,jdbcType=VARCHAR},
       </if>
@@ -226,6 +236,7 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       status_id = #{record.statusId,jdbcType=TINYINT},
       user_no = #{record.userNo,jdbcType=BIGINT},
+      open_id = #{record.openId,jdbcType=VARCHAR},
       mobile = #{record.mobile,jdbcType=VARCHAR},
       mobile_salt = #{record.mobileSalt,jdbcType=VARCHAR},
       mobile_psw = #{record.mobilePsw,jdbcType=VARCHAR},
@@ -249,6 +260,9 @@
       <if test="userNo != null" >
         user_no = #{userNo,jdbcType=BIGINT},
       </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
       <if test="mobile != null" >
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
@@ -270,6 +284,7 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       status_id = #{statusId,jdbcType=TINYINT},
       user_no = #{userNo,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       mobile_salt = #{mobileSalt,jdbcType=VARCHAR},
       mobile_psw = #{mobilePsw,jdbcType=VARCHAR},

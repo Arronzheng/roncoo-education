@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 import java.lang.reflect.Field;
@@ -10,7 +7,7 @@ import java.util.Map;
 
 /**
  * Object To Map and Map To Object
- * 
+ *
  * @author wujing
  */
 public final class ObjectMapUtil {

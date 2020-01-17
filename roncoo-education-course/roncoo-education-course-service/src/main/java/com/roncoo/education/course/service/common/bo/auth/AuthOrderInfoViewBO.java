@@ -36,4 +36,10 @@ public class AuthOrderInfoViewBO implements Serializable {
 	 */
 	@ApiModelProperty(value = "支付类型1：微信，2支付宝 ", required = true)
 	private Integer payType;
+	/**
+	 * 用户编号
+	 */
+	@ApiModelProperty(value = "用户编号", required = true)
+	@JsonSerialize(using = ToStringSerializer.class)
+	private Long userNo;
 }

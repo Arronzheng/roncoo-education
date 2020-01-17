@@ -16,6 +16,7 @@
     <result column="price_payable" property="pricePayable" jdbcType="DECIMAL" />
     <result column="price_discount" property="priceDiscount" jdbcType="DECIMAL" />
     <result column="price_paid" property="pricePaid" jdbcType="DECIMAL" />
+    <result column="price_paid_source" property="pricePaidSource" jdbcType="TINYINT" />
     <result column="platform_profit" property="platformProfit" jdbcType="DECIMAL" />
     <result column="lecturer_profit" property="lecturerProfit" jdbcType="DECIMAL" />
     <result column="trade_type" property="tradeType" jdbcType="TINYINT" />
@@ -24,6 +25,7 @@
     <result column="order_status" property="orderStatus" jdbcType="TINYINT" />
     <result column="is_show_lecturer" property="isShowLecturer" jdbcType="TINYINT" />
     <result column="is_show_user" property="isShowUser" jdbcType="TINYINT" />
+    <result column="shipping_address_id" property="shippingAddressId" jdbcType="BIGINT" />
     <result column="remark_cus" property="remarkCus" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
@@ -88,9 +90,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, gmt_create, gmt_modified, lecturer_user_no, lecturer_name, user_no, mobile, register_time, 
-    order_no, course_id, course_name, price_payable, price_discount, price_paid, platform_profit, 
+    order_no, course_id, course_name, price_payable, price_discount, price_paid, price_paid_source, platform_profit,
     lecturer_profit, trade_type, pay_type, channel_type, order_status, is_show_lecturer, 
-    is_show_user, remark_cus, remark, pay_time
+    is_show_user, shipping_address_id, remark_cus, remark, pay_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample" >
     select
@@ -130,19 +132,19 @@
       lecturer_user_no, lecturer_name, user_no, 
       mobile, register_time, order_no, 
       course_id, course_name, price_payable, 
-      price_discount, price_paid, platform_profit, 
+      price_discount, price_paid, price_paid_source, platform_profit,
       lecturer_profit, trade_type, pay_type, 
       channel_type, order_status, is_show_lecturer, 
-      is_show_user, remark_cus, remark, 
+      is_show_user, shipping_address_id, remark_cus, remark,
       pay_time)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{lecturerUserNo,jdbcType=BIGINT}, #{lecturerName,jdbcType=VARCHAR}, #{userNo,jdbcType=BIGINT}, 
       #{mobile,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=BIGINT}, 
       #{courseId,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR}, #{pricePayable,jdbcType=DECIMAL}, 
-      #{priceDiscount,jdbcType=DECIMAL}, #{pricePaid,jdbcType=DECIMAL}, #{platformProfit,jdbcType=DECIMAL}, 
+      #{priceDiscount,jdbcType=DECIMAL}, #{pricePaid,jdbcType=DECIMAL}, #{pricePaidSource,jdbcType=TINYINT} #{platformProfit,jdbcType=DECIMAL},
       #{lecturerProfit,jdbcType=DECIMAL}, #{tradeType,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT}, 
       #{channelType,jdbcType=TINYINT}, #{orderStatus,jdbcType=TINYINT}, #{isShowLecturer,jdbcType=TINYINT}, 
-      #{isShowUser,jdbcType=TINYINT}, #{remarkCus,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{isShowUser,jdbcType=TINYINT}, #{{shippingAddressId,jdbcType=BIGINT}} #{remarkCus,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
       #{payTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo" >
@@ -190,6 +192,9 @@
       <if test="pricePaid != null" >
         price_paid,
       </if>
+      <if test="pricePaidSource != null" >
+        price_paid_source,
+      </if>
       <if test="platformProfit != null" >
         platform_profit,
       </if>
@@ -213,6 +218,9 @@
       </if>
       <if test="isShowUser != null" >
         is_show_user,
+      </if>
+      <if test="shippingAddressId != null" >
+        shipping_address_id,
       </if>
       <if test="remarkCus != null" >
         remark_cus,
@@ -267,6 +275,9 @@
       <if test="pricePaid != null" >
         #{pricePaid,jdbcType=DECIMAL},
       </if>
+      <if test="pricePaidSource != null" >
+        #{pricePaidSource,jdbcType=TINYINT},
+      </if>
       <if test="platformProfit != null" >
         #{platformProfit,jdbcType=DECIMAL},
       </if>
@@ -290,6 +301,9 @@
       </if>
       <if test="isShowUser != null" >
         #{isShowUser,jdbcType=TINYINT},
+      </if>
+      <if test="shippingAddressId != null" >
+        #{shippingAddressId,jdbcType=BIGINT},
       </if>
       <if test="remarkCus != null" >
         #{remarkCus,jdbcType=VARCHAR},
@@ -353,6 +367,9 @@
       <if test="record.pricePaid != null" >
         price_paid = #{record.pricePaid,jdbcType=DECIMAL},
       </if>
+      <if test="record.pricePaidSource != null" >
+        price_paid_source = #{record.pricePaidSource,jdbcType=TINYINT},
+      </if>
       <if test="record.platformProfit != null" >
         platform_profit = #{record.platformProfit,jdbcType=DECIMAL},
       </if>
@@ -376,6 +393,9 @@
       </if>
       <if test="record.isShowUser != null" >
         is_show_user = #{record.isShowUser,jdbcType=TINYINT},
+      </if>
+      <if test="record.shippingAddressId != null" >
+        shipping_address_id = #{record.shippingAddressId,jdbcType=BIGINT},
       </if>
       <if test="record.remarkCus != null" >
         remark_cus = #{record.remarkCus,jdbcType=VARCHAR},
@@ -407,6 +427,7 @@
       price_payable = #{record.pricePayable,jdbcType=DECIMAL},
       price_discount = #{record.priceDiscount,jdbcType=DECIMAL},
       price_paid = #{record.pricePaid,jdbcType=DECIMAL},
+      price_paid_source = #{record.pricePaidSource,jdbcType=TINYINT},
       platform_profit = #{record.platformProfit,jdbcType=DECIMAL},
       lecturer_profit = #{record.lecturerProfit,jdbcType=DECIMAL},
       trade_type = #{record.tradeType,jdbcType=TINYINT},
@@ -415,6 +436,7 @@
       order_status = #{record.orderStatus,jdbcType=TINYINT},
       is_show_lecturer = #{record.isShowLecturer,jdbcType=TINYINT},
       is_show_user = #{record.isShowUser,jdbcType=TINYINT},
+      shipping_address_id = #{record.shippingAddressId,jdbcType=BIGINT},
       remark_cus = #{record.remarkCus,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       pay_time = #{record.payTime,jdbcType=TIMESTAMP}
@@ -464,6 +486,9 @@
       <if test="pricePaid != null" >
         price_paid = #{pricePaid,jdbcType=DECIMAL},
       </if>
+      <if test="pricePaidSource != null" >
+        price_paid_source = #{pricePaidSource,jdbcType=TINYINT},
+      </if>
       <if test="platformProfit != null" >
         platform_profit = #{platformProfit,jdbcType=DECIMAL},
       </if>
@@ -487,6 +512,9 @@
       </if>
       <if test="isShowUser != null" >
         is_show_user = #{isShowUser,jdbcType=TINYINT},
+      </if>
+      <if test="shippingAddressId != null" >
+        shipping_address_id = #{shippingAddressId,jdbcType=BIGINT},
       </if>
       <if test="remarkCus != null" >
         remark_cus = #{remarkCus,jdbcType=VARCHAR},
@@ -515,6 +543,7 @@
       price_payable = #{pricePayable,jdbcType=DECIMAL},
       price_discount = #{priceDiscount,jdbcType=DECIMAL},
       price_paid = #{pricePaid,jdbcType=DECIMAL},
+      price_paid_source = #{pricePaidSource,jdbcType=TINYINT},
       platform_profit = #{platformProfit,jdbcType=DECIMAL},
       lecturer_profit = #{lecturerProfit,jdbcType=DECIMAL},
       trade_type = #{tradeType,jdbcType=TINYINT},
@@ -523,6 +552,7 @@
       order_status = #{orderStatus,jdbcType=TINYINT},
       is_show_lecturer = #{isShowLecturer,jdbcType=TINYINT},
       is_show_user = #{isShowUser,jdbcType=TINYINT},
+      shipping_address_id = #{shippingAddressId,jdbcType=BIGINT},
       remark_cus = #{remarkCus,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       pay_time = #{payTime,jdbcType=TIMESTAMP}

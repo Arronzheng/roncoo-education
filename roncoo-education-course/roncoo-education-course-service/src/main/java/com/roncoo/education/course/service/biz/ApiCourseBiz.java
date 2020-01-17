@@ -6,6 +6,7 @@ import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
 import com.roncoo.education.course.service.dao.*;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.user.feign.IBossUserExt;
+import com.roncoo.education.util.enums.AuditStatusEnum;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -149,6 +150,7 @@ public class ApiCourseBiz {
 		CourseAuditExample.Criteria c = example.createCriteria();
 		c.andStatusIdEqualTo(StatusIdEnum.YES.getCode());
 		c.andIsPutawayEqualTo(IsPutawayEnum.YES.getCode());
+		c.andAuditStatusEqualTo(AuditStatusEnum.SUCCESS.getCode());
 		if (!StringUtils.isEmpty(courseInfoPageBO.getCategoryId1())) {
 			c.andCategoryId1EqualTo(courseInfoPageBO.getCategoryId1());
 		}
@@ -160,6 +162,9 @@ public class ApiCourseBiz {
 		}
 		if (!StringUtils.isEmpty(courseInfoPageBO.getIsFree())) {
 			c.andIsFreeEqualTo(courseInfoPageBO.getIsFree());
+		}
+		if (!StringUtils.isEmpty(courseInfoPageBO.getIsVipFree())) {
+			c.andIsVipFreeEqualTo(courseInfoPageBO.getIsVipFree());
 		}
 		if (!StringUtils.isEmpty(courseInfoPageBO.getCourseName())) {
 			c.andCourseNameLike(PageUtil.rightLike(SqlUtil.checkSql(courseInfoPageBO.getCourseName())));

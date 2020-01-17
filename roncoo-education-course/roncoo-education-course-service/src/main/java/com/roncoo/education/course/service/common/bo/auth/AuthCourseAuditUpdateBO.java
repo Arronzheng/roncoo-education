@@ -64,6 +64,16 @@ public class AuthCourseAuditUpdateBO implements Serializable {
 	@ApiModelProperty(value = "原价", required = true)
 	private BigDecimal courseOriginal;
 	/**
+	 * 会员价
+	 */
+	@ApiModelProperty(value = "会员价", required = false)
+	private BigDecimal courseSvipDiscount;
+	/**
+	 * 拼团价
+	 */
+	@ApiModelProperty(value = "拼团价", required = false)
+	private BigDecimal courseAssembleDiscount;
+	/**
      * 用户编号
      */
 	@ApiModelProperty(value = "用户编号", required = true)

@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education;
 
 import org.springframework.boot.SpringApplication;
@@ -12,8 +9,7 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 
 /**
  * 课程服务
- * 
- * @author wujing
+ *
  */
 @EnableSwagger2Doc
 @EnableFeignClients

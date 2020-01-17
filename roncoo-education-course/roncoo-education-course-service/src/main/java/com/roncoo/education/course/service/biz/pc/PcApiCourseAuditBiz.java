@@ -289,10 +289,10 @@ public class PcApiCourseAuditBiz {
 		// 根据课程ID查询课时信息集合
 		List<CourseChapterPeriodAudit> periodAuditList = courseChapterPeriodAuditDao.listByCourseId(courseAudit.getId());
 
-		Course course = courseDao.getById(courseAudit.getId());
+//		Course course = courseDao.getById(courseAudit.getId());
 		// 1、对课程操作
 		// 如果课程信息表里面有数据就进行更新
-		if (ObjectUtil.isNotNull(course)) {
+		/*if (ObjectUtil.isNotNull(course)) {
 			course = BeanUtil.copyProperties(courseAudit, Course.class);
 			course.setGmtCreate(null);
 			course.setGmtModified(null);
@@ -316,7 +316,7 @@ public class PcApiCourseAuditBiz {
 				info.setPeriodTotal(periodAuditList.size());
 			}
 			courseDao.save(info);
-		}
+		}*/
 
 		// 2、对课程简介操作
 		CourseIntroduceAudit courseIntroduceAudit = courseIntroduceAuditDao.getById(courseAudit.getIntroduceId());
@@ -339,6 +339,12 @@ public class PcApiCourseAuditBiz {
 
 		// 更改课程审核状态
 		CourseAudit audit = BeanUtil.copyProperties(req, CourseAudit.class);
+		// 设置总课时数
+		if (CollectionUtils.isEmpty(periodAuditList)) {
+			audit.setPeriodTotal(0);
+		} else {
+			audit.setPeriodTotal(periodAuditList.size());
+		}
 		int resultNum = dao.updateById(audit);
 		if (resultNum < 0) {
 			return Result.error(ResultEnum.COURSE_AUDIT_FAIL);

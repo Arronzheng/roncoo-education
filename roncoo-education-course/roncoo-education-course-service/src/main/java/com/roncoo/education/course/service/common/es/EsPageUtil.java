@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.common.es;
 
 import java.io.Serializable;
@@ -17,7 +14,7 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 分页
- * 
+ *
  * @author wujing
  * @param <T>
  */

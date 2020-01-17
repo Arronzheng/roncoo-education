@@ -3,6 +3,9 @@ package com.roncoo.education.user.service.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.roncoo.education.user.service.common.req.UserExtPageREQ;
+import com.roncoo.education.user.service.common.resq.UserExtPageRESQ;
+import com.roncoo.education.util.tools.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -47,14 +50,34 @@ public class UserExtDaoImpl implements UserExtDao {
 	}
 
 	@Override
-	public Page<UserExt> listForPage(int pageCurrent, int pageSize, UserExtExample example) {
+	public Page<UserExtPageRESQ> listForPage(UserExtPageREQ req) {
+		UserExtExample example = new UserExtExample();
+		Criteria c = example.createCriteria();
+		if (StringUtils.hasText(req.getMobile())) {
+			c.andMobileLike(PageUtil.rightLike(req.getMobile()));
+		}
+		if (StringUtils.hasText(req.getNickname())) {
+			c.andNicknameLike(PageUtil.like(req.getNickname()));
+		}
+		if (req.getStatusId() != null) {
+			c.andStatusIdEqualTo(req.getStatusId());
+		}
+		if (StringUtils.hasText(req.getBeginGmtCreate())) {
+			req.setBeginGmtCreate(DateUtil.formatDate(DateUtil.addDate(DateUtil.parseDate(req.getBeginGmtCreate(), "yyyy-MM-dd"),1)));
+			c.andGmtCreateGreaterThanOrEqualTo(DateUtil.parseDate(req.getBeginGmtCreate()));
+		}
+		if (StringUtils.hasText(req.getEndGmtCreate())) {
+			req.setEndGmtCreate(DateUtil.formatDate(DateUtil.addDate(DateUtil.parseDate(req.getEndGmtCreate(), "yyyy-MM-dd"), 1)));
+			c.andGmtCreateLessThanOrEqualTo(DateUtil.parseDate(req.getEndGmtCreate()));
+		}
+		example.setOrderByClause(" status_id desc, id desc ");
 		int count = this.userExtMapper.countByExample(example);
-		pageSize = PageUtil.checkPageSize(pageSize);
-		pageCurrent = PageUtil.checkPageCurrent(count, pageSize, pageCurrent);
-		int totalPage = PageUtil.countTotalPage(count, pageSize);
-		example.setLimitStart(PageUtil.countOffset(pageCurrent, pageSize));
-		example.setPageSize(pageSize);
-		return new Page<UserExt>(count, totalPage, pageCurrent, pageSize, this.userExtMapper.selectByExample(example));
+		int pageSize = PageUtil.checkPageSize(req.getPageSize());
+		int pageCurrent = PageUtil.checkPageCurrent(count, req.getPageSize(), req.getPageCurrent());
+		int totalPage = PageUtil.countTotalPage(count, req.getPageSize());
+		req.setLimitStart(PageUtil.countOffset(pageCurrent, pageSize));
+		List<UserExtPageRESQ> userRESQ = this.userExtMapper.selectUnionSvip(req);
+		return new Page<UserExtPageRESQ>(count, totalPage, pageCurrent, pageSize, userRESQ);
 	}
 
 	@Override

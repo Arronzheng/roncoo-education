@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.pay;
 
 import java.util.Map;
@@ -10,7 +7,7 @@ import org.springframework.util.StringUtils;
 import com.roncoo.education.util.tools.MD5Util;
 
 /**
- * 
+ *
  * @author forest
  */
 public final class MerchantApiUtil {
@@ -20,7 +17,7 @@ public final class MerchantApiUtil {
 
     /**
      * 获取参数签名
-     * 
+     *
      * @param paramMap
      *            签名参数
      * @param paySecret
@@ -48,7 +45,7 @@ public final class MerchantApiUtil {
 
     /**
      * 获取参数拼接串
-     * 
+     *
      * @param paramMap
      * @return
      */
@@ -65,7 +62,7 @@ public final class MerchantApiUtil {
 
     /**
      * 验证商户签名
-     * 
+     *
      * @param paramMap
      *            签名参数
      * @param paySecret

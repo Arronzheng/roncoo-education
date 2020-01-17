@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.user.common.bean.vo;
 
 import java.io.Serializable;
@@ -23,7 +20,7 @@ public class UserExtMsgVO implements Serializable {
 	 * 用户编号
 	 */
 	private Long userNo;
-	
+
 	/**
 	 * 用户手机
 	 */

@@ -84,6 +84,11 @@ public class OrderInfoPageREQ implements Serializable {
 	@ApiModelProperty(value = "订单状态：1待支付，2成功支付，3支付失败，4已关闭，5已退款，6订单解绑", required = false)
 	private Integer orderStatus;
 	/**
+	 * 实付金额来源：0原价，1会员价，2拼团价，3砍价
+	 */
+	@ApiModelProperty(value = "实付金额来源：0原价，1会员价，2拼团价，3砍价", required = false)
+	private Integer pricePaidSource;
+	/**
 	 * 支付开始时间
 	 */
 	@ApiModelProperty(value = "支付开始时间", required = false)

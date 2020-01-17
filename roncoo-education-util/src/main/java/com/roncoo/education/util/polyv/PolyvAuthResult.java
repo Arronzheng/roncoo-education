@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.polyv;
 
 import java.io.Serializable;
@@ -63,7 +60,7 @@ public class PolyvAuthResult implements Serializable {
 
 	// 是否显示跑马灯，默认为否=off
 	private String show = "on";
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public Integer getStatus() {

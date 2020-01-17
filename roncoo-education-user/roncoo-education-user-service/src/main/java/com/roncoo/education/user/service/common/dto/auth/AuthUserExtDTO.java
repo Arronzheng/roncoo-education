@@ -1,10 +1,13 @@
 package com.roncoo.education.user.service.common.dto.auth;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.roncoo.education.course.common.bean.vo.CourseUserCollectionVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -32,6 +35,11 @@ public class AuthUserExtDTO implements Serializable {
    	@ApiModelProperty(value = "用户编号")
    	@JsonSerialize(using = ToStringSerializer.class)
     private Long userNo;
+	/**
+	 * 微信openId
+	 */
+	@ApiModelProperty(value = "微信openId")
+   	private String openId;
     /**
    	 * 用户类型
    	 */
@@ -67,4 +75,9 @@ public class AuthUserExtDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "备注")
     private String remark;
+	/**
+	 * 是否是VIP 0：否，1：是
+	 */
+	@ApiModelProperty(value = "是否是VIP 0：否，1：是")
+	private Integer isVip;
 }

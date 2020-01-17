@@ -1,6 +1,7 @@
 package com.roncoo.education.system.service.common.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -126,6 +127,11 @@ public class WebsiteDTO implements Serializable {
     @ApiModelProperty(value = "客服信息2")
     private String service2;
     /**
+     * 是否开启vip
+     */
+    @ApiModelProperty(value = "是否开启vip")
+    private Integer isEnableVip;
+    /**
      * logoImg
      */
     @ApiModelProperty(value = "logoImg")
@@ -155,4 +161,9 @@ public class WebsiteDTO implements Serializable {
      */
     @ApiModelProperty(value = "入驻协议")
     private String entryAgreement;
+    /**
+     * 会员价格
+     */
+    @ApiModelProperty(value = "会员价格")
+    private BigDecimal vipPrice;
 }

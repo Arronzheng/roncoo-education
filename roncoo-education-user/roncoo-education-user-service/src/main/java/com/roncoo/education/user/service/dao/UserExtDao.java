@@ -1,5 +1,7 @@
 package com.roncoo.education.user.service.dao;
 
+import com.roncoo.education.user.service.common.req.UserExtPageREQ;
+import com.roncoo.education.user.service.common.resq.UserExtPageRESQ;
 import com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt;
 import com.roncoo.education.user.service.dao.impl.mapper.entity.UserExtExample;
 import com.roncoo.education.util.base.Page;
@@ -13,7 +15,7 @@ public interface UserExtDao {
 
 	UserExt getById(Long id);
 
-	Page<UserExt> listForPage(int pageCurrent, int pageSize, UserExtExample example);
+	Page<UserExtPageRESQ> listForPage(UserExtPageREQ req);
 
 	UserExt getByUserNo(Long userNo);
 
@@ -36,5 +38,4 @@ public interface UserExtDao {
 	 * @author wuyun
 	 */
 	Integer sumByCountOrders(String date);
-
 }

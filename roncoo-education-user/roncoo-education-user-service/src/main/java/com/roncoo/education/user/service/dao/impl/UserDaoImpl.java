@@ -82,4 +82,22 @@ public class UserDaoImpl extends AbstractBaseJdbc implements UserDao {
 		}
 		return queryForPage(sql.toString(), pageCurrent, pageSize, UserExtMsgVO.class);
 	}
+
+	@Override
+	public User findByopenid(String openId) {
+		UserExample example = new UserExample();
+		example.createCriteria().andOpenIdEqualTo(openId);
+		List<User> list = this.userMapper.selectByExample(example);
+		if (list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
+	}
+
+	@Override
+	public int updateByUserNo(User user) {
+		UserExample example = new UserExample();
+		example.createCriteria().andUserNoEqualTo(user.getUserNo());
+		return this.userMapper.updateByExampleSelective(user, example);
+	}
 }

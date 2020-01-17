@@ -996,6 +996,66 @@ public class OrderInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andPricePaidSourceIsNull() {
+            addCriterion("price_paid_source is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceIsNotNull() {
+            addCriterion("price_paid_source is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceEqualTo(Integer value) {
+            addCriterion("price_paid_source =", value, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceNotEqualTo(Integer value) {
+            addCriterion("price_paid_source <>", value, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceGreaterThan(Integer value) {
+            addCriterion("price_paid_source >", value, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("price_paid_source >=", value, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceLessThan(Integer value) {
+            addCriterion("price_paid_source <", value, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceLessThanOrEqualTo(Integer value) {
+            addCriterion("price_paid_source <=", value, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceIn(List<Integer> values) {
+            addCriterion("price_paid_source in", values, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceNotIn(List<Integer> values) {
+            addCriterion("price_paid_source not in", values, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceBetween(Integer value1, Integer value2) {
+            addCriterion("price_paid_source between", value1, value2, "pricePaidSource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPricePaidSourceNotBetween(Integer value1, Integer value2) {
+            addCriterion("price_paid_source not between", value1, value2, "pricePaidSource");
+            return (Criteria) this;
+        }
+
         public Criteria andPlatformProfitIsNull() {
             addCriterion("platform_profit is null");
             return (Criteria) this;
@@ -1473,6 +1533,66 @@ public class OrderInfoExample {
 
         public Criteria andIsShowUserNotBetween(Integer value1, Integer value2) {
             addCriterion("is_show_user not between", value1, value2, "isShowUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdIsNull() {
+            addCriterion("shipping_address_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdIsNotNull() {
+            addCriterion("shipping_address_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdEqualTo(Long value) {
+            addCriterion("shipping_address_id =", value, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdNotEqualTo(Long value) {
+            addCriterion("shipping_address_id <>", value, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdGreaterThan(Long value) {
+            addCriterion("shipping_address_id >", value, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("shipping_address_id >=", value, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdLessThan(Long value) {
+            addCriterion("shipping_address_id <", value, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdLessThanOrEqualTo(Long value) {
+            addCriterion("shipping_address_id <=", value, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdIn(List<Long> values) {
+            addCriterion("shipping_address_id in", values, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdNotIn(List<Long> values) {
+            addCriterion("shipping_address_id not in", values, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdBetween(Long value1, Long value2) {
+            addCriterion("shipping_address_id between", value1, value2, "shippingAddressId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShippingAddressIdNotBetween(Long value1, Long value2) {
+            addCriterion("shipping_address_id not between", value1, value2, "shippingAddressId");
             return (Criteria) this;
         }
 

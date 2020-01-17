@@ -14,6 +14,8 @@ public class User implements Serializable {
 
     private Long userNo;
 
+    private String openId;
+
     private String mobile;
 
     private String mobileSalt;
@@ -64,6 +66,14 @@ public class User implements Serializable {
         this.userNo = userNo;
     }
 
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
     public String getMobile() {
         return mobile;
     }
@@ -107,6 +117,7 @@ public class User implements Serializable {
         sb.append(", gmtModified=").append(gmtModified);
         sb.append(", statusId=").append(statusId);
         sb.append(", userNo=").append(userNo);
+        sb.append(", openId=").append(openId);
         sb.append(", mobile=").append(mobile);
         sb.append(", mobileSalt=").append(mobileSalt);
         sb.append(", mobilePsw=").append(mobilePsw);

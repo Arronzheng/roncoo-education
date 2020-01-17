@@ -4,6 +4,8 @@ import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAuditExample;
 import com.roncoo.education.util.base.Page;
 
+import java.util.List;
+
 public interface CourseAuditDao {
 	int save(CourseAudit record);
 
@@ -24,4 +26,10 @@ public interface CourseAuditDao {
 	 * @author WY
 	 */
 	int updateAuditStatusBycourseId(Integer auditStatus, Long courseId);
+
+    CourseAudit getByCourseName(String courseName);
+
+	List<CourseAudit> listByCategoryId(Long courseId);
+
+	CourseAudit getByCourseIdAndStatusId(Long courseId, Integer code);
 }

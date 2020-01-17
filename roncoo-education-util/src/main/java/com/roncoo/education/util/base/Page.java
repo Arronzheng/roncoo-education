@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.base;
 
 import java.io.Serializable;
@@ -8,7 +5,7 @@ import java.util.List;
 
 /**
  * 分页
- * 
+ *
  * @author wujing
  * @param <T>
  */
@@ -48,7 +45,7 @@ public class Page<T extends Serializable> implements Serializable {
 
 	/**
 	 * 构造函数
-	 * 
+	 *
 	 * @param totalCount
 	 *            总记录数
 	 * @param totalPage

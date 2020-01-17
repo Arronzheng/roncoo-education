@@ -1,5 +1,6 @@
 package com.roncoo.education.course.service.api.auth;
 
+import com.roncoo.education.course.service.common.bo.auth.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.abel533.echarts.Option;
 import com.roncoo.education.course.service.biz.auth.AuthApiOrderInfoBiz;
 import com.roncoo.education.course.service.common.bo.OrderInfoCloseBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoContinuePayBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoForChartsBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoListBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoViewBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderPayBO;
 import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoListDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoListForLecturerDTO;
@@ -75,7 +71,7 @@ public class AuthApiOrderInfoController extends BaseController {
 	/**
 	 * 订单详情信息接口
 	 * 
-	 * @param infoBO
+	 * @param authOrderInfoViewBO
 	 * @return
 	 */
 	@ApiOperation(value = "订单详情信息接口", notes = "订单详情信息接口")
@@ -85,9 +81,21 @@ public class AuthApiOrderInfoController extends BaseController {
 	}
 
 	/**
+	 * 补充订单地址接口
+	 *
+	 * @param authOrderInfoUpdateBO
+	 * @return
+	 */
+	@ApiOperation(value = "补充订单地址接口", notes = "补充订单地址接口")
+	@RequestMapping(value = "/complete", method = RequestMethod.POST)
+	public Result<Integer> completeOrderSite(@RequestBody AuthOrderInfoUpdateBO authOrderInfoUpdateBO){
+		return biz.completeOrderSite(authOrderInfoUpdateBO);
+	}
+
+	/**
 	 * 讲师订单收益列表
 	 *
-	 * @param infoBO
+	 * @param authOrderInfoListBO
 	 * @return
 	 */
 	@ApiOperation(value = "讲师订单收益列表接口", notes = "讲师订单收益列表接口")
@@ -99,7 +107,7 @@ public class AuthApiOrderInfoController extends BaseController {
 	/**
 	 * 讲师收益折线图
 	 * 
-	 * @param bo
+	 * @param authOrderInfoForChartsBO
 	 * @return
 	 */
 	@ApiOperation(value = "讲师收益折线图", notes = "讲师收益折线图")

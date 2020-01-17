@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.api.callback;
 
 import java.util.HashMap;
@@ -42,7 +39,7 @@ public class CallbackOrderController extends BaseController {
 
 	/**
 	 * 龙果支付回调
-	 * 
+	 *
 	 * @param CallbackOrderBO
 	 * @return
 	 */

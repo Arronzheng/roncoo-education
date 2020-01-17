@@ -3,6 +3,8 @@ package com.roncoo.education.user.service.controller.biz;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.roncoo.education.user.service.common.req.UserExtPageREQ;
+import com.roncoo.education.user.service.common.resq.UserExtPageRESQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -43,22 +45,23 @@ public class BossUserExtBiz extends BaseBiz {
 	private CacheRedis cacheRedis;
 
 	public Page<UserExtVO> listForPage(UserExtQO qo) {
-		UserExtExample example = new UserExtExample();
-		Criteria c = example.createCriteria();
-		if (StringUtils.hasText(qo.getMobile())) {
-			c.andMobileLike(PageUtil.rightLike(qo.getMobile()));
-		}
-		if (!StringUtils.isEmpty(qo.getUserNo())) {
-			c.andUserNoEqualTo(qo.getUserNo());
-		}
-		if (StringUtils.hasText(qo.getBeginGmtCreate())) {
-			c.andGmtCreateGreaterThanOrEqualTo(DateUtil.parseDate(qo.getBeginGmtCreate(), "yyyy-MM-dd"));
-		}
-		if (StringUtils.hasText(qo.getEndGmtCreate())) {
-			c.andGmtCreateLessThanOrEqualTo(DateUtil.addDate(DateUtil.parseDate(qo.getEndGmtCreate(), "yyyy-MM-dd"), 1));
-		}
-		example.setOrderByClause(" status_id desc, id desc ");
-		Page<UserExt> page = dao.listForPage(qo.getPageCurrent(), qo.getPageSize(), example);
+//		UserExtExample example = new UserExtExample();
+//		Criteria c = example.createCriteria();
+//		if (StringUtils.hasText(qo.getMobile())) {
+//			c.andMobileLike(PageUtil.rightLike(qo.getMobile()));
+//		}
+//		if (!StringUtils.isEmpty(qo.getUserNo())) {
+//			c.andUserNoEqualTo(qo.getUserNo());
+//		}
+//		if (StringUtils.hasText(qo.getBeginGmtCreate())) {
+//			c.andGmtCreateGreaterThanOrEqualTo(DateUtil.parseDate(qo.getBeginGmtCreate(), "yyyy-MM-dd"));
+//		}
+//		if (StringUtils.hasText(qo.getEndGmtCreate())) {
+//			c.andGmtCreateLessThanOrEqualTo(DateUtil.addDate(DateUtil.parseDate(qo.getEndGmtCreate(), "yyyy-MM-dd"), 1));
+//		}
+//		example.setOrderByClause(" status_id desc, id desc ");
+		UserExtPageREQ req = BeanUtil.copyProperties(qo, UserExtPageREQ.class);
+		Page<UserExtPageRESQ> page = dao.listForPage(req);
 		return PageUtil.transform(page, UserExtVO.class);
 	}
 

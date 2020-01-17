@@ -1,6 +1,7 @@
 package com.roncoo.education.system.service.common.resq;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -125,6 +126,16 @@ public class WebsiteViewRESQ implements Serializable {
      */
     @ApiModelProperty(value = "客服信息2")
     private String service2;
+    /**
+     * 是否开启vip
+     */
+    @ApiModelProperty(value = "是否开启vip")
+    private Integer isEnableVip;
+    /**
+     * 会员价格
+     */
+    @ApiModelProperty(value = "会员价格")
+    private BigDecimal vipPrice;
     /**
      * logoImg
      */

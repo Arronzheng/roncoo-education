@@ -884,6 +884,61 @@ public class UserExtExample {
             addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
+
+        public Criteria andIsVipIsNull() {
+            addCriterion("is_vip is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipIsNotNull() {
+            addCriterion("is_vip is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipEqualTo(Integer value) {
+            addCriterion("is_vip =", value, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipNotEqualTo(Integer value) {
+            addCriterion("is_vip <>", value, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipGreaterThan(Integer value) {
+            addCriterion("is_vip >", value, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_vip >=", value, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipLessThan(Integer value) {
+            addCriterion("is_vip <", value, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipLessThanOrEqualTo(Integer value) {
+            addCriterion("is_vip <=", value, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipIn(List<Integer> values) {
+            addCriterion("is_vip in", values, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipNotIn(List<Integer> values) {
+            addCriterion("is_vip not in", values, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipBetween(Integer value1, Integer value2) {
+            addCriterion("is_vip between", value1, value2, "isVip");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

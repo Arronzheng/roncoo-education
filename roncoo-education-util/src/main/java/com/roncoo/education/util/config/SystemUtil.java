@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.config;
 
 import java.io.IOException;
@@ -61,4 +58,11 @@ public final class SystemUtil {
 	public static final String DOC_STORAGE_PATH = getProperty("doc_storage_path");
 	public static final String PIC_STORAGE_PATH = getProperty("pic_storage_path");
 	public static final String VIDEO_STORAGE_PATH = getProperty("video_storage_path");
+
+	//微信登录配置
+	public static final String APP_ID = getProperty("app_id");
+	public static final String APP_SECRET = getProperty("app_secret");
+	public static final String ACCESS_TOKEN_URL = getProperty("access_token_url");
+	public static final String USER_INFO_URL = getProperty("user_info_url");
+	public static final String REDIRECT_URI = getProperty("redirect_uri");
 }

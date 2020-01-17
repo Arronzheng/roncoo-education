@@ -2,14 +2,18 @@ package com.roncoo.education.course.service.dao.impl;
 
 import com.roncoo.education.course.service.dao.CourseAuditDao;
 import com.roncoo.education.course.service.dao.impl.mapper.CourseAuditMapper;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAuditExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAuditExample.Criteria;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseExample;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class CourseAuditDaoImpl implements CourseAuditDao {
@@ -57,4 +61,38 @@ public class CourseAuditDaoImpl implements CourseAuditDao {
 		record.setGmtModified(null);
 		return this.courseAuditMapper.updateByExampleSelective(record, example);
 	}
+
+    @Override
+    public CourseAudit getByCourseName(String courseName) {
+        CourseAuditExample example = new CourseAuditExample();
+        CourseAuditExample.Criteria c = example.createCriteria();
+        c.andCourseNameLike(PageUtil.rightLike(courseName));
+        List<CourseAudit> courseAuditList =  this.courseAuditMapper.selectByExample(example);
+        if (courseAuditList.isEmpty()) {
+            return null;
+        }
+        return courseAuditList.get(0);
+    }
+
+    @Override
+    public List<CourseAudit> listByCategoryId(Long courseId) {
+        CourseAuditExample example = new CourseAuditExample();
+        Criteria c = example.createCriteria();
+        c.andIdEqualTo(courseId);
+        List<CourseAudit> list = this.courseAuditMapper.selectByExample(example);
+        return list;
+    }
+
+    @Override
+    public CourseAudit getByCourseIdAndStatusId(Long courseId, Integer StatusId) {
+        CourseAuditExample example = new CourseAuditExample();
+        Criteria c = example.createCriteria();
+        c.andIdEqualTo(courseId);
+        c.andStatusIdEqualTo(StatusId);
+        List<CourseAudit> list = this.courseAuditMapper.selectByExample(example);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
 }

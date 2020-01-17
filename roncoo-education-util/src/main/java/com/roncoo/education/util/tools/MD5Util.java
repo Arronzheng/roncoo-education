@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 import java.io.UnsupportedEncodingException;
@@ -24,7 +21,7 @@ public final class MD5Util {
 
     /**
      * 对字符串进行MD5加密， 默认使用UTF-8
-     * 
+     *
      * @param text
      *            明文
      * @return 密文
@@ -43,7 +40,7 @@ public final class MD5Util {
 
     /**
      * 对字符串进行MD5加密， 默认使用UTF-8
-     * 
+     *
      * @param text
      *            明文
      * @return 密文
@@ -54,7 +51,7 @@ public final class MD5Util {
 
     /**
      * 对字符串进行MD5加密
-     * 
+     *
      * @param text
      *            明文
      * @param charsetName

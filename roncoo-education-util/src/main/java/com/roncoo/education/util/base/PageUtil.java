@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.base;
 
 import java.io.Serializable;
@@ -17,7 +14,7 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 分页
- * 
+ *
  * @author wujing
  * @param <T>
  */
@@ -81,7 +78,7 @@ public final class PageUtil<T extends Serializable> implements Serializable {
 
 	/**
 	 * 检测sql，防止sql注入
-	 * 
+	 *
 	 * @param sql
 	 *            sql
 	 * @return 正常返回sql；异常返回""
@@ -230,7 +227,7 @@ public final class PageUtil<T extends Serializable> implements Serializable {
 
 	/**
 	 * 模糊查询
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -240,7 +237,7 @@ public final class PageUtil<T extends Serializable> implements Serializable {
 
 	/**
 	 * 模糊查询
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */

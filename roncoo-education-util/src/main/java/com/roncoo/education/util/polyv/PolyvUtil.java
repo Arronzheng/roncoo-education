@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.polyv;
 
 import java.io.File;
@@ -61,7 +58,7 @@ public final class PolyvUtil {
 
 	/**
 	 * 获取code
-	 * 
+	 *
 	 * @param polyvCode
 	 * @return
 	 */
@@ -78,7 +75,7 @@ public final class PolyvUtil {
 
 	/**
 	 * code解密
-	 * 
+	 *
 	 * @param code
 	 * @return
 	 */
@@ -266,7 +263,7 @@ public final class PolyvUtil {
 
 	/**
 	 * 获取sign
-	 * 
+	 *
 	 * @param paramMap
 	 * @return
 	 */

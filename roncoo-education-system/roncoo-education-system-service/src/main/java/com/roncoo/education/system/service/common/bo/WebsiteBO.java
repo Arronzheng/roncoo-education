@@ -93,4 +93,8 @@ public class WebsiteBO implements Serializable {
      * 客服信息5
      */
     private String service5;
+    /**
+     * 是否开启vip
+     */
+    private Integer isEnableVip;
 }

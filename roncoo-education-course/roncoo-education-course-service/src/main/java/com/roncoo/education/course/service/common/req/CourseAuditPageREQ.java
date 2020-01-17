@@ -53,6 +53,16 @@ public class CourseAuditPageREQ implements Serializable {
 	@ApiModelProperty(value = "是否免费：1免费，0收费", required = false)
 	private Integer isFree;
 	/**
+	 * 是否vip免费：1免费，0收费
+	 */
+	@ApiModelProperty(value = "是否免费：1免费，0收费")
+	private Integer isVipFree;
+	/**
+	 * 是否只有vip能买：1是，0否
+	 */
+	@ApiModelProperty(value = "是否只有vip能买：1是，0否")
+	private Integer isOnlyVipBuy;
+	/**
 	 * 审核状态(0:待审核,1:审核通过,2:审核不通过)
 	 */
 	@ApiModelProperty(value = "审核状态(0:待审核,1:审核通过,2:审核不通过)", required = false)

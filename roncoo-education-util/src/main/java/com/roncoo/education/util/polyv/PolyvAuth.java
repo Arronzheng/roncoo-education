@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.polyv;
 
 import java.io.Serializable;
@@ -46,7 +43,7 @@ public class PolyvAuth implements Serializable {
 	public void setCallback(String callback) {
 		this.callback = callback;
 	}
-	
+
 	public String getSecretkey() {
 		return secretkey;
 	}

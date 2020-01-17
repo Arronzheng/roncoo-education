@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.polyv;
 
 import java.io.Serializable;
@@ -12,7 +9,7 @@ public class PolyvVideo implements Serializable {
 	private String sign;
 
 	private String type;
-	
+
 	private String secretkey;
 
 	private static final long serialVersionUID = 1L;
@@ -44,7 +41,7 @@ public class PolyvVideo implements Serializable {
 	public String getSecretkey() {
 		return secretkey;
 	}
-	
+
 	public void setSecretkey(String secretkey) {
 		this.secretkey = secretkey;
 	}

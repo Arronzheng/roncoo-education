@@ -28,6 +28,8 @@ public class UserExt implements Serializable {
 
     private String remark;
 
+    private Integer isVip;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -126,6 +128,14 @@ public class UserExt implements Serializable {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    public Integer getIsVip() {
+        return isVip;
+    }
+
+    public void setIsVip(Integer isVip) {
+        this.isVip = isVip;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -144,6 +154,7 @@ public class UserExt implements Serializable {
         sb.append(", nickname=").append(nickname);
         sb.append(", headImgUrl=").append(headImgUrl);
         sb.append(", remark=").append(remark);
+        sb.append(", isVip=").append(isVip);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

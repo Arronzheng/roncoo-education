@@ -33,6 +33,8 @@ public class OrderInfo implements Serializable {
 
     private BigDecimal pricePaid;
 
+    private Integer pricePaidSource;
+
     private BigDecimal platformProfit;
 
     private BigDecimal lecturerProfit;
@@ -48,6 +50,8 @@ public class OrderInfo implements Serializable {
     private Integer isShowLecturer;
 
     private Integer isShowUser;
+
+    private Long shippingAddressId;
 
     private String remarkCus;
 
@@ -165,6 +169,14 @@ public class OrderInfo implements Serializable {
         return pricePaid;
     }
 
+    public void setPricePaidSource(Integer pricePaidSource) {
+        this.pricePaidSource = pricePaidSource;
+    }
+
+    public Integer getPricePaidSource() {
+        return pricePaidSource;
+    }
+
     public void setPricePaid(BigDecimal pricePaid) {
         this.pricePaid = pricePaid;
     }
@@ -233,6 +245,14 @@ public class OrderInfo implements Serializable {
         this.isShowUser = isShowUser;
     }
 
+    public Long getShippingAddressId() {
+        return shippingAddressId;
+    }
+
+    public void setShippingAddressId(Long shippingAddressId) {
+        this.shippingAddressId = shippingAddressId;
+    }
+
     public String getRemarkCus() {
         return remarkCus;
     }
@@ -277,6 +297,7 @@ public class OrderInfo implements Serializable {
         sb.append(", pricePayable=").append(pricePayable);
         sb.append(", priceDiscount=").append(priceDiscount);
         sb.append(", pricePaid=").append(pricePaid);
+        sb.append(", pricePaidSource=").append(pricePaidSource);
         sb.append(", platformProfit=").append(platformProfit);
         sb.append(", lecturerProfit=").append(lecturerProfit);
         sb.append(", tradeType=").append(tradeType);
@@ -285,6 +306,7 @@ public class OrderInfo implements Serializable {
         sb.append(", orderStatus=").append(orderStatus);
         sb.append(", isShowLecturer=").append(isShowLecturer);
         sb.append(", isShowUser=").append(isShowUser);
+        sb.append(", shippingAddressId=").append(shippingAddressId);
         sb.append(", remarkCus=").append(remarkCus);
         sb.append(", remark=").append(remark);
         sb.append(", payTime=").append(payTime);

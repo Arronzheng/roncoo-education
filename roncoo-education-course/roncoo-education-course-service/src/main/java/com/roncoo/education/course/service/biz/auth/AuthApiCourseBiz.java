@@ -1,6 +1,7 @@
 package com.roncoo.education.course.service.biz.auth;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
@@ -243,6 +244,16 @@ public class AuthApiCourseBiz extends BaseBiz {
 				e.printStackTrace();
 			}
 		}
+		// 章节信息
+		CourseChapterAudit courseChapterAudit = courseChapterAuditDao.getById(courseChapterPeriodAudit.getChapterId());
+		if (ObjectUtil.isNull(courseChapterAudit)) {
+			return Result.error("找不到章节信息");
+		}
+		// 课程信息
+		CourseAudit courseAudit = courseAuditDao.getById(courseChapterPeriodAudit.getCourseId());
+		if (StringUtils.isEmpty(courseAudit)) {
+			return Result.error("找不到课程信息");
+		}
 		AuthCourseSignDTO dto = new AuthCourseSignDTO();
 		List<String> urls = new ArrayList<String>();
 		String suffix = courseChapterPeriodAudit.getVideoName().substring(courseChapterPeriodAudit.getVideoName().lastIndexOf("."));
@@ -251,6 +262,19 @@ public class AuthApiCourseBiz extends BaseBiz {
 		urls.add(HD);
 		urls.add(FHD);
 		dto.setUrl(urls);
+		// 免费：课时免费，章节免费，课程免费
+		if (IsFreeEnum.FREE.getCode().equals(courseChapterPeriodAudit.getIsFree()) || IsFreeEnum.FREE.getCode().equals(courseChapterAudit.getIsFree()) || IsFreeEnum.FREE.getCode().equals(courseAudit.getIsFree())) {
+//			AuthCourseSignDTO authCourseSignDTO = getSgin(authCourseSignBO);
+			callbackExecutor.execute(new StudyLog(authCourseSignBO, courseChapterPeriodAudit, courseAudit, courseChapterAudit));
+			return Result.success(dto);
+		}
+
+		// 收费：订单是否存在并且判断订单是否支付成功
+		OrderInfo orderInfo = orderInfoDao.getByUserNoAndCourseId(authCourseSignBO.getUserNo(), courseChapterPeriodAudit.getCourseId());
+		if (orderInfo == null || !OrderStatusEnum.SUCCESS.getCode().equals(orderInfo.getOrderStatus())) {
+			return Result.error("收费课程，请先购买");
+		}
+		callbackExecutor.execute(new StudyLog(authCourseSignBO, courseChapterPeriodAudit, courseAudit, courseChapterAudit));
 		return Result.success(dto);
 	}
 
@@ -325,6 +349,8 @@ public class AuthApiCourseBiz extends BaseBiz {
 					courseUserStudy.setPeriodStudy(courseUserStudy.getPeriodStudy() + 1);
 					courseUserStudyDao.updateById(courseUserStudy);
 				} else {
+					courseUserStudyLog.setGmtCreate(new Date());
+					courseUserStudyLogDao.updateById(courseUserStudyLog);
 					courseUserStudy.setPeriodTotal(courseAudit.getPeriodTotal());
 					courseUserStudy.setPeriodStudy(courseUserStudy.getPeriodStudy() + 1);
 					courseUserStudyDao.updateById(courseUserStudy);

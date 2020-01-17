@@ -147,7 +147,7 @@ public class OrderInfoDaoImpl implements OrderInfoDao {
 	@Override
 	public OrderInfo getByUserNoAndCourseIdAndOrderStatus(Long userNo, Long courseId) {
 		OrderInfoExample example = new OrderInfoExample();
-		example.createCriteria().andUserNoEqualTo(userNo).andCourseIdEqualTo(courseId).andOrderStatusNotEqualTo(4);
+		example.createCriteria().andUserNoEqualTo(userNo).andCourseIdEqualTo(courseId).andOrderStatusBetween(OrderStatusEnum.WAIT.getCode(),OrderStatusEnum.SUCCESS.getCode());
 		example.setOrderByClause(" id desc ");
 		List<OrderInfo> list = this.orderInfoMapper.selectByExample(example);
 		if (list.isEmpty()) {

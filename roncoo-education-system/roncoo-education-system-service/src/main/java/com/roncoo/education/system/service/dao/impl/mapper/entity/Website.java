@@ -1,6 +1,7 @@
 package com.roncoo.education.system.service.dao.impl.mapper.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Website implements Serializable {
@@ -45,6 +46,10 @@ public class Website implements Serializable {
     private String service1;
 
     private String service2;
+
+    private Integer isEnableVip;
+
+    private BigDecimal vipPrice;
 
     private String userAgreement;
 
@@ -224,6 +229,22 @@ public class Website implements Serializable {
         this.service2 = service2 == null ? null : service2.trim();
     }
 
+    public Integer getIsEnableVip() {
+        return isEnableVip;
+    }
+
+    public void setIsEnableVip(Integer isEnableVip) {
+        this.isEnableVip = isEnableVip;
+    }
+
+    public BigDecimal getVipPrice() {
+        return vipPrice;
+    }
+
+    public void setVipPrice(BigDecimal vipPrice) {
+        this.vipPrice = vipPrice;
+    }
+
     public String getUserAgreement() {
         return userAgreement;
     }
@@ -283,6 +304,8 @@ public class Website implements Serializable {
         sb.append(", isShowService=").append(isShowService);
         sb.append(", service1=").append(service1);
         sb.append(", service2=").append(service2);
+        sb.append(", isEnableVip=").append(isEnableVip);
+        sb.append(", vipPrice=").append(vipPrice);
         sb.append(", userAgreement=").append(userAgreement);
         sb.append(", recruitTitle=").append(recruitTitle);
         sb.append(", recruitInfo=").append(recruitInfo);

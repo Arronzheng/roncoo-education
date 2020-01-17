@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 import java.security.MessageDigest;
@@ -31,7 +28,7 @@ public final class SHA1Util {
 
 	/**
 	 * 将字节数组转换为十六进制字符串
-	 * 
+	 *
 	 * @param byteArray
 	 * @return
 	 */
@@ -45,7 +42,7 @@ public final class SHA1Util {
 
 	/**
 	 * 将字节转换为十六进制字符串
-	 * 
+	 *
 	 * @param mByte
 	 * @return
 	 */

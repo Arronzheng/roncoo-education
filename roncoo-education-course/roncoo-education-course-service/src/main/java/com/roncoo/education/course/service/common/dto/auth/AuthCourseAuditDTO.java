@@ -80,6 +80,14 @@ public class AuthCourseAuditDTO implements Serializable {
      */
     private Integer isFree;
     /**
+     * 是否vip免费：1免费，0收费
+     */
+    private Integer isVipFree;
+    /**
+     * 是否只有vip能买：1是，0否
+     */
+    private Integer isOnlyVipBuy;
+    /**
      * 原价
      */
     private BigDecimal courseOriginal;
@@ -87,6 +95,14 @@ public class AuthCourseAuditDTO implements Serializable {
      * 优惠价
      */
     private BigDecimal courseDiscount;
+    /**
+     * 会员价
+     */
+    private BigDecimal courseSvipDiscount;
+    /**
+     * 拼团价
+     */
+    private BigDecimal courseAssembleDiscount;
     /**
      * 是否上架(1:上架，0:下架)
      */

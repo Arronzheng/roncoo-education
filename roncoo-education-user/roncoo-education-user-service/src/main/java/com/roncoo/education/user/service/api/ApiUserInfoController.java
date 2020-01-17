@@ -1,5 +1,6 @@
 package com.roncoo.education.user.service.api;
 
+import com.roncoo.education.user.service.common.dto.UserWXLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,6 +86,15 @@ public class ApiUserInfoController extends BaseController {
 	@RequestMapping(value = "/update/password", method = RequestMethod.POST)
 	public Result<Integer> updatePassword(@RequestBody UserUpdateBO userUpdateBO) {
 		return biz.updatePassword(userUpdateBO);
+	}
+
+	/**
+	 * 获取开放平台appId
+	 */
+	@ApiOperation(value = "用户微信登录接口", notes = "用户微信登录接口")
+	@RequestMapping(value = "/getAppId", method = RequestMethod.POST)
+	public Result<UserWXLoginDTO> getAppId(){
+		return biz.getAppId();
 	}
 
 }

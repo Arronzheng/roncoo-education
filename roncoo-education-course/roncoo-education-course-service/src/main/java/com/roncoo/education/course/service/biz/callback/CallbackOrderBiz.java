@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.biz.callback;
 
 import java.math.BigDecimal;
@@ -51,7 +48,7 @@ public class CallbackOrderBiz extends BaseBiz {
 
 	/**
 	 * 订单异步通知接口
-	 * 
+	 *
 	 * @param orderInfoPayBO
 	 * @return
 	 * @author wuyun
@@ -102,7 +99,7 @@ public class CallbackOrderBiz extends BaseBiz {
 
 	/**
 	 * 课程处理
-	 * 
+	 *
 	 * @param orderInfo
 	 * @param orderPay
 	 * @return
@@ -140,7 +137,7 @@ public class CallbackOrderBiz extends BaseBiz {
 
 		// 更新订单信息
 		orderInfoDao.updateById(orderInfo);
-		
+
 		// 更新订单支付信息
 		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
 		orderPay.setPayTime(new Date());
@@ -151,7 +148,7 @@ public class CallbackOrderBiz extends BaseBiz {
 
 	/**
 	 * 计算处理讲师分润信息
-	 * 
+	 *
 	 * @param orderInfo
 	 * @param lecturerExtVO
 	 * @param lecturerProportion
@@ -172,7 +169,7 @@ public class CallbackOrderBiz extends BaseBiz {
 
 	/**
 	 * 更新讲师账户信息
-	 * 
+	 *
 	 * @param orderInfo
 	 * @param lecturerAccoutVO
 	 * @author wuyun

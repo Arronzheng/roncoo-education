@@ -1525,6 +1525,66 @@ public class WebsiteExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsEnableVipIsNull() {
+            addCriterion("is_enable_vip is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipIsNotNull() {
+            addCriterion("is_enable_vip is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipEqualTo(Integer value) {
+            addCriterion("is_enable_vip =", value, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipNotEqualTo(Integer value) {
+            addCriterion("is_enable_vip <>", value, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipGreaterThan(Integer value) {
+            addCriterion("is_enable_vip >", value, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_enable_vip >=", value, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipLessThan(Integer value) {
+            addCriterion("is_enable_vip <", value, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipLessThanOrEqualTo(Integer value) {
+            addCriterion("is_enable_vip <=", value, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipIn(List<Integer> values) {
+            addCriterion("is_enable_vip in", values, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipNotIn(List<Integer> values) {
+            addCriterion("is_enable_vip not in", values, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipBetween(Integer value1, Integer value2) {
+            addCriterion("is_enable_vip between", value1, value2, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEnableVipNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_enable_vip not between", value1, value2, "isEnableStatistics");
+            return (Criteria) this;
+        }
+
         public Criteria andUserAgreementIsNull() {
             addCriterion("user_agreement is null");
             return (Criteria) this;

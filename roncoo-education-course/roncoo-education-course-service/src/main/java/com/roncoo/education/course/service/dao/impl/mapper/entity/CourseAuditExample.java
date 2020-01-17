@@ -1,11 +1,13 @@
 package com.roncoo.education.course.service.dao.impl.mapper.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CourseAuditExample {
+public class CourseAuditExample implements Serializable {
+
     protected String orderByClause;
 
     protected boolean distinct;
@@ -126,12 +128,12 @@ public class CourseAuditExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andIdIsNull() {
+        public Criteria andIdIsNull(){
             addCriterion("id is null");
             return (Criteria) this;
         }
 
-        public Criteria andIdIsNotNull() {
+        public Criteria andIdIsNotNull(){
             addCriterion("id is not null");
             return (Criteria) this;
         }
@@ -166,6 +168,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andIdIn(List<Long> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
@@ -176,22 +179,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdBetween(Long value1, Long value2) {
-            addCriterion("id between", value1, value2, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdNotBetween(Long value1, Long value2) {
-            addCriterion("id not between", value1, value2, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreateIsNull() {
+        public Criteria andGmtCreateIsNull(){
             addCriterion("gmt_create is null");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreateIsNotNull() {
+        public Criteria andGmtCreateIsNotNull(){
             addCriterion("gmt_create is not null");
             return (Criteria) this;
         }
@@ -226,6 +219,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andGmtCreateIn(List<Date> values) {
             addCriterion("gmt_create in", values, "gmtCreate");
             return (Criteria) this;
@@ -245,13 +239,12 @@ public class CourseAuditExample {
             addCriterion("gmt_create not between", value1, value2, "gmtCreate");
             return (Criteria) this;
         }
-
-        public Criteria andGmtModifiedIsNull() {
+        public Criteria andGmtModifiedIsNull(){
             addCriterion("gmt_modified is null");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedIsNotNull() {
+        public Criteria andGmtModifiedIsNotNull(){
             addCriterion("gmt_modified is not null");
             return (Criteria) this;
         }
@@ -286,6 +279,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andGmtModifiedIn(List<Date> values) {
             addCriterion("gmt_modified in", values, "gmtModified");
             return (Criteria) this;
@@ -305,13 +299,12 @@ public class CourseAuditExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
-
-        public Criteria andStatusIdIsNull() {
+        public Criteria andStatusIdIsNull(){
             addCriterion("status_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIdIsNotNull() {
+        public Criteria andStatusIdIsNotNull(){
             addCriterion("status_id is not null");
             return (Criteria) this;
         }
@@ -346,6 +339,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andStatusIdIn(List<Integer> values) {
             addCriterion("status_id in", values, "statusId");
             return (Criteria) this;
@@ -365,13 +359,12 @@ public class CourseAuditExample {
             addCriterion("status_id not between", value1, value2, "statusId");
             return (Criteria) this;
         }
-
-        public Criteria andSortIsNull() {
+        public Criteria andSortIsNull(){
             addCriterion("sort is null");
             return (Criteria) this;
         }
 
-        public Criteria andSortIsNotNull() {
+        public Criteria andSortIsNotNull(){
             addCriterion("sort is not null");
             return (Criteria) this;
         }
@@ -406,6 +399,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andSortIn(List<Integer> values) {
             addCriterion("sort in", values, "sort");
             return (Criteria) this;
@@ -425,13 +419,12 @@ public class CourseAuditExample {
             addCriterion("sort not between", value1, value2, "sort");
             return (Criteria) this;
         }
-
-        public Criteria andAuditStatusIsNull() {
+        public Criteria andAuditStatusIsNull(){
             addCriterion("audit_status is null");
             return (Criteria) this;
         }
 
-        public Criteria andAuditStatusIsNotNull() {
+        public Criteria andAuditStatusIsNotNull(){
             addCriterion("audit_status is not null");
             return (Criteria) this;
         }
@@ -466,6 +459,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andAuditStatusIn(List<Integer> values) {
             addCriterion("audit_status in", values, "auditStatus");
             return (Criteria) this;
@@ -485,13 +479,12 @@ public class CourseAuditExample {
             addCriterion("audit_status not between", value1, value2, "auditStatus");
             return (Criteria) this;
         }
-
-        public Criteria andAuditOpinionIsNull() {
+        public Criteria andAuditOpinionIsNull(){
             addCriterion("audit_opinion is null");
             return (Criteria) this;
         }
 
-        public Criteria andAuditOpinionIsNotNull() {
+        public Criteria andAuditOpinionIsNotNull(){
             addCriterion("audit_opinion is not null");
             return (Criteria) this;
         }
@@ -546,22 +539,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andAuditOpinionBetween(String value1, String value2) {
-            addCriterion("audit_opinion between", value1, value2, "auditOpinion");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuditOpinionNotBetween(String value1, String value2) {
-            addCriterion("audit_opinion not between", value1, value2, "auditOpinion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLecturerUserNoIsNull() {
+        public Criteria andLecturerUserNoIsNull(){
             addCriterion("lecturer_user_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andLecturerUserNoIsNotNull() {
+        public Criteria andLecturerUserNoIsNotNull(){
             addCriterion("lecturer_user_no is not null");
             return (Criteria) this;
         }
@@ -596,6 +579,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andLecturerUserNoIn(List<Long> values) {
             addCriterion("lecturer_user_no in", values, "lecturerUserNo");
             return (Criteria) this;
@@ -606,22 +590,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andLecturerUserNoBetween(Long value1, Long value2) {
-            addCriterion("lecturer_user_no between", value1, value2, "lecturerUserNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andLecturerUserNoNotBetween(Long value1, Long value2) {
-            addCriterion("lecturer_user_no not between", value1, value2, "lecturerUserNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryId1IsNull() {
+        public Criteria andCategoryId1IsNull(){
             addCriterion("category_id1 is null");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryId1IsNotNull() {
+        public Criteria andCategoryId1IsNotNull(){
             addCriterion("category_id1 is not null");
             return (Criteria) this;
         }
@@ -656,6 +630,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andCategoryId1In(List<Long> values) {
             addCriterion("category_id1 in", values, "categoryId1");
             return (Criteria) this;
@@ -666,22 +641,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryId1Between(Long value1, Long value2) {
-            addCriterion("category_id1 between", value1, value2, "categoryId1");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryId1NotBetween(Long value1, Long value2) {
-            addCriterion("category_id1 not between", value1, value2, "categoryId1");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryId2IsNull() {
+        public Criteria andCategoryId2IsNull(){
             addCriterion("category_id2 is null");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryId2IsNotNull() {
+        public Criteria andCategoryId2IsNotNull(){
             addCriterion("category_id2 is not null");
             return (Criteria) this;
         }
@@ -716,6 +681,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andCategoryId2In(List<Long> values) {
             addCriterion("category_id2 in", values, "categoryId2");
             return (Criteria) this;
@@ -726,22 +692,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryId2Between(Long value1, Long value2) {
-            addCriterion("category_id2 between", value1, value2, "categoryId2");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryId2NotBetween(Long value1, Long value2) {
-            addCriterion("category_id2 not between", value1, value2, "categoryId2");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryId3IsNull() {
+        public Criteria andCategoryId3IsNull(){
             addCriterion("category_id3 is null");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryId3IsNotNull() {
+        public Criteria andCategoryId3IsNotNull(){
             addCriterion("category_id3 is not null");
             return (Criteria) this;
         }
@@ -776,6 +732,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andCategoryId3In(List<Long> values) {
             addCriterion("category_id3 in", values, "categoryId3");
             return (Criteria) this;
@@ -786,22 +743,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryId3Between(Long value1, Long value2) {
-            addCriterion("category_id3 between", value1, value2, "categoryId3");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryId3NotBetween(Long value1, Long value2) {
-            addCriterion("category_id3 not between", value1, value2, "categoryId3");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseNameIsNull() {
+        public Criteria andCourseNameIsNull(){
             addCriterion("course_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andCourseNameIsNotNull() {
+        public Criteria andCourseNameIsNotNull(){
             addCriterion("course_name is not null");
             return (Criteria) this;
         }
@@ -856,22 +803,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andCourseNameBetween(String value1, String value2) {
-            addCriterion("course_name between", value1, value2, "courseName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseNameNotBetween(String value1, String value2) {
-            addCriterion("course_name not between", value1, value2, "courseName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseLogoIsNull() {
+        public Criteria andCourseLogoIsNull(){
             addCriterion("course_logo is null");
             return (Criteria) this;
         }
 
-        public Criteria andCourseLogoIsNotNull() {
+        public Criteria andCourseLogoIsNotNull(){
             addCriterion("course_logo is not null");
             return (Criteria) this;
         }
@@ -926,22 +863,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andCourseLogoBetween(String value1, String value2) {
-            addCriterion("course_logo between", value1, value2, "courseLogo");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseLogoNotBetween(String value1, String value2) {
-            addCriterion("course_logo not between", value1, value2, "courseLogo");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntroduceIdIsNull() {
+        public Criteria andIntroduceIdIsNull(){
             addCriterion("introduce_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andIntroduceIdIsNotNull() {
+        public Criteria andIntroduceIdIsNotNull(){
             addCriterion("introduce_id is not null");
             return (Criteria) this;
         }
@@ -976,6 +903,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andIntroduceIdIn(List<Long> values) {
             addCriterion("introduce_id in", values, "introduceId");
             return (Criteria) this;
@@ -986,22 +914,12 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
-        public Criteria andIntroduceIdBetween(Long value1, Long value2) {
-            addCriterion("introduce_id between", value1, value2, "introduceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIntroduceIdNotBetween(Long value1, Long value2) {
-            addCriterion("introduce_id not between", value1, value2, "introduceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsFreeIsNull() {
+        public Criteria andIsFreeIsNull(){
             addCriterion("is_free is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsFreeIsNotNull() {
+        public Criteria andIsFreeIsNotNull(){
             addCriterion("is_free is not null");
             return (Criteria) this;
         }
@@ -1036,6 +954,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andIsFreeIn(List<Integer> values) {
             addCriterion("is_free in", values, "isFree");
             return (Criteria) this;
@@ -1055,13 +974,132 @@ public class CourseAuditExample {
             addCriterion("is_free not between", value1, value2, "isFree");
             return (Criteria) this;
         }
+        public Criteria andIsVipFreeIsNull(){
+            addCriterion("is_vip_free is null");
+            return (Criteria) this;
+        }
 
-        public Criteria andCourseOriginalIsNull() {
+        public Criteria andIsVipFreeIsNotNull(){
+            addCriterion("is_vip_free is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeEqualTo(Integer value) {
+            addCriterion("is_vip_free =", value, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeNotEqualTo(Integer value) {
+            addCriterion("is_vip_free <>", value, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeGreaterThan(Integer value) {
+            addCriterion("is_vip_free >", value, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_vip_free >=", value, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeLessThan(Integer value) {
+            addCriterion("is_vip_free <", value, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeLessThanOrEqualTo(Integer value) {
+            addCriterion("is_vip_free <=", value, "isVipFree");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andIsVipFreeIn(List<Integer> values) {
+            addCriterion("is_vip_free in", values, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeNotIn(List<Integer> values) {
+            addCriterion("is_vip_free not in", values, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeBetween(Integer value1, Integer value2) {
+            addCriterion("is_vip_free between", value1, value2, "isVipFree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsVipFreeNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_vip_free not between", value1, value2, "isVipFree");
+            return (Criteria) this;
+        }
+        public Criteria andIsOnlyVipBuyIsNull(){
+            addCriterion("is_only_vip_buy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyIsNotNull(){
+            addCriterion("is_only_vip_buy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyEqualTo(Integer value) {
+            addCriterion("is_only_vip_buy =", value, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyNotEqualTo(Integer value) {
+            addCriterion("is_only_vip_buy <>", value, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyGreaterThan(Integer value) {
+            addCriterion("is_only_vip_buy >", value, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_only_vip_buy >=", value, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyLessThan(Integer value) {
+            addCriterion("is_only_vip_buy <", value, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyLessThanOrEqualTo(Integer value) {
+            addCriterion("is_only_vip_buy <=", value, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andIsOnlyVipBuyIn(List<Integer> values) {
+            addCriterion("is_only_vip_buy in", values, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyNotIn(List<Integer> values) {
+            addCriterion("is_only_vip_buy not in", values, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyBetween(Integer value1, Integer value2) {
+            addCriterion("is_only_vip_buy between", value1, value2, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsOnlyVipBuyNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_only_vip_buy not between", value1, value2, "isOnlyVipBuy");
+            return (Criteria) this;
+        }
+        public Criteria andCourseOriginalIsNull(){
             addCriterion("course_original is null");
             return (Criteria) this;
         }
 
-        public Criteria andCourseOriginalIsNotNull() {
+        public Criteria andCourseOriginalIsNotNull(){
             addCriterion("course_original is not null");
             return (Criteria) this;
         }
@@ -1096,6 +1134,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andCourseOriginalIn(List<BigDecimal> values) {
             addCriterion("course_original in", values, "courseOriginal");
             return (Criteria) this;
@@ -1115,13 +1154,12 @@ public class CourseAuditExample {
             addCriterion("course_original not between", value1, value2, "courseOriginal");
             return (Criteria) this;
         }
-
-        public Criteria andCourseDiscountIsNull() {
+        public Criteria andCourseDiscountIsNull(){
             addCriterion("course_discount is null");
             return (Criteria) this;
         }
 
-        public Criteria andCourseDiscountIsNotNull() {
+        public Criteria andCourseDiscountIsNotNull(){
             addCriterion("course_discount is not null");
             return (Criteria) this;
         }
@@ -1156,6 +1194,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andCourseDiscountIn(List<BigDecimal> values) {
             addCriterion("course_discount in", values, "courseDiscount");
             return (Criteria) this;
@@ -1175,13 +1214,132 @@ public class CourseAuditExample {
             addCriterion("course_discount not between", value1, value2, "courseDiscount");
             return (Criteria) this;
         }
+        public Criteria andCourseSvipDiscountIsNull(){
+            addCriterion("course_svip_discount is null");
+            return (Criteria) this;
+        }
 
-        public Criteria andIsPutawayIsNull() {
+        public Criteria andCourseSvipDiscountIsNotNull(){
+            addCriterion("course_svip_discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountEqualTo(BigDecimal value) {
+            addCriterion("course_svip_discount =", value, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountNotEqualTo(BigDecimal value) {
+            addCriterion("course_svip_discount <>", value, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountGreaterThan(BigDecimal value) {
+            addCriterion("course_svip_discount >", value, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("course_svip_discount >=", value, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountLessThan(BigDecimal value) {
+            addCriterion("course_svip_discount <", value, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("course_svip_discount <=", value, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andCourseSvipDiscountIn(List<BigDecimal> values) {
+            addCriterion("course_svip_discount in", values, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountNotIn(List<BigDecimal> values) {
+            addCriterion("course_svip_discount not in", values, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("course_svip_discount between", value1, value2, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSvipDiscountNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("course_svip_discount not between", value1, value2, "courseSvipDiscount");
+            return (Criteria) this;
+        }
+        public Criteria andCourseAssembleDiscountIsNull(){
+            addCriterion("course_assemble_discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountIsNotNull(){
+            addCriterion("course_assemble_discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountEqualTo(BigDecimal value) {
+            addCriterion("course_assemble_discount =", value, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountNotEqualTo(BigDecimal value) {
+            addCriterion("course_assemble_discount <>", value, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountGreaterThan(BigDecimal value) {
+            addCriterion("course_assemble_discount >", value, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("course_assemble_discount >=", value, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountLessThan(BigDecimal value) {
+            addCriterion("course_assemble_discount <", value, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("course_assemble_discount <=", value, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andCourseAssembleDiscountIn(List<BigDecimal> values) {
+            addCriterion("course_assemble_discount in", values, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountNotIn(List<BigDecimal> values) {
+            addCriterion("course_assemble_discount not in", values, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("course_assemble_discount between", value1, value2, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseAssembleDiscountNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("course_assemble_discount not between", value1, value2, "courseAssembleDiscount");
+            return (Criteria) this;
+        }
+        public Criteria andIsPutawayIsNull(){
             addCriterion("is_putaway is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsPutawayIsNotNull() {
+        public Criteria andIsPutawayIsNotNull(){
             addCriterion("is_putaway is not null");
             return (Criteria) this;
         }
@@ -1216,6 +1374,7 @@ public class CourseAuditExample {
             return (Criteria) this;
         }
 
+
         public Criteria andIsPutawayIn(List<Integer> values) {
             addCriterion("is_putaway in", values, "isPutaway");
             return (Criteria) this;
@@ -1235,6 +1394,248 @@ public class CourseAuditExample {
             addCriterion("is_putaway not between", value1, value2, "isPutaway");
             return (Criteria) this;
         }
+        public Criteria andCourseSortIsNull(){
+            addCriterion("course_sort is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortIsNotNull(){
+            addCriterion("course_sort is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortEqualTo(Integer value) {
+            addCriterion("course_sort =", value, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortNotEqualTo(Integer value) {
+            addCriterion("course_sort <>", value, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortGreaterThan(Integer value) {
+            addCriterion("course_sort >", value, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortGreaterThanOrEqualTo(Integer value) {
+            addCriterion("course_sort >=", value, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortLessThan(Integer value) {
+            addCriterion("course_sort <", value, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortLessThanOrEqualTo(Integer value) {
+            addCriterion("course_sort <=", value, "courseSort");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andCourseSortIn(List<Integer> values) {
+            addCriterion("course_sort in", values, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortNotIn(List<Integer> values) {
+            addCriterion("course_sort not in", values, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortBetween(Integer value1, Integer value2) {
+            addCriterion("course_sort between", value1, value2, "courseSort");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseSortNotBetween(Integer value1, Integer value2) {
+            addCriterion("course_sort not between", value1, value2, "courseSort");
+            return (Criteria) this;
+        }
+        public Criteria andCountBuyIsNull(){
+            addCriterion("count_buy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyIsNotNull(){
+            addCriterion("count_buy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyEqualTo(Integer value) {
+            addCriterion("count_buy =", value, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyNotEqualTo(Integer value) {
+            addCriterion("count_buy <>", value, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyGreaterThan(Integer value) {
+            addCriterion("count_buy >", value, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("count_buy >=", value, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyLessThan(Integer value) {
+            addCriterion("count_buy <", value, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyLessThanOrEqualTo(Integer value) {
+            addCriterion("count_buy <=", value, "countBuy");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andCountBuyIn(List<Integer> values) {
+            addCriterion("count_buy in", values, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyNotIn(List<Integer> values) {
+            addCriterion("count_buy not in", values, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyBetween(Integer value1, Integer value2) {
+            addCriterion("count_buy between", value1, value2, "countBuy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBuyNotBetween(Integer value1, Integer value2) {
+            addCriterion("count_buy not between", value1, value2, "countBuy");
+            return (Criteria) this;
+        }
+        public Criteria andCountStudyIsNull(){
+            addCriterion("count_study is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyIsNotNull(){
+            addCriterion("count_study is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyEqualTo(Integer value) {
+            addCriterion("count_study =", value, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyNotEqualTo(Integer value) {
+            addCriterion("count_study <>", value, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyGreaterThan(Integer value) {
+            addCriterion("count_study >", value, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("count_study >=", value, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyLessThan(Integer value) {
+            addCriterion("count_study <", value, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyLessThanOrEqualTo(Integer value) {
+            addCriterion("count_study <=", value, "countStudy");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andCountStudyIn(List<Integer> values) {
+            addCriterion("count_study in", values, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyNotIn(List<Integer> values) {
+            addCriterion("count_study not in", values, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyBetween(Integer value1, Integer value2) {
+            addCriterion("count_study between", value1, value2, "countStudy");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountStudyNotBetween(Integer value1, Integer value2) {
+            addCriterion("count_study not between", value1, value2, "countStudy");
+            return (Criteria) this;
+        }
+        public Criteria andPeriodTotalIsNull(){
+            addCriterion("period_total is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalIsNotNull(){
+            addCriterion("period_total is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalEqualTo(Integer value) {
+            addCriterion("period_total =", value, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalNotEqualTo(Integer value) {
+            addCriterion("period_total <>", value, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalGreaterThan(Integer value) {
+            addCriterion("period_total >", value, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalGreaterThanOrEqualTo(Integer value) {
+            addCriterion("period_total >=", value, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalLessThan(Integer value) {
+            addCriterion("period_total <", value, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalLessThanOrEqualTo(Integer value) {
+            addCriterion("period_total <=", value, "periodTotal");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andPeriodTotalIn(List<Integer> values) {
+            addCriterion("period_total in", values, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalNotIn(List<Integer> values) {
+            addCriterion("period_total not in", values, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalBetween(Integer value1, Integer value2) {
+            addCriterion("period_total between", value1, value2, "periodTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTotalNotBetween(Integer value1, Integer value2) {
+            addCriterion("period_total not between", value1, value2, "periodTotal");
+            return (Criteria) this;
+        }
+
+
     }
 
     public static class Criteria extends GeneratedCriteria {
@@ -1329,4 +1730,5 @@ public class CourseAuditExample {
             this(condition, value, secondValue, null);
         }
     }
+
 }

@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.base;
 
 import java.io.DataInputStream;
@@ -52,7 +49,7 @@ import com.roncoo.education.util.tools.JSONUtil;
 
 /**
  * 控制基础类，所以controller都应该继承这个类
- * 
+ *
  * @author wujing
  */
 public class BaseController extends Base {
@@ -105,7 +102,7 @@ public class BaseController extends Base {
 
 	/**
 	 * 重定向
-	 * 
+	 *
 	 * @param format
 	 * @param arguments
 	 * @return
@@ -147,10 +144,10 @@ public class BaseController extends Base {
 
 	/**
 	 * 成功提示，关闭当前对话框，并对tabid进行刷新
-	 * 
+	 *
 	 * @param tabid
 	 *            需要刷新的tabid或者dialogid
-	 * 
+	 *
 	 * @return json字符串
 	 */
 	protected static String success(String targetId) {
@@ -159,12 +156,12 @@ public class BaseController extends Base {
 
 	/**
 	 * 成功提示，关闭当前对话框，并对tabid进行刷新
-	 * 
+	 *
 	 * @param tabid
 	 *            需要刷新的tabid或者dialogid
 	 * @param message
 	 *            提示信息
-	 * 
+	 *
 	 * @return json字符串
 	 */
 	protected static String success(String targetId, String message) {
@@ -173,7 +170,7 @@ public class BaseController extends Base {
 
 	/**
 	 * 删除成功提示，不关闭当前对话框
-	 * 
+	 *
 	 * @param tabid
 	 *            需要刷新的tabid或者dialogid
 	 * @return
@@ -184,7 +181,7 @@ public class BaseController extends Base {
 
 	/**
 	 * 删除成功提示，不关闭当前对话框
-	 * 
+	 *
 	 * @param tabid
 	 *            需要刷新的tabid或者dialogid
 	 * @param message
@@ -197,7 +194,7 @@ public class BaseController extends Base {
 
 	/**
 	 * 信息提示，不关闭当前对话框
-	 * 
+	 *
 	 * @param tabid
 	 *            需要刷新的tabid或者dialogid
 	 * @param message
@@ -210,7 +207,7 @@ public class BaseController extends Base {
 
 	/**
 	 * 错误提示，不关闭当前对话框，自定义提示信息
-	 * 
+	 *
 	 * @param message
 	 *            提示信息
 	 * @return
@@ -221,7 +218,7 @@ public class BaseController extends Base {
 
 	/**
 	 * 错误提示，不关闭当前对话框，自定义提示信息
-	 * 
+	 *
 	 * @param message
 	 *            提示信息
 	 * @return

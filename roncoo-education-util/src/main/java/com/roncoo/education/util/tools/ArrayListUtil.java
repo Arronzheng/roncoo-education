@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 import java.io.Serializable;
@@ -16,7 +13,7 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 队列属性复制
- * 
+ *
  * @author wujing
  * @param <T>
  */

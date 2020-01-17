@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 上传接口
- * 
+ *
  * @author wuyun
  */
 @RestController
@@ -30,7 +27,7 @@ public class ApiUploadController extends BaseController {
 
 	/**
 	 * 上传视频接口
-	 * 
+	 *
 	 * @param videoFile
 	 * @author wuyun
 	 */
@@ -42,7 +39,7 @@ public class ApiUploadController extends BaseController {
 
 	/**
 	 * 上传图片接口
-	 * 
+	 *
 	 * @param picFile
 	 * @author wuyun
 	 */
@@ -55,7 +52,7 @@ public class ApiUploadController extends BaseController {
 
 	/**
 	 * 上传文档接口
-	 * 
+	 *
 	 * @param docFile
 	 * @param periodUploadDoc
 	 * @author wuyun

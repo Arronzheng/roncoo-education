@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.biz.callback;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +47,7 @@ public class CallbackPolyvBiz extends BaseBiz {
 
 	/**
 	 * 保利威视，视频上传回调接口
-	 * 
+	 *
 	 * @param polyvVideo
 	 * @return
 	 * @author wuyun
@@ -67,7 +64,7 @@ public class CallbackPolyvBiz extends BaseBiz {
 
 	/**
 	 * 保利威视，视频授权播放回调接口 解密保利威视返回code值，获取到用户编号和课时编号
-	 * 
+	 *
 	 * @param polyvAuth
 	 * @return
 	 * @author wuyun

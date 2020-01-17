@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.base;
 
 import java.math.BigDecimal;
@@ -16,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 基础类
- * 
+ *
  * @author wujing
  */
 public class Base {

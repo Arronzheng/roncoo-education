@@ -54,4 +54,6 @@ public interface CourseUserStudyLogDao {
 	 * @author YZJ
 	 */
 	List<CourseUserStudyLog> countPeriodNoByCourseIdAndGmtCreate(Long courseId, String beginGmtCreate, String endGmtCreate);
+
+    CourseUserStudyLog getByCourseIdAndSortByTimeDesc(Long courseId);
 }

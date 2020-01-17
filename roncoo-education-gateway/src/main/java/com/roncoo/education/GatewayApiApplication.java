@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education;
 
 import org.springframework.boot.SpringApplication;
@@ -15,7 +12,7 @@ import com.roncoo.education.gateway.common.FilterPre;
 
 /**
  * 服务网关
- * 
+ *
  * @author wujing
  */
 @EnableZuulProxy

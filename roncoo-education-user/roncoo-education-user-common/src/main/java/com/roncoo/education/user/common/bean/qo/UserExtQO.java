@@ -25,6 +25,10 @@ public class UserExtQO implements Serializable {
      */
     private int pageSize;
     /**
+     * 当前分页的开始记录的索引
+     */
+    private int limitStart = 0;
+    /**
      * 主键
      */
     private Long id;
@@ -75,4 +79,8 @@ public class UserExtQO implements Serializable {
     
 	private String beginGmtCreate;
 	private String endGmtCreate;
+    /**
+     * 是否vip
+     */
+    private Integer isVip;
 }

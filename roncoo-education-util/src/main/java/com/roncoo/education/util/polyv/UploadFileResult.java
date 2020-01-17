@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.polyv;
 
 import java.util.List;
@@ -191,7 +188,7 @@ public class UploadFileResult {
 	public void setPtime(String ptime) {
 		this.ptime = ptime;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Video [images_b=" + images_b + ", md5checksum=" + md5checksum + ", tag=" + tag + ", mp4=" + mp4 + ", title=" + title + ", df=" + df + ", times=" + times + ", mp4_1=" + mp4_1 + ", vid=" + vid + ", cataid=" + cataid + ", swf_link=" + swf_link + ", source_filesize=" + source_filesize + ", status=" + status + ", seed=" + seed + ", flv1=" + flv1 + ", sourcefile=" + sourcefile + ", playerwidth=" + playerwidth + ", default_video=" + default_video + ", duration=" + duration + ", filesize=" + filesize + ", first_image=" + first_image + ", original_definition=" + original_definition + ", context=" + context + ", images=" + images + ", playerheight=" + playerheight + ", ptime=" + ptime + "]";

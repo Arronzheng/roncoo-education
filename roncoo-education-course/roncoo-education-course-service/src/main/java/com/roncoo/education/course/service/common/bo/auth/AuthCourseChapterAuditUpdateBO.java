@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.common.bo.auth;
 
 import java.io.Serializable;
@@ -16,7 +13,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class AuthCourseChapterAuditUpdateBO implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	/**

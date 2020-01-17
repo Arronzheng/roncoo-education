@@ -14,7 +14,27 @@
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="head_img_url" property="headImgUrl" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="is_vip" property="isVip" jdbcType="TINYINT" />
   </resultMap>
+
+  <resultMap id="ResultMapUnionSvip" type="com.roncoo.education.user.service.common.resq.UserExtPageRESQ">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="status_id" property="statusId" jdbcType="TINYINT" />
+    <result column="user_no" property="userNo" jdbcType="BIGINT" />
+    <result column="user_type" property="userType" jdbcType="TINYINT" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="head_img_url" property="headImgUrl" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="is_vip" property="isVip" jdbcType="TINYINT" />
+<!--    resultMap="com.roncoo.education.user.service.dao.impl.mapper.SvipMapper.BaseResultMap"-->
+    <association property="vip" column="user_no" select="com.roncoo.education.user.service.dao.impl.mapper.SvipMapper.getVipByUserNo"></association>
+  </resultMap>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -75,13 +95,13 @@
   </sql>
   <sql id="Base_Column_List" >
     id, gmt_create, gmt_modified, status_id, user_no, user_type, mobile, sex, age, nickname, 
-    head_img_url, remark
+    head_img_url, remark, is_vip
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserExtExample" >
     select
     <if test="distinct" >
-      distinct
-    </if>
+    distinct
+  </if>
     <include refid="Base_Column_List" />
     from user_ext
     <if test="_parameter != null" >
@@ -93,6 +113,30 @@
     <if test="limitStart >= 0" >
       limit ${limitStart} , ${pageSize}
     </if>
+  </select>
+  <select id="selectUnionSvip" resultMap="ResultMapUnionSvip" parameterType="com.roncoo.education.user.service.common.req.UserExtPageREQ">
+    select
+    <include refid="Base_Column_List" />
+    from user_ext
+    <where>
+      <if test="paramMap.isVip != null">
+        and is_vip = #{paramMap.isVip}
+      </if>
+      <if test="paramMap.mobile != null">
+        and mobile like CONCAT('%',#{paramMap.mobile},'%')
+      </if>
+      <if test="paramMap.nickname != null">
+        and nickname like CONCAT('%',#{paramMap.nickname},'%')
+      </if>
+      <if test="paramMap.statusId != null">
+        and status_id = #{paramMap.statusId}
+      </if>
+      <if test="paramMap.beginGmtCreate != null">
+        and gmt_create between date_format(#{paramMap.beginGmtCreate}, '%Y-%m-%d %H:%i:%s') and date_format(#{paramMap.endGmtCreate}, '%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+    order by status_id desc, id desc
+    limit #{paramMap.limitStart} , #{paramMap.pageSize}
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -114,11 +158,11 @@
     insert into user_ext (id, gmt_create, gmt_modified, 
       status_id, user_no, user_type, 
       mobile, sex, age, nickname, 
-      head_img_url, remark)
+      head_img_url, remark, is_vip)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{statusId,jdbcType=TINYINT}, #{userNo,jdbcType=BIGINT}, #{userType,jdbcType=TINYINT}, 
       #{mobile,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{age,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, 
-      #{headImgUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+      #{headImgUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}), #{isVip,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt" >
     insert into user_ext
@@ -159,6 +203,9 @@
       <if test="remark != null" >
         remark,
       </if>
+      <if test="isVip != null" >
+        is_vip,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -196,6 +243,9 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isVip != null" >
+        #{isVip,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -244,6 +294,9 @@
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.isVip != null" >
+        is_vip = #{record.isVip,jdbcType=TINYINT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -262,7 +315,8 @@
       age = #{record.age,jdbcType=INTEGER},
       nickname = #{record.nickname,jdbcType=VARCHAR},
       head_img_url = #{record.headImgUrl,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR}
+      remark = #{record.remark,jdbcType=VARCHAR},
+      is_vip = #{record.isVip,jdbcType=TINYINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -303,6 +357,9 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="isVip != null" >
+        is_vip = #{isVip,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -318,7 +375,8 @@
       age = #{age,jdbcType=INTEGER},
       nickname = #{nickname,jdbcType=VARCHAR},
       head_img_url = #{headImgUrl,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
+      remark = #{remark,jdbcType=VARCHAR},
+      is_vip = #{isVip,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

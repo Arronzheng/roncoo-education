@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.common.bo.auth;
 
 import java.io.Serializable;
@@ -16,7 +13,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class AuthCourseAuditSaveBO implements Serializable{
-	 
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -54,6 +51,16 @@ public class AuthCourseAuditSaveBO implements Serializable{
      */
 	@ApiModelProperty(value = "原价", required = true)
     private BigDecimal courseOriginal;
+	/**
+	 * 会员价
+	 */
+	@ApiModelProperty(value = "会员价", required = false)
+	private BigDecimal courseSvipDiscount;
+	/**
+	 * 拼团价
+	 */
+	@ApiModelProperty(value = "拼团价", required = false)
+	private BigDecimal courseAssembleDiscount;
     /**
      * 用户编号
      */

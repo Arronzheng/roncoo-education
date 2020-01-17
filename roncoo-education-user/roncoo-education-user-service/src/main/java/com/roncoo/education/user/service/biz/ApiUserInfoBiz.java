@@ -3,6 +3,8 @@ package com.roncoo.education.user.service.biz;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import com.roncoo.education.user.service.common.dto.UserWXLoginDTO;
+import com.roncoo.education.util.config.SystemUtil;
 import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.tencentcloud.Tencent;
 import com.roncoo.education.util.tencentcloud.TencentUtil;
@@ -161,8 +163,8 @@ public class ApiUserInfoBiz extends BaseBiz {
 		dto.setToken(JWTUtil.create(user.getUserNo(), JWTUtil.DATE));
 
 		// 登录成功，存入缓存，单点登录使用
-		 redisTemplate.opsForValue().set(dto.getUserNo().toString(), dto.getToken(),
-		 1, TimeUnit.DAYS);
+//		 redisTemplate.opsForValue().set(dto.getUserNo().toString(), dto.getToken(),
+//		 1, TimeUnit.DAYS);
 
 		return Result.success(dto);
 	}
@@ -353,4 +355,14 @@ public class ApiUserInfoBiz extends BaseBiz {
 		return result == 1 ? Result.success(result) : Result.error(ResultEnum.USER_UPDATE_FAIL.getDesc());
 	}
 
+	public Result<UserWXLoginDTO> getAppId() {
+		UserWXLoginDTO userWXLoginDTO = new UserWXLoginDTO();
+		userWXLoginDTO.setAppid(SystemUtil.APP_ID);
+		userWXLoginDTO.setRedirectUri(SystemUtil.REDIRECT_URI);
+		String state = "47CC68A6508DA7038DA8E7EDFD03BE7E3398DA68943D4CFAE2A4A9DFCE3117207037171CAF5D77F789A2260CB831DA66";//测试
+//		String state = String.valueOf(System.currentTimeMillis());
+		redisTemplate.opsForValue().set("state", state);
+		userWXLoginDTO.setState(state);
+		return Result.success(userWXLoginDTO);
+	}
 }

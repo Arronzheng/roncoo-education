@@ -1,6 +1,7 @@
 package com.roncoo.education.system.common.bean.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import lombok.Data;
@@ -117,5 +118,9 @@ public class WebsiteVO implements Serializable {
 	 * 入驻协议
 	 */
 	private String entryAgreement;
+    /**
+     * 会员价格
+     */
+    private BigDecimal vipPrice;
     
 }

@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 import java.io.UnsupportedEncodingException;
@@ -23,15 +20,12 @@ public final class JWTUtil {
 	protected static final Logger logger = LoggerFactory.getLogger(JWTUtil.class);
 
 	private static final String TOKEN_SECRET = "eyJhbGciOiJIUzI1NiJ9";
-	private static final String ISSUER = "RONCOO";
+	private static final String ISSUER = "ZMZX";
 	public static final String USERNO = "userNo";
 	public static final Long DATE = 30 * 24 * 3600 * 1000L; // 1个月
 
 	/**
-	 * 
-	 * @param roncooNo
-	 * @param loginName
-	 * @param password
+	 *
 	 * @param date
 	 * @return
 	 * @throws IllegalArgumentException
@@ -48,7 +42,7 @@ public final class JWTUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 * @throws JWTVerificationException
@@ -60,8 +54,8 @@ public final class JWTUtil {
 	}
 
 	/**
-	 * 
-	 * @param token
+	 *
+	 * @param decodedJWT
 	 * @return
 	 * @throws JWTVerificationException
 	 * @throws IllegalArgumentException

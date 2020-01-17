@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.gateway.common;
 
 import java.io.BufferedReader;
@@ -127,6 +124,7 @@ public class FilterPre extends ZuulFilter {
 		DecodedJWT jwt = null;
 		try {
 			jwt = JWTUtil.verify(token);
+			System.out.println(jwt.getPayload());
 		} catch (Exception e) {
 			logger.error("token异常，token={}", token.toString());
 			throw new BaseException(ResultEnum.TOKEN_ERROR);
@@ -146,11 +144,11 @@ public class FilterPre extends ZuulFilter {
 //			throw new BaseException(ResultEnum.TOKEN_PAST);
 //		}
 		 // 存在，判断是否token相同
-//		 String tk = stringRedisTemplate.opsForValue().get(userNo.toString());
-//		if (!token.equals(tk)) {
-//			// 不同则为不同的用户登录，这时候提示异地登录
-//			 throw new BaseException(ResultEnum.REMOTE_ERROR);
-//		}
+		 /*String tk = stringRedisTemplate.opsForValue().get(userNo.toString());
+		if (!token.equals(tk)) {
+			// 不同则为不同的用户登录，这时候提示异地登录
+			 throw new BaseException(ResultEnum.REMOTE_ERROR);
+		}*/
 
 		// 更新时间，使token不过期
 		stringRedisTemplate.opsForValue().set(userNo.toString(), token, 1, TimeUnit.HOURS);

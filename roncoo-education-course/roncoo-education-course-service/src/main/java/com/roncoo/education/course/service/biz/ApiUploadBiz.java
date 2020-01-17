@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.biz;
 
 import java.io.File;
@@ -41,7 +38,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 上传接口
- * 
+ *
  * @author wuyun
  */
 @Component
@@ -61,7 +58,7 @@ public class ApiUploadBiz extends BaseBiz {
 
 	/**
 	 * 上传视频接口
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	public Result<String> uploadVideo(MultipartFile videoFile) {
@@ -188,7 +185,7 @@ public class ApiUploadBiz extends BaseBiz {
 
 	/**
 	 * 上传图片接口
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	public Result<String> uploadPic(MultipartFile picFile, String imgUrl) {
@@ -237,7 +234,7 @@ public class ApiUploadBiz extends BaseBiz {
 
 	/**
 	 * 上传文档接口
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	public Result<String> uploadDoc(MultipartFile docFile) {

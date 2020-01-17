@@ -1,5 +1,7 @@
 package com.roncoo.education.user.service.biz.pc;
 
+import com.roncoo.education.user.service.dao.SvipDao;
+import com.roncoo.education.user.service.dao.impl.mapper.entity.Svip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -29,7 +31,8 @@ public class PcApiUserExtBiz {
 
 	@Autowired
 	private UserExtDao dao;
-
+	@Autowired
+	private SvipDao svipDao;
 	/**
 	 * 用戶教育分页列出
 	 * 
@@ -37,26 +40,26 @@ public class PcApiUserExtBiz {
 	 * @return
 	 */
 	public Result<Page<UserExtPageRESQ>> listForPage(UserExtPageREQ req) {
-		UserExtExample example = new UserExtExample();
-		Criteria c = example.createCriteria();
-		if (StringUtils.hasText(req.getMobile())) {
-			c.andMobileLike(PageUtil.rightLike(req.getMobile()));
-		}
-		if (StringUtils.hasText(req.getNickname())) {
-			c.andNicknameLike(PageUtil.like(req.getNickname()));
-		}
-		if (req.getStatusId() != null) {
-			c.andStatusIdEqualTo(req.getStatusId());
-		}
-		if (StringUtils.hasText(req.getBeginGmtCreate())) {
-			c.andGmtCreateGreaterThanOrEqualTo(DateUtil.parseDate(req.getBeginGmtCreate(), "yyyy-MM-dd"));
-		}
-		if (StringUtils.hasText(req.getEndGmtCreate())) {
-			c.andGmtCreateLessThanOrEqualTo(DateUtil.addDate(DateUtil.parseDate(req.getEndGmtCreate(), "yyyy-MM-dd"), 1));
-		}
-		example.setOrderByClause(" status_id desc, id desc ");
-		Page<UserExt> page = dao.listForPage(req.getPageCurrent(), req.getPageSize(), example);
-		return Result.success(PageUtil.transform(page, UserExtPageRESQ.class));
+//		UserExtExample example = new UserExtExample();
+//		Criteria c = example.createCriteria();
+//		if (StringUtils.hasText(req.getMobile())) {
+//			c.andMobileLike(PageUtil.rightLike(req.getMobile()));
+//		}
+//		if (StringUtils.hasText(req.getNickname())) {
+//			c.andNicknameLike(PageUtil.like(req.getNickname()));
+//		}
+//		if (req.getStatusId() != null) {
+//			c.andStatusIdEqualTo(req.getStatusId());
+//		}
+//		if (StringUtils.hasText(req.getBeginGmtCreate())) {
+//			c.andGmtCreateGreaterThanOrEqualTo(DateUtil.parseDate(req.getBeginGmtCreate(), "yyyy-MM-dd"));
+//		}
+//		if (StringUtils.hasText(req.getEndGmtCreate())) {
+//			c.andGmtCreateLessThanOrEqualTo(DateUtil.addDate(DateUtil.parseDate(req.getEndGmtCreate(), "yyyy-MM-dd"), 1));
+//		}
+//		example.setOrderByClause(" status_id desc, id desc ");
+		Page<UserExtPageRESQ> page = dao.listForPage(req);
+		return Result.success(page);
 	}
 
 	/**

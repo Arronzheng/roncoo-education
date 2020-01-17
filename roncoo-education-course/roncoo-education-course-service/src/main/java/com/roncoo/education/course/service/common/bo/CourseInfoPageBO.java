@@ -51,4 +51,9 @@ public class CourseInfoPageBO implements Serializable {
 	 */
 	@ApiModelProperty(value = "是否免费(1:免费，0:收费)")
     private Integer isFree;
+	/**
+	 * 是否免费(1:免费，0:收费)
+	 */
+	@ApiModelProperty(value = "是否vip免费(1:免费)")
+	private Integer isVipFree;
 }

@@ -1,10 +1,20 @@
 package com.roncoo.education.course.service.biz.auth;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.roncoo.education.course.service.common.bo.auth.*;
+import com.roncoo.education.course.service.dao.CourseAuditDao;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
+import com.roncoo.education.user.common.bean.vo.LecturerExtVO;
+import com.roncoo.education.user.common.bean.vo.SvipVO;
+import com.roncoo.education.user.feign.IBossLecturerExt;
+import com.roncoo.education.user.feign.IBossVip;
+import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.pay.AlipayUtil;
 import com.roncoo.education.util.pay.WeixinPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +34,6 @@ import com.github.abel533.echarts.code.Trigger;
 import com.github.abel533.echarts.feature.MagicType;
 import com.github.abel533.echarts.series.Line;
 import com.roncoo.education.course.service.common.bo.OrderInfoCloseBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoContinuePayBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoForChartsBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoListBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderInfoViewBO;
-import com.roncoo.education.course.service.common.bo.auth.AuthOrderPayBO;
 import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoLecturerIncomeDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoListDTO;
@@ -37,11 +42,7 @@ import com.roncoo.education.course.service.common.dto.auth.AuthOrderPayDTO;
 import com.roncoo.education.course.service.dao.CourseDao;
 import com.roncoo.education.course.service.dao.OrderInfoDao;
 import com.roncoo.education.course.service.dao.OrderPayDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample.Criteria;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPay;
 import com.roncoo.education.system.common.bean.vo.SysVO;
 import com.roncoo.education.system.feign.IBossSys;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
@@ -54,11 +55,6 @@ import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.base.Result;
 import com.roncoo.education.util.config.SystemUtil;
-import com.roncoo.education.util.enums.IsShowEnum;
-import com.roncoo.education.util.enums.IsShowUserEnum;
-import com.roncoo.education.util.enums.OrderStatusEnum;
-import com.roncoo.education.util.enums.StatusIdEnum;
-import com.roncoo.education.util.enums.TradeTypeEnum;
 import com.roncoo.education.util.pay.PayUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 import com.roncoo.education.util.tools.DateUtil;
@@ -78,7 +74,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	@Autowired
 	private OrderPayDao orderPayDao;
 	@Autowired
-	private CourseDao courseDao;
+	private CourseAuditDao courseAuditDao;
 
 	@Autowired
 	private IBossSys bossSys;
@@ -86,6 +82,10 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	private IBossUserExt bossUserExt;
 	@Autowired
 	private IBossLecturer bossLecturer;
+	@Autowired
+	private IBossVip bossVip;
+	@Autowired
+	private IBossLecturerExt bossLecturerExt;
 
 	/**
 	 * 订单列表接口
@@ -115,9 +115,9 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		Page<OrderInfo> page = orderInfoDao.listForPage(authOrderInfoListBO.getPageCurrent(), authOrderInfoListBO.getPageSize(), Example);
 		Page<AuthOrderInfoListDTO> dtopage = PageUtil.transform(page, AuthOrderInfoListDTO.class);
 		for (AuthOrderInfoListDTO dto : dtopage.getList()) {
-			Course course = courseDao.getById(dto.getCourseId());
-			dto.setCourseLogo(course.getCourseLogo());
-			dto.setCourseId(course.getId());
+			CourseAudit courseAudit = courseAuditDao.getById(dto.getCourseId());
+			dto.setCourseLogo(courseAudit.getCourseLogo());
+			dto.setCourseId(courseAudit.getId());
 		}
 		return Result.success(dtopage);
 	}
@@ -134,8 +134,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		verifyParam(authOrderPayBO);
 
 		// 课程信息
-		Course course = courseDao.getByCourseIdAndStatusId(authOrderPayBO.getCourseId(), StatusIdEnum.YES.getCode());
-		if (StringUtils.isEmpty(course)) {
+		CourseAudit courseAudit = courseAuditDao.getByCourseIdAndStatusId(authOrderPayBO.getCourseId(), StatusIdEnum.YES.getCode());
+		if (StringUtils.isEmpty(courseAudit)) {
 			return Result.error("courseId不正确");
 		}
 
@@ -146,7 +146,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		// 获取讲师信息
-		LecturerVO lecturerVO = bossLecturer.getByLecturerUserNo(course.getLecturerUserNo());
+		LecturerVO lecturerVO = bossLecturer.getByLecturerUserNo(courseAudit.getLecturerUserNo());
 		if (StringUtils.isEmpty(lecturerVO) || !StatusIdEnum.YES.getCode().equals(lecturerVO.getStatusId())) {
 			return Result.error("lecturerUserNo不正确");
 		}
@@ -159,7 +159,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		OrderPay orderPay = null;
 		if (ObjectUtil.isNull(orderInfo)) {
 			// 创建订单信息
-			orderInfo = createOrderInfo(authOrderPayBO, course, userextVO, lecturerVO);
+			orderInfo = createOrderInfo(authOrderPayBO, courseAudit, userextVO, lecturerVO);
 			// 创建支付订单
 			orderPay = createOrderPay(orderInfo);
 		}else{
@@ -170,7 +170,13 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			if (ObjectUtil.isNull(orderPay)) {
 				return Result.error("orderNo不正确，没有找到流水号");
 			}
-
+			if(orderInfo.getPricePaidSource().equals(PricePaidSourceEnum.VIP.getCode())){
+				SvipVO svipVO = bossVip.getByUserNo(userextVO.getUserNo());
+				if(ObjectUtil.isNull(svipVO)){
+					orderInfo.setPricePaidSource(PricePaidSourceEnum.ORIGINAL.getCode());
+					orderInfo.setPricePaid(orderInfo.getPricePayable());
+				}
+			}
 			// 更新订单信息
 			orderInfo.setPayType(authOrderPayBO.getPayType());
 			orderInfo.setOrderStatus(OrderStatusEnum.WAIT.getCode());
@@ -206,7 +212,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 //			return Result.error("系统繁忙，请稍后再试");
 //		}
 		if(authOrderPayBO.getPayType() == 1){
-			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl());
+			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl(), "course");
 			if(null == response){
 				return Result.error("调用微信支付失败，请联系商家");
 			}
@@ -228,7 +234,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 				return Result.error("调用微信支付失败，请联系商家");
 			}
 		}else {
-			AlipayTradePrecreateResponse response = AlipayUtil.alipay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getPayUrl(), sys.getNotifyUrl());
+			AlipayTradePrecreateResponse response = AlipayUtil.alipay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getPayUrl(), sys.getNotifyUrl(), "course");
 			if (null == response) {
 				return Result.error("调用支付宝支付失败，请联系商家");
 			}
@@ -278,14 +284,39 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		// 查找课程信息
-		Course course = courseDao.getByCourseIdAndStatusId(orderInfo.getCourseId(), StatusIdEnum.YES.getCode());
-		if (StringUtils.isEmpty(course) || !StatusIdEnum.YES.getCode().equals(course.getStatusId())) {
+		CourseAudit courseAudit = courseAuditDao.getByCourseIdAndStatusId(orderInfo.getCourseId(), StatusIdEnum.YES.getCode());
+		if (StringUtils.isEmpty(courseAudit) || !StatusIdEnum.YES.getCode().equals(courseAudit.getStatusId())) {
 			return Result.error("根据订单的课程编号没找到对应的课程信息!");
 		}
 		// 根据用户编号查找用户信息
 		UserExtVO userExtVO = bossUserExt.getByUserNo(orderInfo.getUserNo());
 		if (StringUtils.isEmpty(userExtVO) || !StatusIdEnum.YES.getCode().equals(userExtVO.getStatusId())) {
 			return Result.error("根据传入的userNo没找到对应的用户信息!");
+		}
+
+		SvipVO svipVO = bossVip.getByUserNo(userExtVO.getUserNo());
+		if(orderInfo.getPricePaidSource().equals(PricePaidSourceEnum.VIP.getCode())){
+			if (StringUtils.isEmpty(svipVO)) {
+				orderInfo.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+				orderInfo.setRemark("会员过期，订单失效");
+				orderInfoDao.updateById(orderInfo);
+
+				orderPay.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+				orderPayDao.updateById(orderPay);
+				return Result.error("会员过期，请重新下单!");
+			}
+		}else{
+			if (!StringUtils.isEmpty(svipVO)) {
+				// 更新订单信息
+				orderInfo.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+				orderInfo.setRemark("已购买会员，订单失效");
+				orderInfoDao.updateById(orderInfo);
+
+				// 重新生成新的支付流水
+				orderPay.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+				orderPayDao.updateById(orderPay);
+				return Result.error("已购买会员，请重新下单!");
+			}
 		}
 
 		// 更新订单信息
@@ -315,7 +346,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 //			return Result.error("系统繁忙，请稍后再试");
 //		}
         if(authOrderInfoContinuePayBO.getPayType() == 1){
-            Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl());
+            Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl(), "course");
 			if(CollectionUtils.isEmpty(response)){
 				return Result.error("调用微信支付失败，请联系商家");
 			}
@@ -337,7 +368,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 				return Result.error("调用微信支付失败，请联系商家");
 			}
         }else{
-		    AlipayTradePrecreateResponse response = AlipayUtil.alipay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getPayUrl(), sys.getNotifyUrl());
+		    AlipayTradePrecreateResponse response = AlipayUtil.alipay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getPayUrl(), sys.getNotifyUrl(), "course");
             if(null == response){
                 return Result.error("调用支付宝支付失败，请联系商家");
             }
@@ -453,71 +484,74 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		if (StringUtils.isEmpty(authOrderInfoViewBO.getSerialNumber())) {
 			return Result.error("流水号不能为空");
 		}
+
+//		OrderInfo orderInfo = orderInfoDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
+
+		OrderInfo order = orderInfoDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
+		OrderPay orderPay = orderPayDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
+		if (ObjectUtil.isNull(order)) {
+			return Result.error("订单号不正确");
+		}
+
+		if(PricePaidSourceEnum.VIP.getCode().equals(order.getPricePaidSource())){
+			SvipVO svipVO = bossVip.getByUserNo(authOrderInfoViewBO.getUserNo());
+			if (StringUtils.isEmpty(svipVO)) {
+				// 更新订单信息
+				order.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+				order.setRemark("会员过期，订单失效");
+				orderInfoDao.updateById(order);
+
+				orderPay.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+				orderPayDao.updateById(orderPay);
+				return Result.error("会员过期，请重新下单!");
+			}
+		}
+
 		if(authOrderInfoViewBO.getPayType() == 1){
 			Map<String, String> response = WeixinPayUtil.orderQuery(String.valueOf(authOrderInfoViewBO.getSerialNumber()));
-			if(CollectionUtils.isEmpty(response)){
-				return Result.error("调用微信支付失败,请联系商家");
-			}
-			if("SUCCESS".equals(response.get("return_code"))){
-				if("SUCCESS".equals(response.get("result_code"))){
-					OrderInfo order = new OrderInfo();
-					OrderPay orderPay = new OrderPay();
-					order.setOrderNo(authOrderInfoViewBO.getOrderNo());
-					orderPay.setSerialNumber(authOrderInfoViewBO.getSerialNumber());
-					if("SUCCESS".equals(response.get("trade_state"))){
-						//微信已交易成功,商户系统显示未交易成功，则修改商户系统订单状态
-						if(!OrderStatusEnum.SUCCESS.getCode().equals(orderPay.getOrderStatus())){
-							order.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-							order.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
-							orderPay.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
-							orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-						}
-					}else if("NOTPAY".equals(response.get("trade_state"))){
-						if(!OrderStatusEnum.WAIT.getCode().equals(orderPay.getOrderStatus())){
-							order.setOrderStatus(OrderStatusEnum.WAIT.getCode());
-							orderPay.setOrderStatus(OrderStatusEnum.WAIT.getCode());
-						}
-					}else if("CLOSED".equals(response.get("trade_state"))){
-						if(!OrderStatusEnum.CLOSE.getCode().equals(orderPay.getOrderStatus())){
-							order.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
-							orderPay.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
-						}
-					}else if("PAYERROR".equals(response.get("trade_state"))){
-						if(!OrderStatusEnum.FAIL.getCode().equals(orderPay.getOrderStatus())){
-							order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
-							orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
-						}
-					}else{
-						if(!OrderStatusEnum.FAIL.getCode().equals(orderPay.getOrderStatus())){
-							order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
-							orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+			if(!CollectionUtils.isEmpty(response)){
+				if("SUCCESS".equals(response.get("return_code"))){
+					if("SUCCESS".equals(response.get("result_code"))){
+						if(!"NOTPAY".equals(response.get("trade_state"))){
+							if("SUCCESS".equals(response.get("trade_state"))){
+								//微信已交易成功
+								//处理课程信息
+								course(order, orderPay);
+							}else{
+								//微信支付失败
+								//更新订单信息
+								order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+								orderInfoDao.updateById(order);
+								//更新订单支付信息
+								orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+								orderPayDao.updateById(orderPay);
+							}
 						}
 					}
-					orderInfoDao.updateByOrderNo(order);
-					orderPayDao.updateBySerialNumber(orderPay);
-				}else{
-					return Result.error("调用微信查询失败,请联系商家");
 				}
-			}else{
-				return Result.error("调用微信查询失败,请联系商家");
 			}
 		}else{
 			//查询支付宝交易结果
 			AlipayTradeQueryResponse response = AlipayUtil.queryOrder(String.valueOf(authOrderInfoViewBO.getSerialNumber()),null);
 			if(null != response){
 				if(response.isSuccess()){
-					OrderInfo order =  orderInfoDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
-					OrderPay orderPay = orderPayDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
-					handleQueryResponse(response, order, orderPay);
-					orderInfoDao.updateByOrderNo(order);
-					orderPayDao.updateBySerialNumber(orderPay);
+					if(!response.getTradeStatus().equals("WAIT_BUYER_PAY")){
+						// 订单状态为成功时处理
+						if (response.getTradeStatus().equals("TRADE_FINISHED") || response.getTradeStatus().equals("TRADE_SUCCESS")) {
+							//交易结束，不可退款 或 交易支付成功
+							// 处理课程信息
+							course(order, orderPay);
+						}else{
+							// 更新订单信息
+							order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+							orderInfoDao.updateById(order);
+							// 更新订单支付信息
+							orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
+							orderPayDao.updateById(orderPay);
+						}
+					}
 				}
 			}
-		}
-		// 根据订单编号查找订单信息
-		OrderInfo order = orderInfoDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
-		if (ObjectUtil.isNull(order)) {
-			return Result.error("订单号不正确");
 		}
 		return Result.success(BeanUtil.copyProperties(order, AuthOrderInfoDTO.class));
 	}
@@ -669,20 +703,27 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	/**
 	 * 创建订单信息表
 	 */
-	private OrderInfo createOrderInfo(AuthOrderPayBO authOrderPayBO, Course course, UserExtVO userextvo, LecturerVO lecturervo) {
+	private OrderInfo createOrderInfo(AuthOrderPayBO authOrderPayBO, CourseAudit courseAudit, UserExtVO userextvo, LecturerVO lecturervo) {
+		SvipVO svipVO = bossVip.getByUserNo(userextvo.getUserNo());
 		OrderInfo orderInfo = new OrderInfo();
-		orderInfo.setCourseName(course.getCourseName());
-		orderInfo.setCourseId(course.getId());
-		orderInfo.setPricePaid(course.getCourseDiscount());
-		orderInfo.setPricePayable(course.getCourseOriginal());
+		orderInfo.setCourseName(courseAudit.getCourseName());
+		orderInfo.setCourseId(courseAudit.getId());
+		if(ObjectUtil.isNull(svipVO)){
+			orderInfo.setPricePaid(courseAudit.getCourseOriginal());
+			orderInfo.setPricePaidSource(PricePaidSourceEnum.ORIGINAL.getCode());
+		}else{
+			orderInfo.setPricePaid(courseAudit.getCourseSvipDiscount());
+			orderInfo.setPricePaidSource(PricePaidSourceEnum.VIP.getCode());
+		}
+		orderInfo.setPricePayable(courseAudit.getCourseOriginal());
 		orderInfo.setLecturerUserNo(lecturervo.getLecturerUserNo());
 		orderInfo.setLecturerName(lecturervo.getLecturerName());
 		orderInfo.setUserNo(userextvo.getUserNo());
 		orderInfo.setMobile(userextvo.getMobile());
 		orderInfo.setRegisterTime(userextvo.getGmtCreate());
 		orderInfo.setOrderNo(NOUtil.getOrderNo()); // 订单号，不要使用IdWorker生成
-		orderInfo.setCourseId(course.getId());
-		orderInfo.setCourseName(course.getCourseName());
+		orderInfo.setCourseId(courseAudit.getId());
+		orderInfo.setCourseName(courseAudit.getCourseName());
 		orderInfo.setPriceDiscount(BigDecimal.ZERO);
 		orderInfo.setPlatformProfit(BigDecimal.ZERO);
 		orderInfo.setLecturerProfit(BigDecimal.ZERO);
@@ -696,45 +737,121 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		return orderInfo;
 	}
 
-	class updateCount implements Runnable {
-		private Course course;
+	/**
+	 * 补充订单地址信息
+	 * @param authOrderInfoUpdateBO
+	 * @return
+	 */
+	public Result<Integer> completeOrderSite(AuthOrderInfoUpdateBO authOrderInfoUpdateBO) {
+		if(StringUtils.isEmpty(authOrderInfoUpdateBO.getOrderNo())){
+			return Result.error("订单不能为空！");
+		}
+		if(StringUtils.isEmpty(authOrderInfoUpdateBO.getShippingAddressId())){
+			return Result.error("地址不能为空！");
+		}
+		OrderInfo orderInfo = BeanUtil.copyProperties(authOrderInfoUpdateBO, OrderInfo.class);
+		int result = orderInfoDao.updateByOrderNo(orderInfo);
+		return Result.success(result);
+	}
 
-		public updateCount(Course course) {
-			this.course = course;
+	class updateCount implements Runnable {
+		private CourseAudit courseAudit;
+
+		public updateCount(CourseAudit courseAudit) {
+			this.courseAudit = courseAudit;
 		}
 
 		@Override
 		public void run() {
 			Course info = new Course();
-			info.setCountBuy(course.getCountBuy() + 1);
-			info.setId(course.getId());
-			courseDao.updateById(course);
+			info.setCountBuy(courseAudit.getCountBuy() + 1);
+			info.setId(courseAudit.getId());
+			courseAuditDao.updateById(courseAudit);
 		}
 	}
 
 
-	public static void handleQueryResponse(AlipayTradeQueryResponse response, OrderInfo order, OrderPay orderPay){
-		if("WAIT_BUYER_PAY".equals(response.getTradeStatus())){
-			//交易创建，等待买家付款
-			if(!order.getOrderStatus().equals(OrderStatusEnum.WAIT.getCode()) && !orderPay.getOrderStatus().equals(OrderStatusEnum.WAIT.getCode())){
-				order.setOrderStatus(OrderStatusEnum.WAIT.getCode());
-				orderPay.setOrderStatus(OrderStatusEnum.WAIT.getCode());
-			}
-		}else if("TRADE_SUCCESS".equals(response.getTradeStatus()) || "TRADE_FINISHED".equals(response.getTradeStatus())){
-			//交易支付成功
-			if(!order.getOrderStatus().equals(OrderStatusEnum.SUCCESS.getCode()) && !orderPay.getOrderStatus().equals(OrderStatusEnum.SUCCESS.getCode())){
-				order.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-				order.setPayTime(response.getSendPayDate());
-				orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-				orderPay.setPayTime(response.getSendPayDate());
-			}
-		}else if("TRADE_CLOSED".equals(response.getTradeStatus())){
-			//未付款交易超时关闭，或支付完成后全额退款(交易失败)
-			if(!order.getOrderStatus().equals(OrderStatusEnum.FAIL.getCode()) && !orderPay.getOrderStatus().equals(OrderStatusEnum.FAIL.getCode())){
-				order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
-				orderPay.setOrderStatus(OrderStatusEnum.FAIL.getCode());
-			}
+	/**
+	 * 课程处理
+	 *
+	 * @param orderInfo
+	 * @param orderPay
+	 * @return
+	 * @author wuyun
+	 */
+	private void course(OrderInfo orderInfo, OrderPay orderPay) {
+		// 根据课程No查找课程信息
+		CourseAudit courseAudit = courseAuditDao.getById(orderInfo.getCourseId());
+		if (StringUtils.isEmpty(courseAudit)) {
+			return;
 		}
+
+		// 根据讲师编号和机构编号查找讲师账户信息
+//		LecturerExtVO lecturerExtVO = bossLecturerExt.getByLecturerUserNo(courseAudit.getLecturerUserNo());
+//		if (StringUtils.isEmpty(lecturerExtVO)) {
+//			return;
+//		}
+
+//		LecturerVO lecturerVO = bossLecturer.getByLecturerUserNo(courseAudit.getLecturerUserNo());
+//		if (ObjectUtil.isNull(lecturerVO)) {
+//			return;
+//		}
+
+		// 更新课程信息的购买人数
+		courseAudit.setCountBuy(courseAudit.getCountBuy() + 1);
+		courseAuditDao.updateById(courseAudit);
+
+		// 计算讲师分润
+//		orderInfo = countProfit(orderInfo, lecturerExtVO, lecturerVO.getLecturerProportion());
+		orderInfo.setPayTime(new Date());
+		orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+
+		// 更新讲师账户信息
+//		updateLecturerExtVO(orderInfo, lecturerExtVO);
+
+		// 更新订单信息
+		orderInfoDao.updateById(orderInfo);
+
+		// 更新订单支付信息
+		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+		orderPay.setPayTime(new Date());
+		orderPayDao.updateById(orderPay);
+	}
+
+	/**
+	 * 计算处理讲师分润信息
+	 *
+	 * @param orderInfo
+	 * @param lecturerExtVO
+	 * @param lecturerProportion
+	 * @return
+	 * @author wuyun
+	 */
+	private OrderInfo countProfit(OrderInfo orderInfo, LecturerExtVO lecturerExtVO, BigDecimal lecturerProportion) {
+		// 讲师收入 = 订单价格x讲师分成比例
+		BigDecimal lecturerProfit = orderInfo.getPricePaid().multiply(lecturerProportion).setScale(2, RoundingMode.DOWN);
+		// 平台收入 = 实付金额 - 讲师收入
+		BigDecimal platformIncome = orderInfo.getPricePaid().subtract(lecturerProfit).setScale(2, RoundingMode.DOWN);
+
+		orderInfo.setLecturerProfit(lecturerProfit);
+		orderInfo.setPlatformProfit(platformIncome);
+
+		return orderInfo;
+	}
+
+	/**
+	 * 更新讲师账户信息
+	 *
+	 * @param orderInfo
+	 * @param lecturerExtVO
+	 * @author wuyun
+	 */
+	private void updateLecturerExtVO(OrderInfo orderInfo, LecturerExtVO lecturerExtVO) {
+		LecturerExtQO lecturerExtQO = new LecturerExtQO();
+		lecturerExtQO.setLecturerUserNo(lecturerExtVO.getLecturerUserNo());
+		lecturerExtQO.setTotalIncome(orderInfo.getLecturerProfit());
+		lecturerExtQO.setEnableBalances(orderInfo.getLecturerProfit());
+		bossLecturerExt.updateTotalIncomeByLecturerUserNo(lecturerExtQO);
 	}
 
 }

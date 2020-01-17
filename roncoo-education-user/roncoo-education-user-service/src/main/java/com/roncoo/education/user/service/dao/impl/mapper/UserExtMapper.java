@@ -1,8 +1,12 @@
 package com.roncoo.education.user.service.dao.impl.mapper;
 
+import com.roncoo.education.user.service.common.req.UserExtPageREQ;
+import com.roncoo.education.user.service.common.resq.UserExtPageRESQ;
 import com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt;
 import com.roncoo.education.user.service.dao.impl.mapper.entity.UserExtExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +33,6 @@ public interface UserExtMapper {
     int updateByPrimaryKeySelective(UserExt record);
 
     int updateByPrimaryKey(UserExt record);
+
+    List<UserExtPageRESQ> selectUnionSvip(@Param("paramMap") UserExtPageREQ paramMap);
 }

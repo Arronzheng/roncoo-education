@@ -2,6 +2,8 @@ package com.roncoo.education.course.service.biz.pc;
 
 import java.util.List;
 
+import com.roncoo.education.course.service.dao.*;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -13,15 +15,6 @@ import com.roncoo.education.course.service.common.req.ZoneCourseUpdateREQ;
 import com.roncoo.education.course.service.common.req.ZoneCourseViewREQ;
 import com.roncoo.education.course.service.common.resq.ZoneCoursePageRESQ;
 import com.roncoo.education.course.service.common.resq.ZoneCourseViewRESQ;
-import com.roncoo.education.course.service.dao.CourseCategoryDao;
-import com.roncoo.education.course.service.dao.CourseDao;
-import com.roncoo.education.course.service.dao.ZoneCourseDao;
-import com.roncoo.education.course.service.dao.ZoneDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseCategory;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Zone;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneCourse;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneCourseExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneCourseExample.Criteria;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
@@ -45,12 +38,12 @@ public class PcApiZoneCourseBiz {
 	@Autowired
 	private CourseCategoryDao courseCategoryDao;
 	@Autowired
-	private CourseDao courseDao;
+	private CourseAuditDao courseAuditDao;
 
 	/**
 	 * 分页列出
 	 * 
-	 * @param zoneCoursePageREQ
+	 * @param req
 	 * @return
 	 */
 	public Result<Page<ZoneCoursePageRESQ>> listForPage(ZoneCoursePageREQ req) {
@@ -61,11 +54,11 @@ public class PcApiZoneCourseBiz {
 		Criteria c = example.createCriteria();
 		c.andZoneIdEqualTo(req.getZoneId());
 		if (!StringUtils.isEmpty(req.getCourseName())) {
-			Course course = courseDao.getByCourseName(req.getCourseName());
-			if (ObjectUtil.isNull(course)) {
+			CourseAudit courseAudit = courseAuditDao.getByCourseName(req.getCourseName());
+			if (ObjectUtil.isNull(courseAudit)) {
 				c.andCourseIdEqualTo(0L);
 			} else {
-				c.andCourseIdEqualTo(course.getId());
+				c.andCourseIdEqualTo(courseAudit.getId());
 			}
 		}
 		example.setOrderByClause("status_id desc, sort desc, id desc");
@@ -73,28 +66,28 @@ public class PcApiZoneCourseBiz {
 		Page<ZoneCoursePageRESQ> page = PageUtil.transform(listForPage, ZoneCoursePageRESQ.class);
 		// 根据课程ID获取课程信息
 		for (ZoneCoursePageRESQ resq : page.getList()) {
-			List<Course> course = courseDao.listByCategoryId(resq.getCourseId());
-			for (Course courseinfo : course) {
+			List<CourseAudit> courseAudit = courseAuditDao.listByCategoryId(resq.getCourseId());
+			for (CourseAudit courseAuditInfo : courseAudit) {
 				// 获取课程所属分类
-				if (courseinfo.getCategoryId1() != null && courseinfo.getCategoryId1() != 0) {
-					CourseCategory courseCategory = courseCategoryDao.getById(courseinfo.getCategoryId1());
+				if (courseAuditInfo.getCategoryId1() != null && courseAuditInfo.getCategoryId1() != 0) {
+					CourseCategory courseCategory = courseCategoryDao.getById(courseAuditInfo.getCategoryId1());
 					if (courseCategory != null) {
 						resq.setCategoryName1(courseCategory.getCategoryName());
 					}
 				}
-				if (courseinfo.getCategoryId2() != null && courseinfo.getCategoryId2() != 0) {
-					CourseCategory courseCategory = courseCategoryDao.getById(courseinfo.getCategoryId2());
+				if (courseAuditInfo.getCategoryId2() != null && courseAuditInfo.getCategoryId2() != 0) {
+					CourseCategory courseCategory = courseCategoryDao.getById(courseAuditInfo.getCategoryId2());
 					if (courseCategory != null) {
 						resq.setCategoryName2(courseCategory.getCategoryName());
 					}
 				}
-				if (courseinfo.getCategoryId3() != null && courseinfo.getCategoryId3() != 0) {
-					CourseCategory courseCategory = courseCategoryDao.getById(courseinfo.getCategoryId3());
+				if (courseAuditInfo.getCategoryId3() != null && courseAuditInfo.getCategoryId3() != 0) {
+					CourseCategory courseCategory = courseCategoryDao.getById(courseAuditInfo.getCategoryId3());
 					if (courseCategory != null) {
 						resq.setCategoryName3(courseCategory.getCategoryName());
 					}
 				}
-				resq.setCourseName(courseinfo.getCourseName());
+				resq.setCourseName(courseAuditInfo.getCourseName());
 			}
 
 		}
@@ -121,8 +114,8 @@ public class PcApiZoneCourseBiz {
 		}
 
 		// 根据课程编号获取课程信息
-		Course course = courseDao.getByCourseIdAndStatusId(req.getCourseId(), StatusIdEnum.YES.getCode());
-		if (ObjectUtil.isNull(course) && !StatusIdEnum.YES.getCode().equals(course.getStatusId())) {
+		CourseAudit courseAudit = courseAuditDao.getByCourseIdAndStatusId(req.getCourseId(), StatusIdEnum.YES.getCode());
+		if (ObjectUtil.isNull(courseAudit) && !StatusIdEnum.YES.getCode().equals(courseAudit.getStatusId())) {
 			return Result.error("找不到课程信息");
 		}
 
@@ -133,7 +126,7 @@ public class PcApiZoneCourseBiz {
 
 		// 保存分区关联课程信息
 		ZoneCourse result = new ZoneCourse();
-		result.setCourseId(course.getId());
+		result.setCourseId(courseAudit.getId());
 		result.setZoneId(req.getZoneId());
 		result.setSort(1);
 		int results = dao.save(result);

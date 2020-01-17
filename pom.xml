@@ -306,7 +306,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -370,6 +370,8 @@
 		<module>roncoo-education-job</module>
 		<!-- 网关接口 -->
 		<module>roncoo-education-gateway</module>
+		<!-- 微信公众号 -->
+		<module>roncoo-education-wechat</module>
 	</modules>
 
 </project>

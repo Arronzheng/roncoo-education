@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.util.tools;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ public final class WebUtil {
 
 	/**
 	 * 判断是否为ajax请求
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -57,7 +54,7 @@ public final class WebUtil {
 
 	/**
 	 * 封装请求参数，转换成map
-	 * 
+	 *
 	 * @param webRequest
 	 * @return
 	 */

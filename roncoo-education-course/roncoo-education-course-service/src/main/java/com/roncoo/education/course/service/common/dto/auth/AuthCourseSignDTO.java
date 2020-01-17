@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.common.dto.auth;
 
 import java.io.Serializable;
@@ -31,7 +28,7 @@ public class AuthCourseSignDTO implements Serializable {
 
     @ApiModelProperty(value = "h5播放token值", required = true)
     private String token;
-    
+
     @ApiModelProperty(value = "code值", required = true)
     private String code;
 

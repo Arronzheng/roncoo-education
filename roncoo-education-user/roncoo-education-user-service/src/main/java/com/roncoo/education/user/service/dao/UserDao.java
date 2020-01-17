@@ -30,4 +30,8 @@ public interface UserDao {
 	 * @author wuyun
 	 */
 	Page<UserExtMsgVO> pageByStatusIdForMsg(Integer statusId, int pageCurrent, int pageSize);
+
+    User findByopenid(String openId);
+
+    int updateByUserNo(User user);
 }

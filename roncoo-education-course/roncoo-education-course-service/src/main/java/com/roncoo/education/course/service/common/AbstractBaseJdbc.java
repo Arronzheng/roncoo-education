@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.service.common;
 
 import java.io.Serializable;
@@ -17,7 +14,7 @@ import com.roncoo.education.util.base.PageUtil;
 
 /**
  * spirngjdbc 基本支撑类
- * 
+ *
  * @author hugovon
  * @version 1.0
  */

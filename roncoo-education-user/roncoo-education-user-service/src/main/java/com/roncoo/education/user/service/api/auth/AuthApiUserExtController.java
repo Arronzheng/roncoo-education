@@ -1,5 +1,8 @@
 package com.roncoo.education.user.service.api.auth;
 
+import com.roncoo.education.course.common.bean.vo.CourseUserCollectionVO;
+import com.roncoo.education.user.service.common.bo.auth.AuthUserUpdateBO;
+import com.roncoo.education.user.service.common.dto.auth.AuthApiUserCollectionsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,8 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Result;
 
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
 
 /**
  * 用户教育信息
@@ -37,6 +42,15 @@ public class AuthApiUserExtController extends BaseController {
 	}
 
 	/**
+	 * 判断用户是否是会员
+	 */
+	@ApiOperation(value = "判断用户是否是会员", notes = "根据userNo获取用户信息接口")
+	@RequestMapping(value = "/isVip", method = RequestMethod.POST)
+	public Result<Boolean> isVip(@RequestBody AuthUserExtViewBO authUserExtViewBO) {
+		return biz.isVip(authUserExtViewBO);
+	}
+
+	/**
 	 * 用户信息更新接口
 	 */
 	@ApiOperation(value = "用户信息更新接口", notes = "用户信息更新接口")
@@ -44,5 +58,24 @@ public class AuthApiUserExtController extends BaseController {
 	public Result<AuthUserExtDTO> update(@RequestBody AuthUserExtBO authUserExtBO) {
 		return biz.update(authUserExtBO);
 	}
+
+	/**
+	 * 用户手机更新接口
+	 */
+	@ApiOperation(value = "用户手机更新接口", notes = "用户手机更新接口")
+	@RequestMapping(value = "/updatePhone", method = RequestMethod.POST)
+	public Result<AuthUserExtDTO> updatePhone(@RequestBody AuthUserUpdateBO authUserUpdateBO) {
+		return biz.updatePhone(authUserUpdateBO);
+	}
+
+	/**
+	 * 用户所有收藏课程接口
+	 */
+	@ApiOperation(value = "用户所有收藏课程接口", notes = "用户所有收藏课程接口")
+	@RequestMapping(value = "/collections", method = RequestMethod.POST)
+	public Result<AuthApiUserCollectionsDTO> collections(@RequestBody AuthUserExtViewBO authUserExtViewBO) {
+		return biz.collections(authUserExtViewBO);
+	}
+
 
 }

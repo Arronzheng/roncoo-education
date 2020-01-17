@@ -1,6 +1,3 @@
-/**
- * Copyright 2015-现在 广州市领课网络科技有限公司
- */
 package com.roncoo.education.course.common.bean.vo;
 
 import java.io.Serializable;
@@ -11,7 +8,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 收入统计
- * 
+ *
  * @author forest
  */
 @Data

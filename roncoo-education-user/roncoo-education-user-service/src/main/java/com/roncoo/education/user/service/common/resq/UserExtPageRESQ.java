@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.roncoo.education.user.service.dao.impl.mapper.entity.Svip;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -80,5 +81,15 @@ public class UserExtPageRESQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "备注")
 	private String remark;
+	/**
+	 * 是否会员
+	 */
+	@ApiModelProperty(value = "是否会员")
+	private Integer isVip;
+	/**
+	 * 会员信息
+	 */
+	@ApiModelProperty(value = "会员信息")
+	private Svip vip;
 
 }
