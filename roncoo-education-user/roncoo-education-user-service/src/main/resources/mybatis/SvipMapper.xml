@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roncoo.education.user.service.dao.impl.mapper.SvipMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.roncoo.education.user.service.dao.impl.mapper.entity.Svip">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+            <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+            <result column="due_time" property="dueTime" jdbcType="TIMESTAMP"/>
+            <result column="status_id" property="statusId" jdbcType="TINYINT"/>
+            <result column="user_no" property="userNo" jdbcType="BIGINT"/>
+        </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+        <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, gmt_create, start_time, due_time, status_id, user_no
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.SvipExample">
+        select
+            <if test="distinct" >
+                distinct
+            </if>
+            <include refid="Base_Column_List" />
+        from svip
+            <if test="_parameter != null" >
+                <include refid="Example_Where_Clause" />
+            </if>
+            <if test="orderByClause != null" >
+                order by ${orderByClause}
+            </if>
+            <if test="limitStart >= 0" >
+                limit ${limitStart} , ${pageSize}
+            </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+            <include refid="Base_Column_List" />
+        from svip
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from svip
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.SvipExample" >
+        delete from svip
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.Svip" >
+        insert into svip
+        (
+         id, gmt_create, start_time, due_time, status_id, user_no
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{gmtCreate,jdbcType=TIMESTAMP},
+            #{startTime,jdbcType=TIMESTAMP},
+            #{dueTime,jdbcType=TIMESTAMP},
+            #{statusId,jdbcType=TINYINT},
+            #{userNo,jdbcType=BIGINT},
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.Svip" >
+        insert into svip
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create,
+            </if>
+            <if test="startTime != null" >
+                start_time,
+            </if>
+            <if test="dueTime != null" >
+                due_time,
+            </if>
+            <if test="statusId != null" >
+                status_id,
+            </if>
+            <if test="userNo != null" >
+                user_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null" >
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="startTime != null" >
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dueTime != null" >
+                #{dueTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="statusId != null" >
+                #{statusId,jdbcType=TINYINT},
+            </if>
+            <if test="userNo != null" >
+                #{userNo,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.SvipExample" resultType="java.lang.Integer" >
+        select count(*) from svip
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update svip
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.gmtCreate != null" >
+                gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.startTime != null" >
+                start_time = #{record.startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.dueTime != null" >
+                due_time = #{record.dueTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.statusId != null" >
+                status_id = #{record.statusId,jdbcType=TINYINT},
+            </if>
+            <if test="record.userNo != null" >
+                user_no = #{record.userNo,jdbcType=BIGINT},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update svip
+        set
+            id = #{record.id,jdbcType=BIGINT},
+            gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+            start_time = #{record.startTime,jdbcType=TIMESTAMP},
+            due_time = #{record.dueTime,jdbcType=TIMESTAMP},
+            status_id = #{record.statusId,jdbcType=TINYINT},
+            user_no = #{record.userNo,jdbcType=BIGINT},
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.Svip" >
+        update svip
+        <set >
+                <if test="gmtCreate != null" >
+                    gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="startTime != null" >
+                    start_time = #{startTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="dueTime != null" >
+                    due_time = #{dueTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="statusId != null" >
+                    status_id = #{statusId,jdbcType=TINYINT},
+                </if>
+                <if test="userNo != null" >
+                    user_no = #{userNo,jdbcType=BIGINT},
+                </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.Svip" >
+        update svip
+        set
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+                due_time = #{dueTime,jdbcType=TIMESTAMP},
+                status_id = #{statusId,jdbcType=TINYINT},
+                user_no = #{userNo,jdbcType=BIGINT},
+        where
+        id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="getVipByUserNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from svip
+        where
+        user_no = #{userNo,jdbcType=BIGINT}
+    </select>
+
+</mapper>
