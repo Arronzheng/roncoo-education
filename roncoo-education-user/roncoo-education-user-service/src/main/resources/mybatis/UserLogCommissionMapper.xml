@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roncoo.education.user.service.dao.impl.mapper.UserLogCommissionMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommission">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="user_no" property="userNo" jdbcType="BIGINT"/>
+            <result column="source_user_no" property="sourceUserNo" jdbcType="BIGINT"/>
+            <result column="order_no" property="orderNo" jdbcType="BIGINT"/>
+            <result column="commission" property="commission" jdbcType="DECIMAL"/>
+            <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+        </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+        <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_no, source_user_no, order_no, commission, add_time
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommissionExample">
+        select
+            <if test="distinct" >
+                distinct
+            </if>
+            <include refid="Base_Column_List" />
+        from user_log_commission
+            <if test="_parameter != null" >
+                <include refid="Example_Where_Clause" />
+            </if>
+            <if test="orderByClause != null" >
+                order by ${orderByClause}
+            </if>
+            <if test="limitStart >= 0" >
+                limit ${limitStart} , ${pageSize}
+            </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+            <include refid="Base_Column_List" />
+        from user_log_commission
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from user_log_commission
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommissionExample" >
+        delete from user_log_commission
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommission" >
+        insert into user_log_commission
+        (
+         id, user_no, source_user_no, order_no, commission, add_time
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{userNo,jdbcType=BIGINT},
+            #{sourceUserNo,jdbcType=BIGINT},
+            #{orderNo,jdbcType=BIGINT},
+            #{commission,jdbcType=DECIMAL},
+            #{addTime,jdbcType=TIMESTAMP},
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommission" >
+        insert into user_log_commission
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="userNo != null" >
+                user_no,
+            </if>
+            <if test="sourceUserNo != null" >
+                source_user_no,
+            </if>
+            <if test="orderNo != null" >
+                order_no,
+            </if>
+            <if test="commission != null" >
+                commission,
+            </if>
+            <if test="addTime != null" >
+                add_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userNo != null" >
+                #{userNo,jdbcType=BIGINT},
+            </if>
+            <if test="sourceUserNo != null" >
+                #{sourceUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null" >
+                #{orderNo,jdbcType=BIGINT},
+            </if>
+            <if test="commission != null" >
+                #{commission,jdbcType=DECIMAL},
+            </if>
+            <if test="addTime != null" >
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommissionExample" resultType="java.lang.Integer" >
+        select count(*) from user_log_commission
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update user_log_commission
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.userNo != null" >
+                user_no = #{record.userNo,jdbcType=BIGINT},
+            </if>
+            <if test="record.sourceUserNo != null" >
+                source_user_no = #{record.sourceUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="record.orderNo != null" >
+                order_no = #{record.orderNo,jdbcType=BIGINT},
+            </if>
+            <if test="record.commission != null" >
+                commission = #{record.commission,jdbcType=DECIMAL},
+            </if>
+            <if test="record.addTime != null" >
+                add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update user_log_commission
+        set
+            id = #{record.id,jdbcType=BIGINT},
+            user_no = #{record.userNo,jdbcType=BIGINT},
+            source_user_no = #{record.sourceUserNo,jdbcType=BIGINT},
+            order_no = #{record.orderNo,jdbcType=BIGINT},
+            commission = #{record.commission,jdbcType=DECIMAL},
+            add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommission" >
+        update user_log_commission
+        <set >
+                <if test="userNo != null" >
+                    user_no = #{userNo,jdbcType=BIGINT},
+                </if>
+                <if test="sourceUserNo != null" >
+                    source_user_no = #{sourceUserNo,jdbcType=BIGINT},
+                </if>
+                <if test="orderNo != null" >
+                    order_no = #{orderNo,jdbcType=BIGINT},
+                </if>
+                <if test="commission != null" >
+                    commission = #{commission,jdbcType=DECIMAL},
+                </if>
+                <if test="addTime != null" >
+                    add_time = #{addTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserLogCommission" >
+        update user_log_commission
+        set
+                user_no = #{userNo,jdbcType=BIGINT},
+                source_user_no = #{sourceUserNo,jdbcType=BIGINT},
+                order_no = #{orderNo,jdbcType=BIGINT},
+                commission = #{commission,jdbcType=DECIMAL},
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+        where
+        id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

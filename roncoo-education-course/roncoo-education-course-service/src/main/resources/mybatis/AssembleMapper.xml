@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roncoo.education.course.service.dao.impl.mapper.AssembleMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.roncoo.education.course.service.dao.impl.mapper.entity.Assemble">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="uid" property="uid" jdbcType="BIGINT"/>
+            <result column="assemble_id" property="assembleId" jdbcType="BIGINT"/>
+            <result column="order_id" property="orderId" jdbcType="BIGINT"/>
+            <result column="total_num" property="totalNum" jdbcType="INTEGER"/>
+            <result column="total_price" property="totalPrice" jdbcType="DECIMAL"/>
+            <result column="cid" property="cid" jdbcType="BIGINT"/>
+            <result column="pid" property="pid" jdbcType="BIGINT"/>
+            <result column="people" property="people" jdbcType="INTEGER"/>
+            <result column="price" property="price" jdbcType="DECIMAL"/>
+            <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+            <result column="stop_time" property="stopTime" jdbcType="TIMESTAMP"/>
+            <result column="is_asmer" property="isAsmer" jdbcType="TINYINT"/>
+            <result column="is_tpl" property="isTpl" jdbcType="TINYINT"/>
+            <result column="is_refund" property="isRefund" jdbcType="TINYINT"/>
+            <result column="status" property="status" jdbcType="TINYINT"/>
+        </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+        <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uid, assemble_id, order_id, total_num, total_price, cid, pid, people, price, add_time, stop_time, is_asmer, is_tpl, is_refund, status
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleExample">
+        select
+            <if test="distinct" >
+                distinct
+            </if>
+            <include refid="Base_Column_List" />
+        from assemble
+            <if test="_parameter != null" >
+                <include refid="Example_Where_Clause" />
+            </if>
+            <if test="orderByClause != null" >
+                order by ${orderByClause}
+            </if>
+            <if test="limitStart >= 0" >
+                limit ${limitStart} , ${pageSize}
+            </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+            <include refid="Base_Column_List" />
+        from assemble
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from assemble
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleExample" >
+        delete from assemble
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Assemble" >
+        insert into assemble
+        (
+         id, uid, assemble_id, order_id, total_num, total_price, cid, pid, people, price, add_time, stop_time, is_asmer, is_tpl, is_refund, status
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{uid,jdbcType=BIGINT},
+            #{assembleId,jdbcType=BIGINT},
+            #{orderId,jdbcType=BIGINT},
+            #{totalNum,jdbcType=INTEGER},
+            #{totalPrice,jdbcType=DECIMAL},
+            #{cid,jdbcType=BIGINT},
+            #{pid,jdbcType=BIGINT},
+            #{people,jdbcType=INTEGER},
+            #{price,jdbcType=DECIMAL},
+            #{addTime,jdbcType=TIMESTAMP},
+            #{stopTime,jdbcType=TIMESTAMP},
+            #{isAsmer,jdbcType=TINYINT},
+            #{isTpl,jdbcType=TINYINT},
+            #{isRefund,jdbcType=TINYINT},
+            #{status,jdbcType=TINYINT},
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Assemble" >
+        insert into assemble
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="uid != null" >
+                uid,
+            </if>
+            <if test="assembleId != null" >
+                assemble_id,
+            </if>
+            <if test="orderId != null" >
+                order_id,
+            </if>
+            <if test="totalNum != null" >
+                total_num,
+            </if>
+            <if test="totalPrice != null" >
+                total_price,
+            </if>
+            <if test="cid != null" >
+                cid,
+            </if>
+            <if test="pid != null" >
+                pid,
+            </if>
+            <if test="people != null" >
+                people,
+            </if>
+            <if test="price != null" >
+                price,
+            </if>
+            <if test="addTime != null" >
+                add_time,
+            </if>
+            <if test="stopTime != null" >
+                stop_time,
+            </if>
+            <if test="isAsmer != null" >
+                is_asmer,
+            </if>
+            <if test="isTpl != null" >
+                is_tpl,
+            </if>
+            <if test="isRefund != null" >
+                is_refund,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="uid != null" >
+                #{uid,jdbcType=BIGINT},
+            </if>
+            <if test="assembleId != null" >
+                #{assembleId,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null" >
+                #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="totalNum != null" >
+                #{totalNum,jdbcType=INTEGER},
+            </if>
+            <if test="totalPrice != null" >
+                #{totalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="cid != null" >
+                #{cid,jdbcType=BIGINT},
+            </if>
+            <if test="pid != null" >
+                #{pid,jdbcType=BIGINT},
+            </if>
+            <if test="people != null" >
+                #{people,jdbcType=INTEGER},
+            </if>
+            <if test="price != null" >
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="addTime != null" >
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null" >
+                #{stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isAsmer != null" >
+                #{isAsmer,jdbcType=TINYINT},
+            </if>
+            <if test="isTpl != null" >
+                #{isTpl,jdbcType=TINYINT},
+            </if>
+            <if test="isRefund != null" >
+                #{isRefund,jdbcType=TINYINT},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleExample" resultType="java.lang.Integer" >
+        select count(*) from assemble
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update assemble
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.uid != null" >
+                uid = #{record.uid,jdbcType=BIGINT},
+            </if>
+            <if test="record.assembleId != null" >
+                assemble_id = #{record.assembleId,jdbcType=BIGINT},
+            </if>
+            <if test="record.orderId != null" >
+                order_id = #{record.orderId,jdbcType=BIGINT},
+            </if>
+            <if test="record.totalNum != null" >
+                total_num = #{record.totalNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.totalPrice != null" >
+                total_price = #{record.totalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.cid != null" >
+                cid = #{record.cid,jdbcType=BIGINT},
+            </if>
+            <if test="record.pid != null" >
+                pid = #{record.pid,jdbcType=BIGINT},
+            </if>
+            <if test="record.people != null" >
+                people = #{record.people,jdbcType=INTEGER},
+            </if>
+            <if test="record.price != null" >
+                price = #{record.price,jdbcType=DECIMAL},
+            </if>
+            <if test="record.addTime != null" >
+                add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.stopTime != null" >
+                stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isAsmer != null" >
+                is_asmer = #{record.isAsmer,jdbcType=TINYINT},
+            </if>
+            <if test="record.isTpl != null" >
+                is_tpl = #{record.isTpl,jdbcType=TINYINT},
+            </if>
+            <if test="record.isRefund != null" >
+                is_refund = #{record.isRefund,jdbcType=TINYINT},
+            </if>
+            <if test="record.status != null" >
+                status = #{record.status,jdbcType=TINYINT},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update assemble
+        set
+            id = #{record.id,jdbcType=BIGINT},
+            uid = #{record.uid,jdbcType=BIGINT},
+            assemble_id = #{record.assembleId,jdbcType=BIGINT},
+            order_id = #{record.orderId,jdbcType=BIGINT},
+            total_num = #{record.totalNum,jdbcType=INTEGER},
+            total_price = #{record.totalPrice,jdbcType=DECIMAL},
+            cid = #{record.cid,jdbcType=BIGINT},
+            pid = #{record.pid,jdbcType=BIGINT},
+            people = #{record.people,jdbcType=INTEGER},
+            price = #{record.price,jdbcType=DECIMAL},
+            add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+            is_asmer = #{record.isAsmer,jdbcType=TINYINT},
+            is_tpl = #{record.isTpl,jdbcType=TINYINT},
+            is_refund = #{record.isRefund,jdbcType=TINYINT},
+            status = #{record.status,jdbcType=TINYINT},
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Assemble" >
+        update assemble
+        <set >
+                <if test="uid != null" >
+                    uid = #{uid,jdbcType=BIGINT},
+                </if>
+                <if test="assembleId != null" >
+                    assemble_id = #{assembleId,jdbcType=BIGINT},
+                </if>
+                <if test="orderId != null" >
+                    order_id = #{orderId,jdbcType=BIGINT},
+                </if>
+                <if test="totalNum != null" >
+                    total_num = #{totalNum,jdbcType=INTEGER},
+                </if>
+                <if test="totalPrice != null" >
+                    total_price = #{totalPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="cid != null" >
+                    cid = #{cid,jdbcType=BIGINT},
+                </if>
+                <if test="pid != null" >
+                    pid = #{pid,jdbcType=BIGINT},
+                </if>
+                <if test="people != null" >
+                    people = #{people,jdbcType=INTEGER},
+                </if>
+                <if test="price != null" >
+                    price = #{price,jdbcType=DECIMAL},
+                </if>
+                <if test="addTime != null" >
+                    add_time = #{addTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="stopTime != null" >
+                    stop_time = #{stopTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="isAsmer != null" >
+                    is_asmer = #{isAsmer,jdbcType=TINYINT},
+                </if>
+                <if test="isTpl != null" >
+                    is_tpl = #{isTpl,jdbcType=TINYINT},
+                </if>
+                <if test="isRefund != null" >
+                    is_refund = #{isRefund,jdbcType=TINYINT},
+                </if>
+                <if test="status != null" >
+                    status = #{status,jdbcType=TINYINT},
+                </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Assemble" >
+        update assemble
+        set
+                uid = #{uid,jdbcType=BIGINT},
+                assemble_id = #{assembleId,jdbcType=BIGINT},
+                order_id = #{orderId,jdbcType=BIGINT},
+                total_num = #{totalNum,jdbcType=INTEGER},
+                total_price = #{totalPrice,jdbcType=DECIMAL},
+                cid = #{cid,jdbcType=BIGINT},
+                pid = #{pid,jdbcType=BIGINT},
+                people = #{people,jdbcType=INTEGER},
+                price = #{price,jdbcType=DECIMAL},
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+                stop_time = #{stopTime,jdbcType=TIMESTAMP},
+                is_asmer = #{isAsmer,jdbcType=TINYINT},
+                is_tpl = #{isTpl,jdbcType=TINYINT},
+                is_refund = #{isRefund,jdbcType=TINYINT},
+                status = #{status,jdbcType=TINYINT},
+        where
+        id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

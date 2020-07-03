@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roncoo.education.course.service.dao.impl.mapper.AssembleCourseMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="product_id" property="productId" jdbcType="BIGINT"/>
+            <result column="image" property="image" jdbcType="VARCHAR"/>
+            <result column="images" property="images" jdbcType="VARCHAR"/>
+            <result column="title" property="title" jdbcType="VARCHAR"/>
+            <result column="attr" property="attr" jdbcType="VARCHAR"/>
+            <result column="people" property="people" jdbcType="INTEGER"/>
+            <result column="info" property="info" jdbcType="VARCHAR"/>
+            <result column="price" property="price" jdbcType="DECIMAL"/>
+            <result column="sort" property="sort" jdbcType="INTEGER"/>
+            <result column="sales" property="sales" jdbcType="INTEGER"/>
+            <result column="stock" property="stock" jdbcType="INTEGER"/>
+            <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+            <result column="is_host" property="isHost" jdbcType="TINYINT"/>
+            <result column="is_show" property="isShow" jdbcType="TINYINT"/>
+            <result column="mer_use" property="merUse" jdbcType="TINYINT"/>
+            <result column="is_postage" property="isPostage" jdbcType="TINYINT"/>
+            <result column="postage" property="postage" jdbcType="DECIMAL"/>
+            <result column="description" property="description" jdbcType="VARCHAR"/>
+            <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+            <result column="stop_time" property="stopTime" jdbcType="TIMESTAMP"/>
+            <result column="effective_time" property="effectiveTime" jdbcType="INTEGER"/>
+            <result column="cost" property="cost" jdbcType="INTEGER"/>
+            <result column="browse" property="browse" jdbcType="INTEGER"/>
+            <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+        <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, product_id, image, images, title, attr, people, info, price, sort, sales, stock, add_time, is_host, is_show, mer_use, is_postage, postage, description, start_time, stop_time, effective_time, cost, browse, unit_name
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourseExample">
+        select
+            <if test="distinct" >
+                distinct
+            </if>
+            <include refid="Base_Column_List" />
+        from assemble_course
+            <if test="_parameter != null" >
+                <include refid="Example_Where_Clause" />
+            </if>
+            <if test="orderByClause != null" >
+                order by ${orderByClause}
+            </if>
+            <if test="limitStart >= 0" >
+                limit ${limitStart} , ${pageSize}
+            </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+            <include refid="Base_Column_List" />
+        from assemble_course
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from assemble_course
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourseExample" >
+        delete from assemble_course
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse" >
+        insert into assemble_course
+        (
+         id, product_id, image, images, title, attr, people, info, price, sort, sales, stock, add_time, is_host, is_show, mer_use, is_postage, postage, description, start_time, stop_time, effective_time, cost, browse, unit_name
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{productId,jdbcType=BIGINT},
+            #{image,jdbcType=VARCHAR},
+            #{images,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR},
+            #{attr,jdbcType=VARCHAR},
+            #{people,jdbcType=INTEGER},
+            #{info,jdbcType=VARCHAR},
+            #{price,jdbcType=DECIMAL},
+            #{sort,jdbcType=INTEGER},
+            #{sales,jdbcType=INTEGER},
+            #{stock,jdbcType=INTEGER},
+            #{addTime,jdbcType=TIMESTAMP},
+            #{isHost,jdbcType=TINYINT},
+            #{isShow,jdbcType=TINYINT},
+            #{merUse,jdbcType=TINYINT},
+            #{isPostage,jdbcType=TINYINT},
+            #{postage,jdbcType=DECIMAL},
+            #{description,jdbcType=VARCHAR},
+            #{startTime,jdbcType=TIMESTAMP},
+            #{stopTime,jdbcType=TIMESTAMP},
+            #{effectiveTime,jdbcType=INTEGER},
+            #{cost,jdbcType=INTEGER},
+            #{browse,jdbcType=INTEGER},
+            #{unitName,jdbcType=VARCHAR},
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse" >
+        insert into assemble_course
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="productId != null" >
+                product_id,
+            </if>
+            <if test="image != null" >
+                image,
+            </if>
+            <if test="images != null" >
+                images,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="attr != null" >
+                attr,
+            </if>
+            <if test="people != null" >
+                people,
+            </if>
+            <if test="info != null" >
+                info,
+            </if>
+            <if test="price != null" >
+                price,
+            </if>
+            <if test="sort != null" >
+                sort,
+            </if>
+            <if test="sales != null" >
+                sales,
+            </if>
+            <if test="stock != null" >
+                stock,
+            </if>
+            <if test="addTime != null" >
+                add_time,
+            </if>
+            <if test="isHost != null" >
+                is_host,
+            </if>
+            <if test="isShow != null" >
+                is_show,
+            </if>
+            <if test="merUse != null" >
+                mer_use,
+            </if>
+            <if test="isPostage != null" >
+                is_postage,
+            </if>
+            <if test="postage != null" >
+                postage,
+            </if>
+            <if test="description != null" >
+                description,
+            </if>
+            <if test="startTime != null" >
+                start_time,
+            </if>
+            <if test="stopTime != null" >
+                stop_time,
+            </if>
+            <if test="effectiveTime != null" >
+                effective_time,
+            </if>
+            <if test="cost != null" >
+                cost,
+            </if>
+            <if test="browse != null" >
+                browse,
+            </if>
+            <if test="unitName != null" >
+                unit_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null" >
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="image != null" >
+                #{image,jdbcType=VARCHAR},
+            </if>
+            <if test="images != null" >
+                #{images,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="attr != null" >
+                #{attr,jdbcType=VARCHAR},
+            </if>
+            <if test="people != null" >
+                #{people,jdbcType=INTEGER},
+            </if>
+            <if test="info != null" >
+                #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null" >
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="sort != null" >
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="sales != null" >
+                #{sales,jdbcType=INTEGER},
+            </if>
+            <if test="stock != null" >
+                #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null" >
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isHost != null" >
+                #{isHost,jdbcType=TINYINT},
+            </if>
+            <if test="isShow != null" >
+                #{isShow,jdbcType=TINYINT},
+            </if>
+            <if test="merUse != null" >
+                #{merUse,jdbcType=TINYINT},
+            </if>
+            <if test="isPostage != null" >
+                #{isPostage,jdbcType=TINYINT},
+            </if>
+            <if test="postage != null" >
+                #{postage,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null" >
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null" >
+                #{stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="effectiveTime != null" >
+                #{effectiveTime,jdbcType=INTEGER},
+            </if>
+            <if test="cost != null" >
+                #{cost,jdbcType=INTEGER},
+            </if>
+            <if test="browse != null" >
+                #{browse,jdbcType=INTEGER},
+            </if>
+            <if test="unitName != null" >
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourseExample" resultType="java.lang.Integer" >
+        select count(*) from assemble_course
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update assemble_course
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.productId != null" >
+                product_id = #{record.productId,jdbcType=BIGINT},
+            </if>
+            <if test="record.image != null" >
+                image = #{record.image,jdbcType=VARCHAR},
+            </if>
+            <if test="record.images != null" >
+                images = #{record.images,jdbcType=VARCHAR},
+            </if>
+            <if test="record.title != null" >
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.attr != null" >
+                attr = #{record.attr,jdbcType=VARCHAR},
+            </if>
+            <if test="record.people != null" >
+                people = #{record.people,jdbcType=INTEGER},
+            </if>
+            <if test="record.info != null" >
+                info = #{record.info,jdbcType=VARCHAR},
+            </if>
+            <if test="record.price != null" >
+                price = #{record.price,jdbcType=DECIMAL},
+            </if>
+            <if test="record.sort != null" >
+                sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.sales != null" >
+                sales = #{record.sales,jdbcType=INTEGER},
+            </if>
+            <if test="record.stock != null" >
+                stock = #{record.stock,jdbcType=INTEGER},
+            </if>
+            <if test="record.addTime != null" >
+                add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isHost != null" >
+                is_host = #{record.isHost,jdbcType=TINYINT},
+            </if>
+            <if test="record.isShow != null" >
+                is_show = #{record.isShow,jdbcType=TINYINT},
+            </if>
+            <if test="record.merUse != null" >
+                mer_use = #{record.merUse,jdbcType=TINYINT},
+            </if>
+            <if test="record.isPostage != null" >
+                is_postage = #{record.isPostage,jdbcType=TINYINT},
+            </if>
+            <if test="record.postage != null" >
+                postage = #{record.postage,jdbcType=DECIMAL},
+            </if>
+            <if test="record.description != null" >
+                description = #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.startTime != null" >
+                start_time = #{record.startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.stopTime != null" >
+                stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.effectiveTime != null" >
+                effective_time = #{record.effectiveTime,jdbcType=INTEGER},
+            </if>
+            <if test="record.cost != null" >
+                cost = #{record.cost,jdbcType=INTEGER},
+            </if>
+            <if test="record.browse != null" >
+                browse = #{record.browse,jdbcType=INTEGER},
+            </if>
+            <if test="record.unitName != null" >
+                unit_name = #{record.unitName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update assemble_course
+        set
+            id = #{record.id,jdbcType=BIGINT},
+            product_id = #{record.productId,jdbcType=BIGINT},
+            image = #{record.image,jdbcType=VARCHAR},
+            images = #{record.images,jdbcType=VARCHAR},
+            title = #{record.title,jdbcType=VARCHAR},
+            attr = #{record.attr,jdbcType=VARCHAR},
+            people = #{record.people,jdbcType=INTEGER},
+            info = #{record.info,jdbcType=VARCHAR},
+            price = #{record.price,jdbcType=DECIMAL},
+            sort = #{record.sort,jdbcType=INTEGER},
+            sales = #{record.sales,jdbcType=INTEGER},
+            stock = #{record.stock,jdbcType=INTEGER},
+            add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            is_host = #{record.isHost,jdbcType=TINYINT},
+            is_show = #{record.isShow,jdbcType=TINYINT},
+            mer_use = #{record.merUse,jdbcType=TINYINT},
+            is_postage = #{record.isPostage,jdbcType=TINYINT},
+            postage = #{record.postage,jdbcType=DECIMAL},
+            description = #{record.description,jdbcType=VARCHAR},
+            start_time = #{record.startTime,jdbcType=TIMESTAMP},
+            stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+            effective_time = #{record.effectiveTime,jdbcType=INTEGER},
+            cost = #{record.cost,jdbcType=INTEGER},
+            browse = #{record.browse,jdbcType=INTEGER},
+            unit_name = #{record.unitName,jdbcType=VARCHAR},
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse" >
+        update assemble_course
+        <set >
+                <if test="productId != null" >
+                    product_id = #{productId,jdbcType=BIGINT},
+                </if>
+                <if test="image != null" >
+                    image = #{image,jdbcType=VARCHAR},
+                </if>
+                <if test="images != null" >
+                    images = #{images,jdbcType=VARCHAR},
+                </if>
+                <if test="title != null" >
+                    title = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="attr != null" >
+                    attr = #{attr,jdbcType=VARCHAR},
+                </if>
+                <if test="people != null" >
+                    people = #{people,jdbcType=INTEGER},
+                </if>
+                <if test="info != null" >
+                    info = #{info,jdbcType=VARCHAR},
+                </if>
+                <if test="price != null" >
+                    price = #{price,jdbcType=DECIMAL},
+                </if>
+                <if test="sort != null" >
+                    sort = #{sort,jdbcType=INTEGER},
+                </if>
+                <if test="sales != null" >
+                    sales = #{sales,jdbcType=INTEGER},
+                </if>
+                <if test="stock != null" >
+                    stock = #{stock,jdbcType=INTEGER},
+                </if>
+                <if test="addTime != null" >
+                    add_time = #{addTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="isHost != null" >
+                    is_host = #{isHost,jdbcType=TINYINT},
+                </if>
+                <if test="isShow != null" >
+                    is_show = #{isShow,jdbcType=TINYINT},
+                </if>
+                <if test="merUse != null" >
+                    mer_use = #{merUse,jdbcType=TINYINT},
+                </if>
+                <if test="isPostage != null" >
+                    is_postage = #{isPostage,jdbcType=TINYINT},
+                </if>
+                <if test="postage != null" >
+                    postage = #{postage,jdbcType=DECIMAL},
+                </if>
+                <if test="description != null" >
+                    description = #{description,jdbcType=VARCHAR},
+                </if>
+                <if test="startTime != null" >
+                    start_time = #{startTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="stopTime != null" >
+                    stop_time = #{stopTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="effectiveTime != null" >
+                    effective_time = #{effectiveTime,jdbcType=INTEGER},
+                </if>
+                <if test="cost != null" >
+                    cost = #{cost,jdbcType=INTEGER},
+                </if>
+                <if test="browse != null" >
+                    browse = #{browse,jdbcType=INTEGER},
+                </if>
+                <if test="unitName != null" >
+                    unit_name = #{unitName,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse" >
+        update assemble_course
+        set
+                product_id = #{productId,jdbcType=BIGINT},
+                image = #{image,jdbcType=VARCHAR},
+                images = #{images,jdbcType=VARCHAR},
+                title = #{title,jdbcType=VARCHAR},
+                attr = #{attr,jdbcType=VARCHAR},
+                people = #{people,jdbcType=INTEGER},
+                info = #{info,jdbcType=VARCHAR},
+                price = #{price,jdbcType=DECIMAL},
+                sort = #{sort,jdbcType=INTEGER},
+                sales = #{sales,jdbcType=INTEGER},
+                stock = #{stock,jdbcType=INTEGER},
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+                is_host = #{isHost,jdbcType=TINYINT},
+                is_show = #{isShow,jdbcType=TINYINT},
+                mer_use = #{merUse,jdbcType=TINYINT},
+                is_postage = #{isPostage,jdbcType=TINYINT},
+                postage = #{postage,jdbcType=DECIMAL},
+                description = #{description,jdbcType=VARCHAR},
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+                stop_time = #{stopTime,jdbcType=TIMESTAMP},
+                effective_time = #{effectiveTime,jdbcType=INTEGER},
+                cost = #{cost,jdbcType=INTEGER},
+                browse = #{browse,jdbcType=INTEGER},
+                unit_name = #{unitName,jdbcType=VARCHAR},
+        where
+        id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

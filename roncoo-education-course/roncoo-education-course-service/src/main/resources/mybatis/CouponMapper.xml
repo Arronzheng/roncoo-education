@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roncoo.education.course.service.dao.impl.mapper.CouponMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.roncoo.education.course.service.dao.impl.mapper.entity.Coupon">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="title" property="title" jdbcType="VARCHAR"/>
+            <result column="integral" property="integral" jdbcType="INTEGER"/>
+            <result column="coupon_price" property="couponPrice" jdbcType="DECIMAL"/>
+            <result column="use_min_price" property="useMinPrice" jdbcType="DECIMAL"/>
+            <result column="coupon_time" property="couponTime" jdbcType="INTEGER"/>
+            <result column="sort" property="sort" jdbcType="INTEGER"/>
+            <result column="status" property="status" jdbcType="TINYINT"/>
+            <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+            <result column="is_del" property="isDel" jdbcType="TINYINT"/>
+            <result column="is_convert" property="isConvert" jdbcType="TINYINT"/>
+        </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+        <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, integral, coupon_price, use_min_price, coupon_time, sort, status, add_time, is_del, is_convert
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CouponExample">
+        select
+            <if test="distinct" >
+                distinct
+            </if>
+            <include refid="Base_Column_List" />
+        from coupon
+            <if test="_parameter != null" >
+                <include refid="Example_Where_Clause" />
+            </if>
+            <if test="orderByClause != null" >
+                order by ${orderByClause}
+            </if>
+            <if test="limitStart >= 0" >
+                limit ${limitStart} , ${pageSize}
+            </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+            <include refid="Base_Column_List" />
+        from coupon
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from coupon
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CouponExample" >
+        delete from coupon
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Coupon" >
+        insert into coupon
+        (
+         id, title, integral, coupon_price, use_min_price, coupon_time, sort, status, add_time, is_del, is_convert
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{title,jdbcType=VARCHAR},
+            #{integral,jdbcType=INTEGER},
+            #{couponPrice,jdbcType=DECIMAL},
+            #{useMinPrice,jdbcType=DECIMAL},
+            #{couponTime,jdbcType=INTEGER},
+            #{sort,jdbcType=INTEGER},
+            #{status,jdbcType=TINYINT},
+            #{addTime,jdbcType=TIMESTAMP},
+            #{isDel,jdbcType=TINYINT},
+            #{isConvert,jdbcType=TINYINT},
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Coupon" >
+        insert into coupon
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="integral != null" >
+                integral,
+            </if>
+            <if test="couponPrice != null" >
+                coupon_price,
+            </if>
+            <if test="useMinPrice != null" >
+                use_min_price,
+            </if>
+            <if test="couponTime != null" >
+                coupon_time,
+            </if>
+            <if test="sort != null" >
+                sort,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="addTime != null" >
+                add_time,
+            </if>
+            <if test="isDel != null" >
+                is_del,
+            </if>
+            <if test="isConvert != null" >
+                is_convert,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="integral != null" >
+                #{integral,jdbcType=INTEGER},
+            </if>
+            <if test="couponPrice != null" >
+                #{couponPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="useMinPrice != null" >
+                #{useMinPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="couponTime != null" >
+                #{couponTime,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null" >
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="addTime != null" >
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null" >
+                #{isDel,jdbcType=TINYINT},
+            </if>
+            <if test="isConvert != null" >
+                #{isConvert,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CouponExample" resultType="java.lang.Integer" >
+        select count(*) from coupon
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update coupon
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.title != null" >
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.integral != null" >
+                integral = #{record.integral,jdbcType=INTEGER},
+            </if>
+            <if test="record.couponPrice != null" >
+                coupon_price = #{record.couponPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.useMinPrice != null" >
+                use_min_price = #{record.useMinPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.couponTime != null" >
+                coupon_time = #{record.couponTime,jdbcType=INTEGER},
+            </if>
+            <if test="record.sort != null" >
+                sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null" >
+                status = #{record.status,jdbcType=TINYINT},
+            </if>
+            <if test="record.addTime != null" >
+                add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isDel != null" >
+                is_del = #{record.isDel,jdbcType=TINYINT},
+            </if>
+            <if test="record.isConvert != null" >
+                is_convert = #{record.isConvert,jdbcType=TINYINT},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update coupon
+        set
+            id = #{record.id,jdbcType=BIGINT},
+            title = #{record.title,jdbcType=VARCHAR},
+            integral = #{record.integral,jdbcType=INTEGER},
+            coupon_price = #{record.couponPrice,jdbcType=DECIMAL},
+            use_min_price = #{record.useMinPrice,jdbcType=DECIMAL},
+            coupon_time = #{record.couponTime,jdbcType=INTEGER},
+            sort = #{record.sort,jdbcType=INTEGER},
+            status = #{record.status,jdbcType=TINYINT},
+            add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            is_del = #{record.isDel,jdbcType=TINYINT},
+            is_convert = #{record.isConvert,jdbcType=TINYINT},
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Coupon" >
+        update coupon
+        <set >
+                <if test="title != null" >
+                    title = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="integral != null" >
+                    integral = #{integral,jdbcType=INTEGER},
+                </if>
+                <if test="couponPrice != null" >
+                    coupon_price = #{couponPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="useMinPrice != null" >
+                    use_min_price = #{useMinPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="couponTime != null" >
+                    coupon_time = #{couponTime,jdbcType=INTEGER},
+                </if>
+                <if test="sort != null" >
+                    sort = #{sort,jdbcType=INTEGER},
+                </if>
+                <if test="status != null" >
+                    status = #{status,jdbcType=TINYINT},
+                </if>
+                <if test="addTime != null" >
+                    add_time = #{addTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="isDel != null" >
+                    is_del = #{isDel,jdbcType=TINYINT},
+                </if>
+                <if test="isConvert != null" >
+                    is_convert = #{isConvert,jdbcType=TINYINT},
+                </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.Coupon" >
+        update coupon
+        set
+                title = #{title,jdbcType=VARCHAR},
+                integral = #{integral,jdbcType=INTEGER},
+                coupon_price = #{couponPrice,jdbcType=DECIMAL},
+                use_min_price = #{useMinPrice,jdbcType=DECIMAL},
+                coupon_time = #{couponTime,jdbcType=INTEGER},
+                sort = #{sort,jdbcType=INTEGER},
+                status = #{status,jdbcType=TINYINT},
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+                is_del = #{isDel,jdbcType=TINYINT},
+                is_convert = #{isConvert,jdbcType=TINYINT},
+        where
+        id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roncoo.education.course.service.dao.impl.mapper.BargainCourseMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="product_id" property="productId" jdbcType="BIGINT"/>
+            <result column="title" property="title" jdbcType="VARCHAR"/>
+            <result column="image" property="image" jdbcType="VARCHAR"/>
+            <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+            <result column="stock" property="stock" jdbcType="INTEGER"/>
+            <result column="sales" property="sales" jdbcType="INTEGER"/>
+            <result column="images" property="images" jdbcType="VARCHAR"/>
+            <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+            <result column="stop_time" property="stopTime" jdbcType="TIMESTAMP"/>
+            <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+            <result column="price" property="price" jdbcType="DECIMAL"/>
+            <result column="min_price" property="minPrice" jdbcType="DECIMAL"/>
+            <result column="num" property="num" jdbcType="INTEGER"/>
+            <result column="bargain_max_price" property="bargainMaxPrice" jdbcType="DECIMAL"/>
+            <result column="bargain_min_price" property="bargainMinPrice" jdbcType="DECIMAL"/>
+            <result column="bargain_num" property="bargainNum" jdbcType="INTEGER"/>
+            <result column="status" property="status" jdbcType="TINYINT"/>
+            <result column="description" property="description" jdbcType="VARCHAR"/>
+            <result column="give_integral" property="giveIntegral" jdbcType="DECIMAL"/>
+            <result column="info" property="info" jdbcType="VARCHAR"/>
+            <result column="cost" property="cost" jdbcType="DECIMAL"/>
+            <result column="sort" property="sort" jdbcType="INTEGER"/>
+            <result column="is_hot" property="isHot" jdbcType="TINYINT"/>
+            <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+            <result column="is_postage" property="isPostage" jdbcType="TINYINT"/>
+            <result column="postage" property="postage" jdbcType="DECIMAL"/>
+            <result column="rule" property="rule" jdbcType="VARCHAR"/>
+            <result column="look" property="look" jdbcType="INTEGER"/>
+            <result column="share" property="share" jdbcType="INTEGER"/>
+        </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+        <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, product_id, title, image, unit_name, stock, sales, images, start_time, stop_time, store_name, price, min_price, num, bargain_max_price, bargain_min_price, bargain_num, status, description, give_integral, info, cost, sort, is_hot, add_time, is_postage, postage, rule, look, share
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourseExample">
+        select
+            <if test="distinct" >
+                distinct
+            </if>
+            <include refid="Base_Column_List" />
+        from bargain_course
+            <if test="_parameter != null" >
+                <include refid="Example_Where_Clause" />
+            </if>
+            <if test="orderByClause != null" >
+                order by ${orderByClause}
+            </if>
+            <if test="limitStart >= 0" >
+                limit ${limitStart} , ${pageSize}
+            </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+            <include refid="Base_Column_List" />
+        from bargain_course
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from bargain_course
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourseExample" >
+        delete from bargain_course
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse" >
+        insert into bargain_course
+        (
+         id, product_id, title, image, unit_name, stock, sales, images, start_time, stop_time, store_name, price, min_price, num, bargain_max_price, bargain_min_price, bargain_num, status, description, give_integral, info, cost, sort, is_hot, add_time, is_postage, postage, rule, look, share
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{productId,jdbcType=BIGINT},
+            #{title,jdbcType=VARCHAR},
+            #{image,jdbcType=VARCHAR},
+            #{unitName,jdbcType=VARCHAR},
+            #{stock,jdbcType=INTEGER},
+            #{sales,jdbcType=INTEGER},
+            #{images,jdbcType=VARCHAR},
+            #{startTime,jdbcType=TIMESTAMP},
+            #{stopTime,jdbcType=TIMESTAMP},
+            #{storeName,jdbcType=VARCHAR},
+            #{price,jdbcType=DECIMAL},
+            #{minPrice,jdbcType=DECIMAL},
+            #{num,jdbcType=INTEGER},
+            #{bargainMaxPrice,jdbcType=DECIMAL},
+            #{bargainMinPrice,jdbcType=DECIMAL},
+            #{bargainNum,jdbcType=INTEGER},
+            #{status,jdbcType=TINYINT},
+            #{description,jdbcType=VARCHAR},
+            #{giveIntegral,jdbcType=DECIMAL},
+            #{info,jdbcType=VARCHAR},
+            #{cost,jdbcType=DECIMAL},
+            #{sort,jdbcType=INTEGER},
+            #{isHot,jdbcType=TINYINT},
+            #{addTime,jdbcType=TIMESTAMP},
+            #{isPostage,jdbcType=TINYINT},
+            #{postage,jdbcType=DECIMAL},
+            #{rule,jdbcType=VARCHAR},
+            #{look,jdbcType=INTEGER},
+            #{share,jdbcType=INTEGER},
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse" >
+        insert into bargain_course
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="productId != null" >
+                product_id,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="image != null" >
+                image,
+            </if>
+            <if test="unitName != null" >
+                unit_name,
+            </if>
+            <if test="stock != null" >
+                stock,
+            </if>
+            <if test="sales != null" >
+                sales,
+            </if>
+            <if test="images != null" >
+                images,
+            </if>
+            <if test="startTime != null" >
+                start_time,
+            </if>
+            <if test="stopTime != null" >
+                stop_time,
+            </if>
+            <if test="storeName != null" >
+                store_name,
+            </if>
+            <if test="price != null" >
+                price,
+            </if>
+            <if test="minPrice != null" >
+                min_price,
+            </if>
+            <if test="num != null" >
+                num,
+            </if>
+            <if test="bargainMaxPrice != null" >
+                bargain_max_price,
+            </if>
+            <if test="bargainMinPrice != null" >
+                bargain_min_price,
+            </if>
+            <if test="bargainNum != null" >
+                bargain_num,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="description != null" >
+                description,
+            </if>
+            <if test="giveIntegral != null" >
+                give_integral,
+            </if>
+            <if test="info != null" >
+                info,
+            </if>
+            <if test="cost != null" >
+                cost,
+            </if>
+            <if test="sort != null" >
+                sort,
+            </if>
+            <if test="isHot != null" >
+                is_hot,
+            </if>
+            <if test="addTime != null" >
+                add_time,
+            </if>
+            <if test="isPostage != null" >
+                is_postage,
+            </if>
+            <if test="postage != null" >
+                postage,
+            </if>
+            <if test="rule != null" >
+                rule,
+            </if>
+            <if test="look != null" >
+                look,
+            </if>
+            <if test="share != null" >
+                share,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null" >
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="image != null" >
+                #{image,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null" >
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="stock != null" >
+                #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="sales != null" >
+                #{sales,jdbcType=INTEGER},
+            </if>
+            <if test="images != null" >
+                #{images,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null" >
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null" >
+                #{stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="storeName != null" >
+                #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null" >
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="minPrice != null" >
+                #{minPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="num != null" >
+                #{num,jdbcType=INTEGER},
+            </if>
+            <if test="bargainMaxPrice != null" >
+                #{bargainMaxPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="bargainMinPrice != null" >
+                #{bargainMinPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="bargainNum != null" >
+                #{bargainNum,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="giveIntegral != null" >
+                #{giveIntegral,jdbcType=DECIMAL},
+            </if>
+            <if test="info != null" >
+                #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="cost != null" >
+                #{cost,jdbcType=DECIMAL},
+            </if>
+            <if test="sort != null" >
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="isHot != null" >
+                #{isHot,jdbcType=TINYINT},
+            </if>
+            <if test="addTime != null" >
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isPostage != null" >
+                #{isPostage,jdbcType=TINYINT},
+            </if>
+            <if test="postage != null" >
+                #{postage,jdbcType=DECIMAL},
+            </if>
+            <if test="rule != null" >
+                #{rule,jdbcType=VARCHAR},
+            </if>
+            <if test="look != null" >
+                #{look,jdbcType=INTEGER},
+            </if>
+            <if test="share != null" >
+                #{share,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourseExample" resultType="java.lang.Integer" >
+        select count(*) from bargain_course
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update bargain_course
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.productId != null" >
+                product_id = #{record.productId,jdbcType=BIGINT},
+            </if>
+            <if test="record.title != null" >
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.image != null" >
+                image = #{record.image,jdbcType=VARCHAR},
+            </if>
+            <if test="record.unitName != null" >
+                unit_name = #{record.unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.stock != null" >
+                stock = #{record.stock,jdbcType=INTEGER},
+            </if>
+            <if test="record.sales != null" >
+                sales = #{record.sales,jdbcType=INTEGER},
+            </if>
+            <if test="record.images != null" >
+                images = #{record.images,jdbcType=VARCHAR},
+            </if>
+            <if test="record.startTime != null" >
+                start_time = #{record.startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.stopTime != null" >
+                stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.storeName != null" >
+                store_name = #{record.storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.price != null" >
+                price = #{record.price,jdbcType=DECIMAL},
+            </if>
+            <if test="record.minPrice != null" >
+                min_price = #{record.minPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.num != null" >
+                num = #{record.num,jdbcType=INTEGER},
+            </if>
+            <if test="record.bargainMaxPrice != null" >
+                bargain_max_price = #{record.bargainMaxPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.bargainMinPrice != null" >
+                bargain_min_price = #{record.bargainMinPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.bargainNum != null" >
+                bargain_num = #{record.bargainNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null" >
+                status = #{record.status,jdbcType=TINYINT},
+            </if>
+            <if test="record.description != null" >
+                description = #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.giveIntegral != null" >
+                give_integral = #{record.giveIntegral,jdbcType=DECIMAL},
+            </if>
+            <if test="record.info != null" >
+                info = #{record.info,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cost != null" >
+                cost = #{record.cost,jdbcType=DECIMAL},
+            </if>
+            <if test="record.sort != null" >
+                sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.isHot != null" >
+                is_hot = #{record.isHot,jdbcType=TINYINT},
+            </if>
+            <if test="record.addTime != null" >
+                add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isPostage != null" >
+                is_postage = #{record.isPostage,jdbcType=TINYINT},
+            </if>
+            <if test="record.postage != null" >
+                postage = #{record.postage,jdbcType=DECIMAL},
+            </if>
+            <if test="record.rule != null" >
+                rule = #{record.rule,jdbcType=VARCHAR},
+            </if>
+            <if test="record.look != null" >
+                look = #{record.look,jdbcType=INTEGER},
+            </if>
+            <if test="record.share != null" >
+                share = #{record.share,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update bargain_course
+        set
+            id = #{record.id,jdbcType=BIGINT},
+            product_id = #{record.productId,jdbcType=BIGINT},
+            title = #{record.title,jdbcType=VARCHAR},
+            image = #{record.image,jdbcType=VARCHAR},
+            unit_name = #{record.unitName,jdbcType=VARCHAR},
+            stock = #{record.stock,jdbcType=INTEGER},
+            sales = #{record.sales,jdbcType=INTEGER},
+            images = #{record.images,jdbcType=VARCHAR},
+            start_time = #{record.startTime,jdbcType=TIMESTAMP},
+            stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+            store_name = #{record.storeName,jdbcType=VARCHAR},
+            price = #{record.price,jdbcType=DECIMAL},
+            min_price = #{record.minPrice,jdbcType=DECIMAL},
+            num = #{record.num,jdbcType=INTEGER},
+            bargain_max_price = #{record.bargainMaxPrice,jdbcType=DECIMAL},
+            bargain_min_price = #{record.bargainMinPrice,jdbcType=DECIMAL},
+            bargain_num = #{record.bargainNum,jdbcType=INTEGER},
+            status = #{record.status,jdbcType=TINYINT},
+            description = #{record.description,jdbcType=VARCHAR},
+            give_integral = #{record.giveIntegral,jdbcType=DECIMAL},
+            info = #{record.info,jdbcType=VARCHAR},
+            cost = #{record.cost,jdbcType=DECIMAL},
+            sort = #{record.sort,jdbcType=INTEGER},
+            is_hot = #{record.isHot,jdbcType=TINYINT},
+            add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            is_postage = #{record.isPostage,jdbcType=TINYINT},
+            postage = #{record.postage,jdbcType=DECIMAL},
+            rule = #{record.rule,jdbcType=VARCHAR},
+            look = #{record.look,jdbcType=INTEGER},
+            share = #{record.share,jdbcType=INTEGER},
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse" >
+        update bargain_course
+        <set >
+                <if test="productId != null" >
+                    product_id = #{productId,jdbcType=BIGINT},
+                </if>
+                <if test="title != null" >
+                    title = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="image != null" >
+                    image = #{image,jdbcType=VARCHAR},
+                </if>
+                <if test="unitName != null" >
+                    unit_name = #{unitName,jdbcType=VARCHAR},
+                </if>
+                <if test="stock != null" >
+                    stock = #{stock,jdbcType=INTEGER},
+                </if>
+                <if test="sales != null" >
+                    sales = #{sales,jdbcType=INTEGER},
+                </if>
+                <if test="images != null" >
+                    images = #{images,jdbcType=VARCHAR},
+                </if>
+                <if test="startTime != null" >
+                    start_time = #{startTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="stopTime != null" >
+                    stop_time = #{stopTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="storeName != null" >
+                    store_name = #{storeName,jdbcType=VARCHAR},
+                </if>
+                <if test="price != null" >
+                    price = #{price,jdbcType=DECIMAL},
+                </if>
+                <if test="minPrice != null" >
+                    min_price = #{minPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="num != null" >
+                    num = #{num,jdbcType=INTEGER},
+                </if>
+                <if test="bargainMaxPrice != null" >
+                    bargain_max_price = #{bargainMaxPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="bargainMinPrice != null" >
+                    bargain_min_price = #{bargainMinPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="bargainNum != null" >
+                    bargain_num = #{bargainNum,jdbcType=INTEGER},
+                </if>
+                <if test="status != null" >
+                    status = #{status,jdbcType=TINYINT},
+                </if>
+                <if test="description != null" >
+                    description = #{description,jdbcType=VARCHAR},
+                </if>
+                <if test="giveIntegral != null" >
+                    give_integral = #{giveIntegral,jdbcType=DECIMAL},
+                </if>
+                <if test="info != null" >
+                    info = #{info,jdbcType=VARCHAR},
+                </if>
+                <if test="cost != null" >
+                    cost = #{cost,jdbcType=DECIMAL},
+                </if>
+                <if test="sort != null" >
+                    sort = #{sort,jdbcType=INTEGER},
+                </if>
+                <if test="isHot != null" >
+                    is_hot = #{isHot,jdbcType=TINYINT},
+                </if>
+                <if test="addTime != null" >
+                    add_time = #{addTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="isPostage != null" >
+                    is_postage = #{isPostage,jdbcType=TINYINT},
+                </if>
+                <if test="postage != null" >
+                    postage = #{postage,jdbcType=DECIMAL},
+                </if>
+                <if test="rule != null" >
+                    rule = #{rule,jdbcType=VARCHAR},
+                </if>
+                <if test="look != null" >
+                    look = #{look,jdbcType=INTEGER},
+                </if>
+                <if test="share != null" >
+                    share = #{share,jdbcType=INTEGER},
+                </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse" >
+        update bargain_course
+        set
+                product_id = #{productId,jdbcType=BIGINT},
+                title = #{title,jdbcType=VARCHAR},
+                image = #{image,jdbcType=VARCHAR},
+                unit_name = #{unitName,jdbcType=VARCHAR},
+                stock = #{stock,jdbcType=INTEGER},
+                sales = #{sales,jdbcType=INTEGER},
+                images = #{images,jdbcType=VARCHAR},
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+                stop_time = #{stopTime,jdbcType=TIMESTAMP},
+                store_name = #{storeName,jdbcType=VARCHAR},
+                price = #{price,jdbcType=DECIMAL},
+                min_price = #{minPrice,jdbcType=DECIMAL},
+                num = #{num,jdbcType=INTEGER},
+                bargain_max_price = #{bargainMaxPrice,jdbcType=DECIMAL},
+                bargain_min_price = #{bargainMinPrice,jdbcType=DECIMAL},
+                bargain_num = #{bargainNum,jdbcType=INTEGER},
+                status = #{status,jdbcType=TINYINT},
+                description = #{description,jdbcType=VARCHAR},
+                give_integral = #{giveIntegral,jdbcType=DECIMAL},
+                info = #{info,jdbcType=VARCHAR},
+                cost = #{cost,jdbcType=DECIMAL},
+                sort = #{sort,jdbcType=INTEGER},
+                is_hot = #{isHot,jdbcType=TINYINT},
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+                is_postage = #{isPostage,jdbcType=TINYINT},
+                postage = #{postage,jdbcType=DECIMAL},
+                rule = #{rule,jdbcType=VARCHAR},
+                look = #{look,jdbcType=INTEGER},
+                share = #{share,jdbcType=INTEGER},
+        where
+        id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
