@@ -45,13 +45,17 @@ public class CallbackOauthBiz extends BaseBiz {
             return Result.error("请求错误！");
         }
         //1、通过openAppid和openAppsecret和微信返回的code，拼接URL
-        String accessTokenUrl = String.format(SystemUtil.ACCESS_TOKEN_URL,SystemUtil.APP_ID,SystemUtil.APP_SECRET,code);
+        String accessTokenUrl = SystemUtil.OAUTH_ACCESS_TOKEN_URL.replace("APPID", SystemUtil.APP_ID)
+                                                                 .replace("SECRET", SystemUtil.APP_SECRET)
+                                                                 .replace("CODE", code);
 
         //2、通过URL再去回调微信接口 (使用了httpclient和gson工具）
         Map<String ,Object> baseMap =  HttpUtil.doGet(accessTokenUrl);
 
         //3、回调成功后获取access_token和oppid
-        if(baseMap == null || baseMap.isEmpty()){ return  Result.error("微信登录失败！"); }
+        if(baseMap == null || baseMap.isEmpty()){
+            return  Result.error("微信登录失败！");
+        }
         String accessToken = (String)baseMap.get("access_token");
         String openId  = (String) baseMap.get("openid");
 
@@ -66,7 +70,8 @@ public class CallbackOauthBiz extends BaseBiz {
         }
 
         //4、access_token和openid拼接URL
-        String userInfoUrl = String.format(SystemUtil.USER_INFO_URL,accessToken,openId);
+        String userInfoUrl = SystemUtil.USER_INFO_URL.replace("ACCESS_TOKEN", accessToken)
+                                                     .replace("OPENID", openId);
 
         //5、通过URL再去调微信接口获取用户基本信息
         Map<String ,Object> baseUserMap =  HttpUtil.doGet(userInfoUrl);
@@ -75,8 +80,8 @@ public class CallbackOauthBiz extends BaseBiz {
 
         //6、获取用户姓名、性别、城市、头像等基本信息
         String nickname = (String)baseUserMap.get("nickname");
-        Double sexTemp  = (Double) baseUserMap.get("sex");
-        int sex = sexTemp.intValue();
+//        Double sexTemp  = (Double) baseUserMap.get("sex");
+        int sex = (int) baseUserMap.get("sex");
         String headimgurl = (String)baseUserMap.get("headimgurl");
         try {
             //解决用户名乱码
@@ -102,6 +107,7 @@ public class CallbackOauthBiz extends BaseBiz {
         userLoginDTO.setUserNo(user.getUserNo());
         userLoginDTO.setMobile(user.getMobile());
         userLoginDTO.setToken(JWTUtil.create(user.getUserNo(), JWTUtil.DATE));
+        userLoginDTO.setUserExt(userExt);
         return Result.success(userLoginDTO);
     }
 }

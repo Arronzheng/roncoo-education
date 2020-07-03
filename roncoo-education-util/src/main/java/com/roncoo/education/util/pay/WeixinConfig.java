@@ -11,17 +11,17 @@ public class WeixinConfig implements WXPayConfig {
 
     @Override
     public String getAppID() {
-        return "wx8888888888888888";
+        return "wxd184c956d9cea260";
     }
 
     @Override
     public String getMchID() {
-        return "12888888";
+        return "1596125071";
     }//商户号
 
     @Override
     public String getKey() {
-        return "88888888888888888888888888888888";
+        return "b91d31e906321813f7adcf489c3809df";
     }//API密钥：key为商户平台设置的密钥key
 
     @Override

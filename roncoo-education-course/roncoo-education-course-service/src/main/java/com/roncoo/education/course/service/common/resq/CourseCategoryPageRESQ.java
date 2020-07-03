@@ -59,6 +59,11 @@ public class CourseCategoryPageRESQ implements Serializable {
 	@ApiModelProperty(value = "层级")
 	private Integer floor;
 	/**
+	 * 分类图标
+	 */
+	@ApiModelProperty(value = "分类图标", required = true)
+	private String categoryIcon;
+	/**
 	 * 备注
 	 */
 	@ApiModelProperty(value = "备注")

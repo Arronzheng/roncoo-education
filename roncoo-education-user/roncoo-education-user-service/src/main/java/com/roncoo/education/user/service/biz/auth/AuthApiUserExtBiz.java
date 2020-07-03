@@ -4,12 +4,12 @@ import com.roncoo.education.course.common.bean.vo.CourseUserCollectionVO;
 import com.roncoo.education.course.feign.IBossCourseUserCollection;
 import com.roncoo.education.user.service.common.bo.auth.AuthUserUpdateBO;
 import com.roncoo.education.user.service.common.dto.auth.AuthApiUserCollectionsDTO;
-import com.roncoo.education.user.service.dao.PlatformDao;
-import com.roncoo.education.user.service.dao.SvipDao;
-import com.roncoo.education.user.service.dao.UserDao;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.Platform;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.Svip;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.User;
+import com.roncoo.education.user.service.common.dto.auth.AuthUserExtInviteCodeDTO;
+import com.roncoo.education.user.service.common.resq.UserExtViewRESQ;
+import com.roncoo.education.user.service.common.resq.UserLogInviteListRESQ;
+import com.roncoo.education.user.service.common.resq.UserLogInviteViewRESQ;
+import com.roncoo.education.user.service.dao.*;
+import com.roncoo.education.user.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.util.enums.StatusIdEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,8 +20,6 @@ import com.roncoo.education.system.feign.IBossSys;
 import com.roncoo.education.user.service.common.bo.auth.AuthUserExtBO;
 import com.roncoo.education.user.service.common.bo.auth.AuthUserExtViewBO;
 import com.roncoo.education.user.service.common.dto.auth.AuthUserExtDTO;
-import com.roncoo.education.user.service.dao.UserExtDao;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt;
 import com.roncoo.education.util.aliyun.Aliyun;
 import com.roncoo.education.util.aliyun.AliyunUtil;
 import com.roncoo.education.util.base.BaseBiz;
@@ -50,6 +48,8 @@ public class AuthApiUserExtBiz extends BaseBiz {
 	@Autowired
 	private SvipDao svipDao;
 	@Autowired
+	private UserLogInviteDao userLogInviteDao;
+	@Autowired
 	private PlatformDao platformDao;
 	@Autowired
 	private IBossCourseUserCollection bossCollection;
@@ -58,7 +58,7 @@ public class AuthApiUserExtBiz extends BaseBiz {
 
 	/**
 	 * 用户信息查看接口
-	 * 
+	 *
 	 * @param authUserExtViewBO
 	 * @author wuyun
 	 */
@@ -87,7 +87,7 @@ public class AuthApiUserExtBiz extends BaseBiz {
 
 	/**
 	 * 用户信息更新接口
-	 * 
+	 *
 	 * @param authUserExtBO
 	 * @author wuyun
 	 */
@@ -180,5 +180,37 @@ public class AuthApiUserExtBiz extends BaseBiz {
 		AuthApiUserCollectionsDTO authApiUserCollectionsDTO = new AuthApiUserCollectionsDTO();
 		authApiUserCollectionsDTO.setCourseUserCollections(longList);
 		return Result.success(authApiUserCollectionsDTO);
+	}
+
+    public Result<Integer> getVipLevel(AuthUserExtViewBO authUserExtViewBO) {
+		if(StringUtils.isEmpty(authUserExtViewBO.getUserNo())){
+			return Result.error("用户编号不能为空！");
+		}
+		UserExt userExt = userExtDao.getByUserNo(authUserExtViewBO.getUserNo());
+		if (StringUtils.isEmpty(userExt)) {
+			return Result.error("找不到用户信息！");
+		}
+		return Result.success(userExt.getVipLevel());
+    }
+
+	public Result<AuthUserExtInviteCodeDTO> getInviteCode(AuthUserExtViewBO authUserExtViewBO) {
+		if(StringUtils.isEmpty(authUserExtViewBO.getUserNo())){
+			return Result.error("用户编号不能为空！");
+		}
+		UserExt userExt = userExtDao.getByUserNo(authUserExtViewBO.getUserNo());
+		List<UserLogInvite> userLogInvites = userLogInviteDao.getByInviteUserNo(authUserExtViewBO.getUserNo());
+		if (StringUtils.isEmpty(userExt)) {
+			return Result.error("找不到用户信息！");
+		}
+		List<UserLogInviteListRESQ> userLogInviteListRESQS= BeanUtil.copyProperties(userLogInvites, UserLogInviteListRESQ.class);
+		for (UserLogInviteListRESQ userLogInviteListRESQ : userLogInviteListRESQS) {
+			UserExt userExt1 = userExtDao.getByUserNo(userLogInviteListRESQ.getInvitedUserNo());
+			UserExtViewRESQ userExtViewRESQ = BeanUtil.copyProperties(userExt1, UserExtViewRESQ.class);
+			userLogInviteListRESQ.setInvitedUserExt(userExtViewRESQ);
+		}
+		AuthUserExtInviteCodeDTO authUserExtInviteCodeDTO = new AuthUserExtInviteCodeDTO();
+		authUserExtInviteCodeDTO.setInviteCode(userExt.getInviteCode());
+		authUserExtInviteCodeDTO.setUserLogInviteListRESQS(userLogInviteListRESQS);
+		return Result.success(authUserExtInviteCodeDTO);
 	}
 }

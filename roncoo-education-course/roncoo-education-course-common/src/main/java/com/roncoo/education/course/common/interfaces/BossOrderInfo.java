@@ -39,7 +39,7 @@ public interface BossOrderInfo {
 
 	/**
 	 * 订单信息汇总（导出报表）
-	 * 
+	 *
 	 * @author YZJ
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/listForReport", method = RequestMethod.POST)
@@ -47,7 +47,7 @@ public interface BossOrderInfo {
 
 	/**
 	 * 统计时间段的总订单数
-	 * 
+	 *
 	 * @param orderEchartsQO
 	 * @return
 	 * @author wuyun
@@ -57,7 +57,7 @@ public interface BossOrderInfo {
 
 	/**
 	 * 统计时间段的总收入
-	 * 
+	 *
 	 * @param orderEchartsQO
 	 * @return
 	 * @author wuyun
@@ -67,7 +67,7 @@ public interface BossOrderInfo {
 
 	/**
 	 * 订单处理定时任务
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/handleScheduledTasks", method = RequestMethod.POST)
@@ -75,10 +75,13 @@ public interface BossOrderInfo {
 
 	/**
 	 * 统计订单收入情况
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/countIncome", method = RequestMethod.POST)
 	CountIncomeVO countIncome(@RequestBody OrderInfoQO qo);
-	
+
+	@RequestMapping(value = "/boss/course/orderInfo/get/{orderNo}", method = RequestMethod.GET)
+	OrderInfoVO getByOrderNo(@PathVariable(value = "orderNo") Long orderNo);
+
 }

@@ -37,6 +37,10 @@ public class UserVO implements Serializable {
 	 */
 	private Long userNo;
 	/**
+	 * 微信openID
+	 */
+	private String openId;
+	/**
 	 * 手机号码
 	 */
 	private String mobile;

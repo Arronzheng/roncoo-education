@@ -23,6 +23,7 @@
     <result column="pay_type" property="payType" jdbcType="TINYINT" />
     <result column="channel_type" property="channelType" jdbcType="TINYINT" />
     <result column="order_status" property="orderStatus" jdbcType="TINYINT" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
     <result column="is_show_lecturer" property="isShowLecturer" jdbcType="TINYINT" />
     <result column="is_show_user" property="isShowUser" jdbcType="TINYINT" />
     <result column="shipping_address_id" property="shippingAddressId" jdbcType="BIGINT" />
@@ -89,9 +90,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, gmt_create, gmt_modified, lecturer_user_no, lecturer_name, user_no, mobile, register_time, 
+    id, gmt_create, gmt_modified, lecturer_user_no, lecturer_name, user_no, mobile, register_time,
     order_no, course_id, course_name, price_payable, price_discount, price_paid, price_paid_source, platform_profit,
-    lecturer_profit, trade_type, pay_type, channel_type, order_status, is_show_lecturer, 
+    lecturer_profit, trade_type, pay_type, channel_type, order_status, order_type, is_show_lecturer,
     is_show_user, shipping_address_id, remark_cus, remark, pay_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample" >
@@ -112,7 +113,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from order_info
     where id = #{id,jdbcType=BIGINT}
@@ -128,22 +129,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo" >
-    insert into order_info (id, gmt_create, gmt_modified, 
-      lecturer_user_no, lecturer_name, user_no, 
-      mobile, register_time, order_no, 
-      course_id, course_name, price_payable, 
+    insert into order_info (id, gmt_create, gmt_modified,
+      lecturer_user_no, lecturer_name, user_no,
+      mobile, register_time, order_no,
+      course_id, course_name, price_payable,
       price_discount, price_paid, price_paid_source, platform_profit,
-      lecturer_profit, trade_type, pay_type, 
-      channel_type, order_status, is_show_lecturer, 
+      lecturer_profit, trade_type, pay_type,
+      channel_type, order_status, order_type, is_show_lecturer,
       is_show_user, shipping_address_id, remark_cus, remark,
       pay_time)
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{lecturerUserNo,jdbcType=BIGINT}, #{lecturerName,jdbcType=VARCHAR}, #{userNo,jdbcType=BIGINT}, 
-      #{mobile,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=BIGINT}, 
-      #{courseId,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR}, #{pricePayable,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP},
+      #{lecturerUserNo,jdbcType=BIGINT}, #{lecturerName,jdbcType=VARCHAR}, #{userNo,jdbcType=BIGINT},
+      #{mobile,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=BIGINT},
+      #{courseId,jdbcType=BIGINT}, #{courseName,jdbcType=VARCHAR}, #{pricePayable,jdbcType=DECIMAL},
       #{priceDiscount,jdbcType=DECIMAL}, #{pricePaid,jdbcType=DECIMAL}, #{pricePaidSource,jdbcType=TINYINT} #{platformProfit,jdbcType=DECIMAL},
-      #{lecturerProfit,jdbcType=DECIMAL}, #{tradeType,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT}, 
-      #{channelType,jdbcType=TINYINT}, #{orderStatus,jdbcType=TINYINT}, #{isShowLecturer,jdbcType=TINYINT}, 
+      #{lecturerProfit,jdbcType=DECIMAL}, #{tradeType,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT},
+      #{channelType,jdbcType=TINYINT}, #{orderStatus,jdbcType=TINYINT}, #{orderType,jdbcType=TINYINT}, #{isShowLecturer,jdbcType=TINYINT},
       #{isShowUser,jdbcType=TINYINT}, #{{shippingAddressId,jdbcType=BIGINT}} #{remarkCus,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
       #{payTime,jdbcType=TIMESTAMP})
   </insert>
@@ -212,6 +213,9 @@
       </if>
       <if test="orderStatus != null" >
         order_status,
+      </if>
+      <if test="orderType != null" >
+        order_type,
       </if>
       <if test="isShowLecturer != null" >
         is_show_lecturer,
@@ -295,6 +299,9 @@
       </if>
       <if test="orderStatus != null" >
         #{orderStatus,jdbcType=TINYINT},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=TINYINT},
       </if>
       <if test="isShowLecturer != null" >
         #{isShowLecturer,jdbcType=TINYINT},
@@ -388,6 +395,9 @@
       <if test="record.orderStatus != null" >
         order_status = #{record.orderStatus,jdbcType=TINYINT},
       </if>
+      <if test="record.orderType != null" >
+        order_type = #{record.orderType,jdbcType=TINYINT},
+      </if>
       <if test="record.isShowLecturer != null" >
         is_show_lecturer = #{record.isShowLecturer,jdbcType=TINYINT},
       </if>
@@ -434,6 +444,7 @@
       pay_type = #{record.payType,jdbcType=TINYINT},
       channel_type = #{record.channelType,jdbcType=TINYINT},
       order_status = #{record.orderStatus,jdbcType=TINYINT},
+      order_type = #{record.orderType,jdbcType=TINYINT},
       is_show_lecturer = #{record.isShowLecturer,jdbcType=TINYINT},
       is_show_user = #{record.isShowUser,jdbcType=TINYINT},
       shipping_address_id = #{record.shippingAddressId,jdbcType=BIGINT},
@@ -507,6 +518,9 @@
       <if test="orderStatus != null" >
         order_status = #{orderStatus,jdbcType=TINYINT},
       </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=TINYINT},
+      </if>
       <if test="isShowLecturer != null" >
         is_show_lecturer = #{isShowLecturer,jdbcType=TINYINT},
       </if>
@@ -550,6 +564,7 @@
       pay_type = #{payType,jdbcType=TINYINT},
       channel_type = #{channelType,jdbcType=TINYINT},
       order_status = #{orderStatus,jdbcType=TINYINT},
+      order_type = #{orderType,jdbcType=TINYINT},
       is_show_lecturer = #{isShowLecturer,jdbcType=TINYINT},
       is_show_user = #{isShowUser,jdbcType=TINYINT},
       shipping_address_id = #{shippingAddressId,jdbcType=BIGINT},

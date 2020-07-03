@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 public class OrderPayQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */
@@ -41,6 +41,10 @@ public class OrderPayQO implements Serializable {
      * 流水号
      */
     private Long serialNumber;
+    /**
+     * 支付平台订单号
+     */
+    private String tradeNo;
     /**
      * 订单状态：1待支付，2成功支付，3支付失败，4已关闭，5已退款, 6订单解绑
      */

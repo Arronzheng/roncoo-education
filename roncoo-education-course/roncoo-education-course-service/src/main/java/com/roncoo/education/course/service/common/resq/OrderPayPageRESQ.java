@@ -40,6 +40,12 @@ public class OrderPayPageRESQ implements Serializable {
 	@JsonSerialize(using = ToStringSerializer.class)
 	private Long serialNumber;
 	/**
+	 * 支付平台订单号
+	 */
+	@ApiModelProperty(value = "支付平台订单号")
+	@JsonSerialize(using = ToStringSerializer.class)
+	private String tradeNo;
+	/**
 	 * 订单状态：1待支付，2成功支付，3支付失败，4已关闭，5已退款, 6订单解绑
 	 */
 	@ApiModelProperty(value = "订单状态：1待支付，2成功支付，3支付失败，4已关闭，5已退款, 6订单解绑")

@@ -62,7 +62,12 @@ public final class SystemUtil {
 	//微信登录配置
 	public static final String APP_ID = getProperty("app_id");
 	public static final String APP_SECRET = getProperty("app_secret");
+	public static final String TOKEN = getProperty("token");
 	public static final String ACCESS_TOKEN_URL = getProperty("access_token_url");
+	public static final String OAUTH_ACCESS_TOKEN_URL = getProperty("oauth_access_token_url");
 	public static final String USER_INFO_URL = getProperty("user_info_url");
 	public static final String REDIRECT_URI = getProperty("redirect_uri");
+	public static final String JSAPI_TICKET_URL = getProperty("jsapi_ticket_url");
+	public static final String CREATE_MENU_URL = getProperty("create_menu_url");
+
 }

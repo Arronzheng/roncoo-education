@@ -6,16 +6,17 @@ import java.util.*;
 
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.github.wxpay.sdk.WXPayConstants;
+import com.github.wxpay.sdk.WXPayUtil;
 import com.roncoo.education.course.service.common.bo.auth.*;
 import com.roncoo.education.course.service.dao.CourseAuditDao;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
-import com.roncoo.education.user.common.bean.vo.LecturerExtVO;
-import com.roncoo.education.user.common.bean.vo.SvipVO;
-import com.roncoo.education.user.feign.IBossLecturerExt;
-import com.roncoo.education.user.feign.IBossVip;
+import com.roncoo.education.user.common.bean.vo.*;
+import com.roncoo.education.user.feign.*;
 import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.pay.AlipayUtil;
+import com.roncoo.education.util.pay.WeixinConfig;
 import com.roncoo.education.util.pay.WeixinPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,10 +46,6 @@ import com.roncoo.education.course.service.dao.OrderPayDao;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample.Criteria;
 import com.roncoo.education.system.common.bean.vo.SysVO;
 import com.roncoo.education.system.feign.IBossSys;
-import com.roncoo.education.user.common.bean.vo.LecturerVO;
-import com.roncoo.education.user.common.bean.vo.UserExtVO;
-import com.roncoo.education.user.feign.IBossLecturer;
-import com.roncoo.education.user.feign.IBossUserExt;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.BaseException;
 import com.roncoo.education.util.base.Page;
@@ -81,6 +78,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	@Autowired
 	private IBossUserExt bossUserExt;
 	@Autowired
+	private IBossUser bossUser;
+	@Autowired
 	private IBossLecturer bossLecturer;
 	@Autowired
 	private IBossVip bossVip;
@@ -89,7 +88,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 订单列表接口
-	 * 
+	 *
 	 * @param authOrderInfoListBO
 	 * @return
 	 */
@@ -124,12 +123,12 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 订单下单接口
-	 * 
+	 *
 	 * @param authOrderPayBO
 	 * @return
 	 */
 	@Transactional
-	public Result<AuthOrderPayDTO> pay(AuthOrderPayBO authOrderPayBO) {
+	public Result<AuthOrderPayDTO> pay(AuthOrderPayBO authOrderPayBO) throws Exception {
 		// 参数校验
 		verifyParam(authOrderPayBO);
 
@@ -139,9 +138,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			return Result.error("courseId不正确");
 		}
 
-		// 根据用户编号查找用户信息
-		UserExtVO userextVO = bossUserExt.getByUserNo(authOrderPayBO.getUserNo());
-		if (ObjectUtil.isNull(userextVO) || StatusIdEnum.NO.getCode().equals(userextVO.getStatusId())) {
+		UserVO userVO = bossUser.getByUserNo(authOrderPayBO.getUserNo());
+		if (ObjectUtil.isNull(userVO) || StatusIdEnum.NO.getCode().equals(userVO.getStatusId())) {
 			return Result.error("userNo不正确");
 		}
 
@@ -152,14 +150,14 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		// 判断所要购买的课程是否已经购买------(如果课程为测试支付课程，可以重复下单，不提示已经购买，去掉后面一截判断即可正常使用)
-//		if (!checkOrderInfo(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId()) && !SystemUtil.TEST_COURSE.equals(course.getId().toString())) {
-//			return Result.error("已经购买该课程，请勿重复购买");
-//		}
+		if (!checkOrderInfo(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId())) {
+			return Result.error("已经购买该课程，请勿重复购买");
+		}
 		OrderInfo orderInfo = orderInfoDao.getByUserNoAndCourseIdAndOrderStatus(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId());
 		OrderPay orderPay = null;
 		if (ObjectUtil.isNull(orderInfo)) {
 			// 创建订单信息
-			orderInfo = createOrderInfo(authOrderPayBO, courseAudit, userextVO, lecturerVO);
+			orderInfo = createOrderInfo(authOrderPayBO, courseAudit, userVO, lecturerVO);
 			// 创建支付订单
 			orderPay = createOrderPay(orderInfo);
 		}else{
@@ -171,7 +169,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 				return Result.error("orderNo不正确，没有找到流水号");
 			}
 			if(orderInfo.getPricePaidSource().equals(PricePaidSourceEnum.VIP.getCode())){
-				SvipVO svipVO = bossVip.getByUserNo(userextVO.getUserNo());
+				SvipVO svipVO = bossVip.getByUserNo(userVO.getUserNo());
 				if(ObjectUtil.isNull(svipVO)){
 					orderInfo.setPricePaidSource(PricePaidSourceEnum.ORIGINAL.getCode());
 					orderInfo.setPricePaid(orderInfo.getPricePayable());
@@ -192,11 +190,6 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			orderPayDao.updateById(orderPay);
 		}
 
-		// 创建订单信息
-		//OrderInfo orderInfo = createOrderInfo(authOrderPayBO, course, userextVO, lecturerVO);
-		// 创建支付订单
-		//OrderPay orderPay = createOrderPay(orderInfo);
-
 		// 查找系统配置信息
 		SysVO sys = bossSys.getSys();
 		if (ObjectUtil.isNull(sys)) {
@@ -206,13 +199,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			return Result.error("payKey,paySecret或payUrl未配置");
 		}
 
-		// 调用支付接口
-//		String payMessage = PayUtil.roncooPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), orderInfo.getPayType(), sys.getPayKey(), sys.getPaySecret(), sys.getPayUrl(), sys.getNotifyUrl());
-//		if (StringUtils.isEmpty(payMessage)) {
-//			return Result.error("系统繁忙，请稍后再试");
-//		}
 		if(authOrderPayBO.getPayType() == 1){
-			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl(), "course");
+			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl(), authOrderPayBO.getTradeType(), "course", userVO.getOpenId());
 			if(null == response){
 				return Result.error("调用微信支付失败，请联系商家");
 			}
@@ -223,6 +211,21 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 					dto.setPayMessage(response.get("code_url"));
 				}else{
 					return Result.error("调用微信支付失败，请联系商家");
+				}
+				if ("JSAPI".equals(authOrderPayBO.getTradeType())) {
+					WeixinConfig config = new WeixinConfig();
+					dto.setAppId(config.getAppID());
+					dto.setPrepayId(response.get("prepay_id"));
+					dto.setTimeStamp(System.currentTimeMillis() + "");
+					dto.setNonceStr(WXPayUtil.generateNonceStr());
+					dto.setSignType(WXPayConstants.MD5);
+					Map<String,String> data = new HashMap<>();
+					data.put("appId", config.getAppID());
+					data.put("timeStamp", System.currentTimeMillis() + "");
+					data.put("nonceStr", WXPayUtil.generateNonceStr());
+					data.put("signType", WXPayConstants.MD5);
+					data.put("package", response.get("prepay_id"));
+					dto.setPaySign(WXPayUtil.generateSignature(data, config.getKey()));
 				}
 				dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
 				dto.setSerialNumber(String.valueOf(orderPay.getSerialNumber()));
@@ -256,12 +259,12 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 订单继续支付接口
-	 * 
+	 *
 	 * @param authOrderInfoContinuePayBO
 	 * @return
 	 */
 	@Transactional
-	public Result<AuthOrderPayDTO> continuePay(AuthOrderInfoContinuePayBO authOrderInfoContinuePayBO) {
+	public Result<AuthOrderPayDTO> continuePay(AuthOrderInfoContinuePayBO authOrderInfoContinuePayBO) throws Exception {
 		if (StringUtils.isEmpty(authOrderInfoContinuePayBO.getOrderNo())) {
 			return Result.error("orderNo不能为空");
 		}
@@ -289,12 +292,12 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			return Result.error("根据订单的课程编号没找到对应的课程信息!");
 		}
 		// 根据用户编号查找用户信息
-		UserExtVO userExtVO = bossUserExt.getByUserNo(orderInfo.getUserNo());
-		if (StringUtils.isEmpty(userExtVO) || !StatusIdEnum.YES.getCode().equals(userExtVO.getStatusId())) {
+		UserVO userVO = bossUser.getByUserNo(orderInfo.getUserNo());
+		if (StringUtils.isEmpty(userVO) || StatusIdEnum.NO.getCode().equals(userVO.getStatusId())) {
 			return Result.error("根据传入的userNo没找到对应的用户信息!");
 		}
 
-		SvipVO svipVO = bossVip.getByUserNo(userExtVO.getUserNo());
+		SvipVO svipVO = bossVip.getByUserNo(userVO.getUserNo());
 		if(orderInfo.getPricePaidSource().equals(PricePaidSourceEnum.VIP.getCode())){
 			if (StringUtils.isEmpty(svipVO)) {
 				orderInfo.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
@@ -346,7 +349,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 //			return Result.error("系统繁忙，请稍后再试");
 //		}
         if(authOrderInfoContinuePayBO.getPayType() == 1){
-            Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl(), "course");
+            Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl(), authOrderInfoContinuePayBO.getTradeType(), "course", userVO.getOpenId());
 			if(CollectionUtils.isEmpty(response)){
 				return Result.error("调用微信支付失败，请联系商家");
 			}
@@ -357,6 +360,11 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 					dto.setPayMessage(response.get("code_url"));
 				}else{
 					return Result.error("调用微信支付失败，请联系商家");
+				}
+				if ("JSAPI".equals(authOrderInfoContinuePayBO.getTradeType())) {
+					WeixinConfig config = new WeixinConfig();
+					dto.setAppId(config.getAppID());
+					dto.setPrepayId(response.get("prepay_id"));
 				}
 				dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
 				dto.setSerialNumber(String.valueOf(orderPay.getSerialNumber()));
@@ -391,7 +399,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 关闭订单信息接口
-	 * 
+	 *
 	 * @param orderInfoCloseBO
 	 * @return
 	 */
@@ -472,7 +480,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 订单详情
-	 * 
+	 *
 	 * @param authOrderInfoViewBO
 	 * @return
 	 */
@@ -558,7 +566,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 查找订单信息列表信息
-	 * 
+	 *
 	 * @param authOrderInfoListBO
 	 * @return
 	 */
@@ -584,7 +592,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 讲师收益折线图
-	 * 
+	 *
 	 * @param authOrderInfoForChartsBO
 	 * @return
 	 */
@@ -656,7 +664,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 校验下单时传入的参数
-	 * 
+	 *
 	 * @param authOrderPayBO
 	 */
 	private void verifyParam(AuthOrderPayBO authOrderPayBO) {
@@ -703,8 +711,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	/**
 	 * 创建订单信息表
 	 */
-	private OrderInfo createOrderInfo(AuthOrderPayBO authOrderPayBO, CourseAudit courseAudit, UserExtVO userextvo, LecturerVO lecturervo) {
-		SvipVO svipVO = bossVip.getByUserNo(userextvo.getUserNo());
+	private OrderInfo createOrderInfo(AuthOrderPayBO authOrderPayBO, CourseAudit courseAudit, UserVO userVO, LecturerVO lecturervo) {
+		SvipVO svipVO = bossVip.getByUserNo(userVO.getUserNo());
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setCourseName(courseAudit.getCourseName());
 		orderInfo.setCourseId(courseAudit.getId());
@@ -718,9 +726,9 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		orderInfo.setPricePayable(courseAudit.getCourseOriginal());
 		orderInfo.setLecturerUserNo(lecturervo.getLecturerUserNo());
 		orderInfo.setLecturerName(lecturervo.getLecturerName());
-		orderInfo.setUserNo(userextvo.getUserNo());
-		orderInfo.setMobile(userextvo.getMobile());
-		orderInfo.setRegisterTime(userextvo.getGmtCreate());
+		orderInfo.setUserNo(userVO.getUserNo());
+		orderInfo.setMobile(userVO.getMobile());
+		orderInfo.setRegisterTime(userVO.getGmtCreate());
 		orderInfo.setOrderNo(NOUtil.getOrderNo()); // 订单号，不要使用IdWorker生成
 		orderInfo.setCourseId(courseAudit.getId());
 		orderInfo.setCourseName(courseAudit.getCourseName());

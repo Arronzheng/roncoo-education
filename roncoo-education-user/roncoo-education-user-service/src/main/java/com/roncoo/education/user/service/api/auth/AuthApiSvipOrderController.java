@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
         */
         @ApiOperation(value = "svip下单接口", notes = "svip下单接口")
         @RequestMapping(value = "/pay", method = RequestMethod.POST)
-        public Result<AuthSvipOrderDTO> save(@RequestBody AuthSvipOrderBO authSvipOrderBO) {
+        public Result<AuthSvipOrderDTO> save(@RequestBody AuthSvipOrderBO authSvipOrderBO) throws Exception {
             return biz.pay(authSvipOrderBO);
         }
 

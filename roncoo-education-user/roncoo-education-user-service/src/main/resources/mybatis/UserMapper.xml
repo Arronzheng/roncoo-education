@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, gmt_create, gmt_modified, status_id, user_no, mobile, mobile_salt, mobile_psw, 
+    id, gmt_create, gmt_modified, status_id, user_no, open_id, mobile, mobile_salt, mobile_psw,
     user_source
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserExample" >
@@ -93,7 +93,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where id = #{id,jdbcType=BIGINT}
@@ -109,11 +109,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.User" >
-    insert into user (id, gmt_create, gmt_modified, 
+    insert into user (id, gmt_create, gmt_modified,
       status_id, user_no, open_id, mobile,
       mobile_salt, mobile_psw, user_source
       )
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP},
       #{statusId,jdbcType=TINYINT}, #{userNo,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
       #{mobileSalt,jdbcType=VARCHAR}, #{mobilePsw,jdbcType=VARCHAR}, #{userSource,jdbcType=VARCHAR}
       )

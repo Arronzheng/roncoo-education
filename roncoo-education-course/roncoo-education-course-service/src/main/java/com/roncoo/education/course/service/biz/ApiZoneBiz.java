@@ -3,6 +3,11 @@ package com.roncoo.education.course.service.biz;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.roncoo.education.course.service.common.bo.ZoneAllBO;
+import com.roncoo.education.course.service.common.dto.CourseDTO;
+import com.roncoo.education.course.service.common.dto.ZoneListDTO;
+import com.roncoo.education.course.service.dao.CourseAuditDao;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -13,10 +18,6 @@ import com.roncoo.education.course.service.common.dto.ZoneDTO;
 import com.roncoo.education.course.service.dao.CourseDao;
 import com.roncoo.education.course.service.dao.ZoneCourseDao;
 import com.roncoo.education.course.service.dao.ZoneDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Zone;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneCourse;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneExample;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneExample.Criteria;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
@@ -33,6 +34,8 @@ public class ApiZoneBiz {
 	private ZoneCourseDao zoneCourseDao;
 	@Autowired
 	private CourseDao courseDao;
+	@Autowired
+	private CourseAuditDao courseAuditDaoDao;
 
 	/**
 	 * 专区课程分页列表接口
@@ -61,14 +64,46 @@ public class ApiZoneBiz {
 		Page<ZoneDTO> page = PageUtil.transform(zonePage, ZoneDTO.class);
 		for (ZoneDTO zone : page.getList()) {
 			List<ZoneCourse> zoneCourseList = zoneCourseDao.listByZoneIdAndStatusId(zone.getId(), StatusIdEnum.YES.getCode());
-			List<ZoneCourseDTO> zoneCourseListDTO = new ArrayList<>();
+			List<CourseDTO> courseListDTO = new ArrayList<>();
 			for (ZoneCourse zoneCourse : zoneCourseList) {
-				Course course = courseDao.getById(zoneCourse.getCourseId());
-				zoneCourseListDTO.add(BeanUtil.copyProperties(course, ZoneCourseDTO.class));
+				CourseAudit courseAudit = courseAuditDaoDao.getById(zoneCourse.getCourseId());
+				courseListDTO.add(BeanUtil.copyProperties(courseAudit, CourseDTO.class));
 			}
-			zone.setZoneCourseList(zoneCourseListDTO);
+			zone.setCourseList(courseListDTO);
 		}
 		return Result.success(page);
 	}
 
+    public Result<ZoneListDTO> list(ZoneAllBO zoneAllBO) {
+		if (StringUtils.isEmpty(zoneAllBO.getZoneLocation())) {
+			return Result.error("zoneLocation不能为空");
+		}
+		ZoneExample example = new ZoneExample();
+		Criteria c = example.createCriteria();
+		c.andStatusIdEqualTo(StatusIdEnum.YES.getCode());
+		if (!StringUtils.isEmpty(zoneAllBO.getId())) {
+			c.andIdEqualTo(zoneAllBO.getId());
+		}
+		if (!StringUtils.isEmpty(zoneAllBO.getZoneLocation())) {
+			c.andZoneLocationEqualTo(zoneAllBO.getZoneLocation());
+		}
+		example.setOrderByClause("sort desc, id desc");
+		List<Zone> zones = zoneDao.listByLocation(example);
+		List<ZoneDTO> zoneDTOs = BeanUtil.copyProperties(zones, ZoneDTO.class);
+		if (StringUtils.isEmpty(zones)) {
+			return Result.error("找不到信息");
+		}
+		for (ZoneDTO zoneDTO : zoneDTOs) {
+			List<ZoneCourse> zoneCourseList = zoneCourseDao.listByZoneIdAndStatusId(zoneDTO.getId(), StatusIdEnum.YES.getCode());
+			List<CourseDTO> courseListDTO = new ArrayList<>();
+			for (ZoneCourse zoneCourse : zoneCourseList) {
+				CourseAudit courseAudit = courseAuditDaoDao.getById(zoneCourse.getCourseId());
+				courseListDTO.add(BeanUtil.copyProperties(courseAudit, CourseDTO.class));
+			}
+			zoneDTO.setCourseList(courseListDTO);
+		}
+		ZoneListDTO zoneListDTO = new ZoneListDTO();
+		zoneListDTO.setZoneListDTO(zoneDTOs);
+		return Result.success(zoneListDTO);
+    }
 }

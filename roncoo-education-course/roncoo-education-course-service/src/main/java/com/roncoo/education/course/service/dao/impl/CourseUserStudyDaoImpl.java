@@ -60,4 +60,10 @@ public class CourseUserStudyDaoImpl implements CourseUserStudyDao {
 		}
 		return list.get(0);
 	}
+
+	@Override
+	public int countByUserNo(CourseUserStudyExample example) {
+		int count = this.courseUserStudyMapper.countByExample(example);
+		return count;
+	}
 }

@@ -46,7 +46,7 @@ public class AuthApiOrderInfoController extends BaseController {
 	 */
 	@ApiOperation(value = "课程下单接口", notes = "用户购买课程下单接口")
 	@RequestMapping(value = "/pay", method = RequestMethod.POST)
-	public Result<AuthOrderPayDTO> pay(@RequestBody AuthOrderPayBO authOrderPayBO) {
+	public Result<AuthOrderPayDTO> pay(@RequestBody AuthOrderPayBO authOrderPayBO) throws Exception {
 		return biz.pay(authOrderPayBO);
 	}
 
@@ -55,7 +55,7 @@ public class AuthApiOrderInfoController extends BaseController {
 	 */
 	@ApiOperation(value = "订单继续支付接口", notes = "订单继续支付接口")
 	@RequestMapping(value = "/continue/pay", method = RequestMethod.POST)
-	public Result<AuthOrderPayDTO> continuePay(@RequestBody AuthOrderInfoContinuePayBO authOrderInfoContinuePayBO) {
+	public Result<AuthOrderPayDTO> continuePay(@RequestBody AuthOrderInfoContinuePayBO authOrderInfoContinuePayBO) throws Exception {
 		return biz.continuePay(authOrderInfoContinuePayBO);
 	}
 
@@ -70,7 +70,7 @@ public class AuthApiOrderInfoController extends BaseController {
 
 	/**
 	 * 订单详情信息接口
-	 * 
+	 *
 	 * @param authOrderInfoViewBO
 	 * @return
 	 */
@@ -106,7 +106,7 @@ public class AuthApiOrderInfoController extends BaseController {
 
 	/**
 	 * 讲师收益折线图
-	 * 
+	 *
 	 * @param authOrderInfoForChartsBO
 	 * @return
 	 */

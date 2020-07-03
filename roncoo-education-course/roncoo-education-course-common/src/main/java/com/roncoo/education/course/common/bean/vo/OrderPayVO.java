@@ -34,6 +34,10 @@ public class OrderPayVO implements Serializable {
 	 */
 	private Long serialNumber;
 	/**
+	 * 支付平台订单号
+	 */
+	private String tradeNo;
+	/**
 	 * 订单状态：1待支付，2成功支付，3支付失败，4已关闭，5已退款, 6订单解绑
 	 */
 	private Integer orderStatus;

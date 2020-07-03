@@ -6,6 +6,7 @@
     <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="order_no" property="orderNo" jdbcType="BIGINT" />
     <result column="serial_number" property="serialNumber" jdbcType="BIGINT" />
+    <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
     <result column="order_status" property="orderStatus" jdbcType="TINYINT" />
     <result column="pay_type" property="payType" jdbcType="TINYINT" />
     <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, gmt_create, order_no, serial_number, order_status, pay_type, pay_time
+    id, gmt_create, order_no, serial_number, trade_no, order_status, pay_type, pay_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPayExample" >
     select
@@ -89,7 +90,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from order_pay
     where id = #{id,jdbcType=BIGINT}
@@ -105,11 +106,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPay" >
-    insert into order_pay (id, gmt_create, order_no, 
-      serial_number, order_status, pay_type, 
+    insert into order_pay (id, gmt_create, order_no,
+      serial_number, trade_no, order_status, pay_type,
       pay_time)
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=BIGINT}, 
-      #{serialNumber,jdbcType=BIGINT}, #{orderStatus,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=BIGINT},
+      #{serialNumber,jdbcType=BIGINT}, #{tradeNo,jdbcType=VARCHAR}, #{orderStatus,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT},
       #{payTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPay" >
@@ -126,6 +127,9 @@
       </if>
       <if test="serialNumber != null" >
         serial_number,
+      </if>
+      <if test="tradeNo != null" >
+        trade_no,
       </if>
       <if test="orderStatus != null" >
         order_status,
@@ -149,6 +153,9 @@
       </if>
       <if test="serialNumber != null" >
         #{serialNumber,jdbcType=BIGINT},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
       </if>
       <if test="orderStatus != null" >
         #{orderStatus,jdbcType=TINYINT},
@@ -182,6 +189,9 @@
       <if test="record.serialNumber != null" >
         serial_number = #{record.serialNumber,jdbcType=BIGINT},
       </if>
+      <if test="record.tradeNo != null" >
+        trade_no = #{record.tradeNo,jdbcType=VARCHAR},
+      </if>
       <if test="record.orderStatus != null" >
         order_status = #{record.orderStatus,jdbcType=TINYINT},
       </if>
@@ -202,6 +212,7 @@
       gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
       order_no = #{record.orderNo,jdbcType=BIGINT},
       serial_number = #{record.serialNumber,jdbcType=BIGINT},
+      trade_no = #{record.tradeNo,jdbcType=VARCHAR},
       order_status = #{record.orderStatus,jdbcType=TINYINT},
       pay_type = #{record.payType,jdbcType=TINYINT},
       pay_time = #{record.payTime,jdbcType=TIMESTAMP}
@@ -221,6 +232,9 @@
       <if test="serialNumber != null" >
         serial_number = #{serialNumber,jdbcType=BIGINT},
       </if>
+      <if test="tradeNo != null" >
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
       <if test="orderStatus != null" >
         order_status = #{orderStatus,jdbcType=TINYINT},
       </if>
@@ -238,6 +252,7 @@
     set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       order_no = #{orderNo,jdbcType=BIGINT},
       serial_number = #{serialNumber,jdbcType=BIGINT},
+      trade_no = #{tradeNo,jdbcType=VARCHAR},
       order_status = #{orderStatus,jdbcType=TINYINT},
       pay_type = #{payType,jdbcType=TINYINT},
       pay_time = #{payTime,jdbcType=TIMESTAMP}

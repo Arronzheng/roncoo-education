@@ -18,4 +18,6 @@ public interface ZoneDao {
     Page<Zone> listForPage(int pageCurrent, int pageSize, ZoneExample example);
 
 	List<Zone> listAllZone();
+
+    List<Zone> listByLocation(ZoneExample example);
 }

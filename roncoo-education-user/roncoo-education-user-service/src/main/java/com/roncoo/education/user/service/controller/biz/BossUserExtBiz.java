@@ -3,6 +3,7 @@ package com.roncoo.education.user.service.controller.biz;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.roncoo.education.user.common.bean.qo.UserExtInviteQO;
 import com.roncoo.education.user.service.common.req.UserExtPageREQ;
 import com.roncoo.education.user.service.common.resq.UserExtPageRESQ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,7 @@ public class BossUserExtBiz extends BaseBiz {
 
 	/**
 	 * 获取用户注册量
-	 * 
+	 *
 	 * @param userExtEchartsQO
 	 * @return
 	 * @author wuyun
@@ -111,7 +112,7 @@ public class BossUserExtBiz extends BaseBiz {
 
 	/**
 	 * 根据状态，角色获取可用的用户信息的集合
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	public void cachUserForMsg() {
@@ -126,4 +127,10 @@ public class BossUserExtBiz extends BaseBiz {
 			cacheRedis.set(RedisPreEnum.SYS_MSG_SEND.getCode() + "_" + i, page.getList(), 120);
 		}
 	}
+
+    public UserExtVO getByInviteCode(UserExtInviteQO userExtInviteQO) {
+		UserExt record = dao.getByInviteCode(userExtInviteQO.getInviteCode());
+		UserExtVO vo = BeanUtil.copyProperties(record, UserExtVO.class);
+		return vo;
+    }
 }

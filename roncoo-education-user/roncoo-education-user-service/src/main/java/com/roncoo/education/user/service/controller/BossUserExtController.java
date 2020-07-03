@@ -2,6 +2,7 @@ package com.roncoo.education.user.service.controller;
 
 import java.util.List;
 
+import com.roncoo.education.user.common.bean.qo.UserExtInviteQO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,6 +67,11 @@ public class BossUserExtController extends BaseController implements BossUserExt
 	@Override
 	public void cachUserForMsg() {
 		biz.cachUserForMsg();
+	}
+
+	@Override
+	public UserExtVO getByInviteCode(@RequestBody UserExtInviteQO userExtInviteQO) {
+		return biz.getByInviteCode(userExtInviteQO);
 	}
 
 }

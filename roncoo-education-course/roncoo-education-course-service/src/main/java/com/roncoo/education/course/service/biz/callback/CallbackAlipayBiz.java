@@ -12,18 +12,17 @@ import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPay;
 import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
-import com.roncoo.education.user.common.bean.vo.LecturerExtVO;
-import com.roncoo.education.user.common.bean.vo.LecturerVO;
-import com.roncoo.education.user.common.bean.vo.SvipOrderVO;
-import com.roncoo.education.user.feign.IBossLecturer;
-import com.roncoo.education.user.feign.IBossLecturerExt;
-import com.roncoo.education.user.feign.IBossSvipOrder;
+import com.roncoo.education.user.common.bean.qo.UserExtQO;
+import com.roncoo.education.user.common.bean.qo.UserLogCommissionSaveQO;
+import com.roncoo.education.user.common.bean.vo.*;
+import com.roncoo.education.user.feign.*;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.Result;
 import com.roncoo.education.util.enums.OrderStatusEnum;
 import com.roncoo.education.util.pay.AlipayUtil;
 import com.roncoo.education.util.pay.WeixinConfig;
 import com.roncoo.education.util.pay.WeixinPayUtil;
+import com.roncoo.education.util.tools.BeanUtil;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,6 +32,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -54,7 +54,12 @@ public class CallbackAlipayBiz extends BaseBiz {
 	private IBossLecturerExt bossLecturerExt;
 	@Autowired
 	private IBossSvipOrder bossSvipOrder;
-
+	@Autowired
+	private IBossUserExt bossUserExt;
+	@Autowired
+	private IBossUserLogInvite bossUserLogInvite;
+	@Autowired
+	private IBossUserLogCommission bossUserLogCommission;
 	@Transactional
 	public String alipayNotify(HttpServletRequest request) {
 		boolean signVerified = AlipayUtil.checkSign(request.getParameterMap());
@@ -237,6 +242,32 @@ public class CallbackAlipayBiz extends BaseBiz {
 		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
 		orderPay.setPayTime(new Date());
 		orderPayDao.updateById(orderPay);
+
+		UserExtVO userExtVO = bossUserExt.getByUserNo(orderInfo.getUserNo());
+		if (!StringUtils.isEmpty(userExtVO.getVipLevel())) {
+			userExtVO.setVipLevel(2);
+			UserExtQO userExtQO = BeanUtil.copyProperties(userExtVO, UserExtQO.class);
+			bossUserExt.updateById(userExtQO);
+		}
+		//判断是否有邀请人，如果有判断邀请人会员等级，如果为1级，就返佣
+		UserLogInviteVO userLogInviteVO = bossUserLogInvite.getByInvitedNo(orderInfo.getUserNo());
+		if (!StringUtils.isEmpty(userLogInviteVO)) {
+			UserExtVO extVO = bossUserExt.getByUserNo(userLogInviteVO.getInviteUserNo());
+			if (extVO.getVipLevel().equals("1")) {
+				// 返佣
+				UserExtQO userExtQO = new UserExtQO();
+				userExtQO.setId(extVO.getId()).setCommission(extVO.getCommission().add(new BigDecimal("5")));
+				bossUserExt.updateById(userExtQO);
+				// 返佣记录
+				UserLogCommissionSaveQO userLogCommissionSaveQO = new UserLogCommissionSaveQO();
+				userLogCommissionSaveQO.setAddTime(LocalDateTime.now());
+				userLogCommissionSaveQO.setCommission(userExtQO.getCommission());
+				userLogCommissionSaveQO.setOrderNo(orderInfo.getOrderNo());
+				userLogCommissionSaveQO.setSourceUserNo(userLogInviteVO.getInvitedUserNo());
+				userLogCommissionSaveQO.setUserNo(userLogInviteVO.getInviteUserNo());
+				bossUserLogCommission.save(userLogCommissionSaveQO);
+			}
+		}
 	}
 
 	/**

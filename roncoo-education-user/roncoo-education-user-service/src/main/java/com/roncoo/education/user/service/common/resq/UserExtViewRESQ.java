@@ -1,6 +1,7 @@
 package com.roncoo.education.user.service.common.resq;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -81,5 +82,20 @@ public class UserExtViewRESQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "备注")
 	private String remark;
+	/**
+	 * 邀请码
+	 */
+	@ApiModelProperty(value = "邀请码", required = false)
+	private String inviteCode;
+	/**
+	 * 会员等级（1：一级，2：二级）
+	 */
+	@ApiModelProperty(value = "会员等级（1：一级，2：二级）", required = false)
+	private Integer vipLevel;
+	/**
+	 * 佣金
+	 */
+	@ApiModelProperty(value = "佣金", required = false)
+	private BigDecimal commission;
 
 }

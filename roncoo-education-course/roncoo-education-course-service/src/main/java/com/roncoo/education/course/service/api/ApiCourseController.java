@@ -33,7 +33,7 @@ public class ApiCourseController extends BaseController {
 
 	/**
 	 * 课程信息列表接口
-	 * 
+	 *
 	 * @param courseInfoPageBO
 	 * @return
 	 * @author wuyun
@@ -46,7 +46,7 @@ public class ApiCourseController extends BaseController {
 
 	/**
 	 * 课程详情接口
-	 * 
+	 *
 	 * @param courseVideoBO
 	 * @return
 	 */
@@ -55,11 +55,11 @@ public class ApiCourseController extends BaseController {
 	public Result<CourseViewDTO> view(@RequestBody CourseVideoBO courseVideoBO) {
 		return biz.view(courseVideoBO);
 	}
-	
+
 	/**
 	 * 搜索课程接口
-	 * 
-	 * @param courseVideoBO
+	 *
+	 * @param courseInfoSearchBO
 	 * @return
 	 */
 	@ApiOperation(value = "课程搜索列表接口", notes = "根据课程名称，进行模糊搜索")

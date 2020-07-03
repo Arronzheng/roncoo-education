@@ -103,6 +103,11 @@ public class OrderInfoViewRESQ implements Serializable {
 	@ApiModelProperty(value = "订单状态(1:待支付，2:支付成功，3:支付失败，4:已关闭)")
 	private Integer orderStatus;
 	/**
+	 * 订单类型：1普通订单，2拼团订单，3砍价订单
+	 */
+	@ApiModelProperty(value = "订单类型：1普通订单，2拼团订单，3砍价订单", required = false)
+	private Integer orderType;
+	/**
 	 * 客户备注
 	 */
 	@ApiModelProperty(value = "客户备注")

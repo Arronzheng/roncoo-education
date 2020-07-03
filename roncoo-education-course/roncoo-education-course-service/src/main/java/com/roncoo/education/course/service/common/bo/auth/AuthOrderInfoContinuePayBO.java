@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 订单继续支付
- * 
+ *
  * @author YZJ
  */
 @Data
@@ -26,5 +26,10 @@ public class AuthOrderInfoContinuePayBO implements Serializable {
      */
     @ApiModelProperty(value = "支付方式：1微信支付，2支付宝支付", required = true)
     private Integer payType;
+    /***
+     * 交易类型
+     */
+    @ApiModelProperty(value = "交易类型：JSAPI -JSAPI支付，NATIVE -Native支付，APP -APP支付", required = true)
+    private String tradeType;
 
 }

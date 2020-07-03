@@ -25,7 +25,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
- * 
+ *
  * 专区课程关联表
  *
  */
@@ -42,7 +42,7 @@ public class PcApiZoneCourseBiz {
 
 	/**
 	 * 分页列出
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -66,7 +66,7 @@ public class PcApiZoneCourseBiz {
 		Page<ZoneCoursePageRESQ> page = PageUtil.transform(listForPage, ZoneCoursePageRESQ.class);
 		// 根据课程ID获取课程信息
 		for (ZoneCoursePageRESQ resq : page.getList()) {
-			List<CourseAudit> courseAudit = courseAuditDao.listByCategoryId(resq.getCourseId());
+			List<CourseAudit> courseAudit = courseAuditDao.listByCourseId(resq.getCourseId());
 			for (CourseAudit courseAuditInfo : courseAudit) {
 				// 获取课程所属分类
 				if (courseAuditInfo.getCategoryId1() != null && courseAuditInfo.getCategoryId1() != 0) {
@@ -96,7 +96,7 @@ public class PcApiZoneCourseBiz {
 
 	/**
 	 * 专区课程保存
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -138,7 +138,7 @@ public class PcApiZoneCourseBiz {
 
 	/**
 	 * 专区课程删除
-	 * 
+	 *
 	 * @param zoneCourseDeleteREQ
 	 * @return
 	 */
@@ -155,7 +155,7 @@ public class PcApiZoneCourseBiz {
 
 	/**
 	 * 专区课程更新
-	 * 
+	 *
 	 * @param zoneCourseUpdateREQ
 	 * @return
 	 */
@@ -173,7 +173,7 @@ public class PcApiZoneCourseBiz {
 
 	/**
 	 * 专区课程查看
-	 * 
+	 *
 	 * @param zoneCourseViewREQ
 	 * @return
 	 */

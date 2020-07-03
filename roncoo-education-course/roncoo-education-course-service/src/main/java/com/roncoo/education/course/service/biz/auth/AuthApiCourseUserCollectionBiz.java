@@ -1,5 +1,6 @@
 package com.roncoo.education.course.service.biz.auth;
 
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionCountBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionDelBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionPageBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionSaveBO;
@@ -79,5 +80,12 @@ public class AuthApiCourseUserCollectionBiz extends BaseBiz {
             return Result.error("课程不能为空");
         }
         return Result.success(courseUserCollectionDao.deleteByCourseIdAndUserNo(authCourseUserCollectionDelBO));
+    }
+
+    public Result<Integer> countCollection(AuthCourseUserCollectionCountBO authCourseUserCollectionCountBO) {
+        if (StringUtils.isEmpty(authCourseUserCollectionCountBO.getUserNo())) {
+            return Result.error("课程不能为空");
+        }
+        return Result.success(courseUserCollectionDao.countCollectionByUserNo(authCourseUserCollectionCountBO));
     }
 }

@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -278,6 +280,39 @@ public final class DateUtil {
 	public static Date addDate(Date date, int day) {
 		Calendar calendar = Calendar.getInstance();
 		long millis = getMillis(date) + ((long) day) * 24 * 3600 * 1000;
+		calendar.setTimeInMillis(millis);
+		return calendar.getTime();
+	}
+	/**
+	 * 功能描述：日期相加
+	 *
+	 * @param date
+	 *            Date 日期
+	 * @param day
+	 *            int 天数
+	 * @return 返回相加后的日期
+	 */
+	public static LocalDateTime addDateToLocalDate(Date date, int day) {
+		Calendar calendar = Calendar.getInstance();
+		long millis = getMillis(date) + ((long) day) * 24 * 3600 * 1000;
+		calendar.setTimeInMillis(millis);
+		return calendar.getTime().toInstant()
+				.atZone( ZoneId.systemDefault() )
+				.toLocalDateTime();
+	}
+
+	/**
+	 * 功能描述：日期相加
+	 *
+	 * @param date
+	 *            Date 日期
+	 * @param hour
+	 *            int 小时数
+	 * @return 返回相加后的日期
+	 */
+	public static Date addDateByhour(Date date, int hour) {
+		Calendar calendar = Calendar.getInstance();
+		long millis = getMillis(date) + ((long) hour) * 3600 * 1000;
 		calendar.setTimeInMillis(millis);
 		return calendar.getTime();
 	}

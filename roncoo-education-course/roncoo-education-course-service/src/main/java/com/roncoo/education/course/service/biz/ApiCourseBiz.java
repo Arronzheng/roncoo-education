@@ -1,12 +1,17 @@
 package com.roncoo.education.course.service.biz;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.roncoo.education.course.service.common.dto.*;
+import com.roncoo.education.course.service.common.dto.auth.AuthAssembleCourseViewDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
 import com.roncoo.education.course.service.dao.*;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.user.common.bean.vo.UserExtVO;
 import com.roncoo.education.user.feign.IBossUserExt;
-import com.roncoo.education.util.enums.AuditStatusEnum;
+import com.roncoo.education.util.enums.*;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -25,13 +30,6 @@ import org.springframework.util.StringUtils;
 import com.roncoo.education.course.service.common.bo.CourseInfoPageBO;
 import com.roncoo.education.course.service.common.bo.CourseInfoSearchBO;
 import com.roncoo.education.course.service.common.bo.CourseVideoBO;
-import com.roncoo.education.course.service.common.dto.CourseChapterDTO;
-import com.roncoo.education.course.service.common.dto.CourseChapterPeriodDTO;
-import com.roncoo.education.course.service.common.dto.CourseInfoPageDTO;
-import com.roncoo.education.course.service.common.dto.CourseInfoSearchPageDTO;
-import com.roncoo.education.course.service.common.dto.CourseIntroduceDTO;
-import com.roncoo.education.course.service.common.dto.CourseViewDTO;
-import com.roncoo.education.course.service.common.dto.LecturerDTO;
 import com.roncoo.education.course.service.common.es.EsCourse;
 import com.roncoo.education.course.service.common.es.EsPageUtil;
 import com.roncoo.education.course.service.common.es.ResultMapperExt;
@@ -40,9 +38,6 @@ import com.roncoo.education.user.feign.IBossLecturer;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.base.Result;
-import com.roncoo.education.util.enums.IsHfield;
-import com.roncoo.education.util.enums.IsPutawayEnum;
-import com.roncoo.education.util.enums.StatusIdEnum;
 import com.roncoo.education.util.tools.BeanUtil;
 import com.roncoo.education.util.tools.SqlUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
@@ -75,10 +70,16 @@ public class ApiCourseBiz {
 	private CourseCommentDao courseCommentDao;
 	@Autowired
     private IBossUserExt bossUserExt;
+	@Autowired
+	private AssembleCourseDao assembleCourseDao;
+	@Autowired
+	private BargainCourseDao bargainCourseDao;
+	@Autowired
+	private AssembleDao assembleDao;
 
 	/**
 	 * 课程详情接口
-	 * 
+	 *
 	 * @param courseVideoBO
 	 * @return
 	 */
@@ -92,6 +93,31 @@ public class ApiCourseBiz {
 			return Result.error("找不到该课程信息");
 		}
 		CourseViewDTO data = BeanUtil.copyProperties(courseAudit, CourseViewDTO.class);
+		//查询是否是拼团或砍价课程
+		List<AssembleCourse> assembleCourses = assembleCourseDao.getByProductId(data.getId());
+		List<AuthAssembleCourseViewDTO> authAssembleCourseViewDTO = BeanUtil.copyProperties(assembleCourses, AuthAssembleCourseViewDTO.class);
+		if (!assembleCourses.isEmpty()) {
+			data.setAssemble(true);
+			data.setAuthAssembleCourseViewDTO(authAssembleCourseViewDTO.get(0));
+			//查询拼团列表
+			List<Assemble> assembles = assembleDao.getByCid(assembleCourses.get(0).getId(), 0L);
+			List<AssemblePageDTO> assemblePageDTOS = BeanUtil.copyProperties(assembles, AssemblePageDTO.class);
+
+			for (AssemblePageDTO assemblePageDTO : assemblePageDTOS) {
+				assemblePageDTO.setLackAssembleNum(1);
+				UserExtVO userExtVO = bossUserExt.getByUserNo(assemblePageDTO.getUid());
+				assemblePageDTO.setUserExtVO(userExtVO);
+			}
+			data.setAssemblePageList(assemblePageDTOS);
+		} else {
+			data.setAssemble(false);
+		}
+		List<BargainCourse> bargainCourses = bargainCourseDao.getByProductId(data.getId());
+		if (!bargainCourses.isEmpty()) {
+			data.setBargain(true);
+		} else {
+			data.setBargain(false);
+		}
 
 		// 课程介绍
 		CourseIntroduce courseIntroduce = courseIntroduceDao.getById(data.getIntroduceId());
@@ -140,7 +166,7 @@ public class ApiCourseBiz {
 
 	/**
 	 * 课程信息列表接口
-	 * 
+	 *
 	 * @param courseInfoPageBO
 	 * @return
 	 * @author wuyun
@@ -176,7 +202,7 @@ public class ApiCourseBiz {
 
 	/**
 	 * 课程搜索列表接口
-	 * 
+	 *
 	 * @param bo
 	 * @author wuyun
 	 */

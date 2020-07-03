@@ -86,7 +86,7 @@ public class UserExtDaoImpl implements UserExtDao {
 		Criteria criteria = example.createCriteria();
 		criteria.andUserNoEqualTo(userNo);
 		List<UserExt> list = this.userExtMapper.selectByExample(example);
-		if (list.isEmpty()) {
+		if (list.size() < 0 || list.isEmpty()) {
 			return null;
 		}
 		return list.get(0);
@@ -113,7 +113,7 @@ public class UserExtDaoImpl implements UserExtDao {
 
 	/**
 	 * 获取用户注册量
-	 * 
+	 *
 	 */
 	@Override
 	public Integer sumByCountOrders(String date) {
@@ -129,5 +129,17 @@ public class UserExtDaoImpl implements UserExtDao {
 			count = Integer.valueOf(String.valueOf(map.get("count")));
 		}
 		return count;
+	}
+
+	@Override
+	public UserExt getByInviteCode(String code) {
+		UserExtExample example = new UserExtExample();
+		Criteria c = example.createCriteria();
+		c.andInviteCodeEqualTo(code);
+		List<UserExt> list = this.userExtMapper.selectByExample(example);
+		if (list.size() < 0 || list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
 	}
 }

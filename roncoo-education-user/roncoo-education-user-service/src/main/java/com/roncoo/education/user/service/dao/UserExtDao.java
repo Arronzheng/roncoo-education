@@ -23,7 +23,7 @@ public interface UserExtDao {
 
 	/**
 	 * 根据手机号码获取用户信息
-	 * 
+	 *
 	 * @param mobile
 	 * @return
 	 * @author wuyun
@@ -32,10 +32,12 @@ public interface UserExtDao {
 
 	/**
 	 * 获取用户注册量
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 * @author wuyun
 	 */
 	Integer sumByCountOrders(String date);
+
+    UserExt getByInviteCode(String code);
 }

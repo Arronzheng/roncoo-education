@@ -1,6 +1,7 @@
 package com.roncoo.education.course.service.api.auth;
 
 import com.roncoo.education.course.service.biz.auth.AuthApiCourseUserCollectionBiz;
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionCountBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionDelBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionPageBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionSaveBO;
@@ -38,5 +39,11 @@ public class AuthApiCourseUserCollectionController extends BaseController {
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     public Result<Integer> cancelCollection(@RequestBody AuthCourseUserCollectionDelBO authCourseUserCollectionDelBO){
         return biz.cancelCollection(authCourseUserCollectionDelBO);
+    }
+
+    @ApiOperation(value = "统计接口", notes = "我的收藏统计接口")
+    @RequestMapping(value = "/count", method = RequestMethod.POST)
+    public Result<Integer> countCollection(@RequestBody AuthCourseUserCollectionCountBO authCourseUserCollectionCountBO){
+        return biz.countCollection(authCourseUserCollectionCountBO);
     }
 }

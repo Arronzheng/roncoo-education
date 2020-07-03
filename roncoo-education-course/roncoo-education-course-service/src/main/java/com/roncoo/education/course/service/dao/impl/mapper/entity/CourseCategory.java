@@ -22,6 +22,8 @@ public class CourseCategory implements Serializable {
 
     private Integer floor;
 
+    private String categoryIcon;
+
     private String remark;
 
     private static final long serialVersionUID = 1L;
@@ -98,6 +100,14 @@ public class CourseCategory implements Serializable {
         this.floor = floor;
     }
 
+    public String getCategoryIcon() {
+        return categoryIcon;
+    }
+
+    public void setCategoryIcon(String categoryIcon) {
+        this.categoryIcon = categoryIcon;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -121,6 +131,7 @@ public class CourseCategory implements Serializable {
         sb.append(", categoryType=").append(categoryType);
         sb.append(", categoryName=").append(categoryName);
         sb.append(", floor=").append(floor);
+        sb.append(", categoryIcon=").append(categoryIcon);
         sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

@@ -148,4 +148,9 @@ public class CourseAuditPageRESQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "是否已添加专区课程(1:存在，0:不存在)")
 	private Integer isAddZoneCourse;
+	/**
+	 * 是否已添加专区课程(1:存在，0:不存在)
+	 */
+	@ApiModelProperty(value = "是否已添加活动专区课程(1:存在，0:不存在)")
+	private Integer isAddActivityCourse;
 }

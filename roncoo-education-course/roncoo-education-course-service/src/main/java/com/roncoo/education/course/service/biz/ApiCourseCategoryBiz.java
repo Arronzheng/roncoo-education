@@ -3,8 +3,16 @@ package com.roncoo.education.course.service.biz;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.roncoo.education.course.service.common.bo.CourseInfoPageBO;
 import com.roncoo.education.course.service.common.dto.*;
+import com.roncoo.education.course.service.dao.ActivityCourseDao;
+import com.roncoo.education.course.service.dao.CourseAuditDao;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.ActivityCourse;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
+import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.base.Tree;
+import com.roncoo.education.util.enums.ActivityCategoryEnum;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,13 +37,19 @@ public class ApiCourseCategoryBiz {
 	@Autowired
 	private CourseCategoryDao dao;
 
+	@Autowired
+	private CourseAuditDao courseAuditDao;
+
+	@Autowired
+	private ActivityCourseDao activityCourseDao;
+
 	/**
 	 * 获取课程分类列表
-	 * 
+	 *
 	 * @return
 	 * @author wuyun
 	 */
-	public Result<CourseCategoryListDTO> list() {
+	public Result<CourseCategoryListDTO> list(CourseInfoPageBO courseInfoPageBO) {
 		CourseCategoryListDTO dto = new CourseCategoryListDTO();
 		// 根据分类类型、层级查询可用状态的课程分类集合
 		List<CourseCategory> oneCategoryList = dao.listByCategoryTypeAndFloorAndStatusId(CategoryTypeEnum.COURSE.getCode(), 1, StatusIdEnum.YES.getCode());
@@ -47,6 +61,11 @@ public class ApiCourseCategoryBiz {
 		for (CourseCategory courseCategory : oneCategoryList) {
 			// 设置一级分类
 			CourseCategoryDTO oneCategory = BeanUtil.copyProperties(courseCategory, CourseCategoryDTO.class);
+
+			//根据条件查找一级分类下的课程,暂时只根据课程名字查找
+			List<CourseAudit> courseAudits = courseAuditDao.listByCategoryId(courseCategory.getId(), courseInfoPageBO.getCourseName());
+			List<CourseViewDTO> oneCourseList = BeanUtil.copyProperties(courseAudits, CourseViewDTO.class);
+			oneCategory.setCourseList(oneCourseList);
 
 			// 查找一级分类下的二级分类
 			List<CourseCategory> twoCategoryList = dao.listByParentId(courseCategory.getId());

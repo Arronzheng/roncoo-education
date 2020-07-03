@@ -10,18 +10,13 @@ import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
 import com.roncoo.education.user.common.bean.vo.LecturerExtVO;
 import com.roncoo.education.user.common.bean.vo.SvipVO;
 import com.roncoo.education.user.common.bean.vo.UserExtVO;
+import com.roncoo.education.user.common.bean.vo.UserVO;
 import com.roncoo.education.user.service.common.bo.auth.AuthSvipOrderBO;
 import com.roncoo.education.user.service.common.bo.auth.AuthSvipOrderViewBO;
 import com.roncoo.education.user.service.common.dto.auth.AuthSvipOrderDTO;
 import com.roncoo.education.user.service.common.dto.auth.AuthSvipOrderViewDTO;
-import com.roncoo.education.user.service.dao.SvipBuyLogDao;
-import com.roncoo.education.user.service.dao.SvipDao;
-import com.roncoo.education.user.service.dao.SvipOrderDao;
-import com.roncoo.education.user.service.dao.UserExtDao;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.Svip;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.SvipBuyLog;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.SvipOrder;
-import com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt;
+import com.roncoo.education.user.service.dao.*;
+import com.roncoo.education.user.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.util.base.*;
 import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.pay.AlipayUtil;
@@ -55,6 +50,8 @@ public class AuthApiSvipOrderBiz extends BaseBiz {
 	@Autowired
 	private SvipOrderDao svipOrderDao;
 	@Autowired
+	private UserDao userDao;
+	@Autowired
 	private UserExtDao userExtDao;
 	@Autowired
 	private SvipDao svipDao;
@@ -67,18 +64,18 @@ public class AuthApiSvipOrderBiz extends BaseBiz {
 	 * @return
 	 */
 	@Transactional
-	public Result<AuthSvipOrderDTO> pay(AuthSvipOrderBO authSvipOrderBO) {
+	public Result<AuthSvipOrderDTO> pay(AuthSvipOrderBO authSvipOrderBO) throws Exception {
 		// 参数校验
 		verifyParam(authSvipOrderBO);
 		// 根据用户编号查找用户信息
-		UserExt userExt = userExtDao.getByUserNo(authSvipOrderBO.getUserNo());
-		if (ObjectUtil.isNull(userExt) || StatusIdEnum.NO.getCode().equals(userExt.getStatusId())) {
+		User user = userDao.getByUserNo(authSvipOrderBO.getUserNo());
+		if (ObjectUtil.isNull(user) || StatusIdEnum.NO.getCode().equals(user.getStatusId())) {
 			return Result.error("userNo不正确");
 		}
 		SvipOrder svipOrder = svipOrderDao.getByUserNoAndOrderStatus(authSvipOrderBO.getUserNo());
 		if (ObjectUtil.isNull(svipOrder)) {
 			// 创建订单信息
-			svipOrder = createOrderInfo(authSvipOrderBO, userExt);
+			svipOrder = createOrderInfo(authSvipOrderBO, user);
 		}else{
 			svipOrder.setPayType(authSvipOrderBO.getPayType());
 			svipOrder.setOrderStatus(OrderStatusEnum.WAIT.getCode());
@@ -96,7 +93,7 @@ public class AuthApiSvipOrderBiz extends BaseBiz {
 			return Result.error("payKey,paySecret或payUrl未配置");
 		}
 		if(authSvipOrderBO.getPayType() == 1){
-			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(svipOrder.getSerialNo()), svipOrder.getOrderName(), svipOrder.getPricePaid(), sys.getNotifyUrl(), "course");
+			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(svipOrder.getSerialNo()), svipOrder.getOrderName(), svipOrder.getPricePaid(), sys.getNotifyUrl(), authSvipOrderBO.getTradeType(), "course", user.getOpenId());
 			if(null == response){
 				return Result.error("调用微信支付失败，请联系商家");
 			}
@@ -223,7 +220,7 @@ public class AuthApiSvipOrderBiz extends BaseBiz {
 	/**
 	 * 创建订单信息表
 	 */
-	private SvipOrder createOrderInfo(AuthSvipOrderBO authSvipOrderBO, UserExt userExt) {
+	private SvipOrder createOrderInfo(AuthSvipOrderBO authSvipOrderBO, User user) {
 		SvipOrder svipOrder = new SvipOrder();
 		WebsiteVO websiteVO = bossWebsite.getWebsite();
 		svipOrder.setOrderName(authSvipOrderBO.getOrderName());
@@ -238,9 +235,9 @@ public class AuthApiSvipOrderBiz extends BaseBiz {
 //			svipOrder.setPricePaid(courseAudit.getCourseOriginal());
 //			svipOrder.setPricePaidSource(PricePaidSourceEnum.ORIGINAL.getCode());
 //		}
-		svipOrder.setUserNo(userExt.getUserNo());
-		svipOrder.setMobile(userExt.getMobile());
-		svipOrder.setRegisterTime(userExt.getGmtCreate());
+		svipOrder.setUserNo(user.getUserNo());
+		svipOrder.setMobile(user.getMobile());
+		svipOrder.setRegisterTime(user.getGmtCreate());
 		svipOrder.setOrderNo(NOUtil.getOrderNo()); // 订单号，不要使用IdWorker生成
 		svipOrder.setSerialNo(NOUtil.getOrderNo()); // 流水号，不要使用IdWorker生成
 		svipOrder.setPriceDiscount(BigDecimal.ZERO);

@@ -1,6 +1,7 @@
 package com.roncoo.education.user.service.dao.impl.mapper.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class UserExt implements Serializable {
@@ -29,6 +30,14 @@ public class UserExt implements Serializable {
     private String remark;
 
     private Integer isVip;
+
+    private String inviteCode;
+
+    private Long inviteUserNo;
+
+    private Integer vipLevel;
+
+    private BigDecimal commission;
 
     private static final long serialVersionUID = 1L;
 
@@ -136,6 +145,39 @@ public class UserExt implements Serializable {
         this.isVip = isVip;
     }
 
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public Long getInviteUserNo() {
+        return inviteUserNo;
+    }
+
+    public Integer getVipLevel() {
+        return vipLevel;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    public void setInviteUserNo(Long inviteUserNo) {
+        this.inviteUserNo = inviteUserNo;
+    }
+
+    public void setVipLevel(Integer vipLevel) {
+        this.vipLevel = vipLevel;
+    }
+
+
+    public BigDecimal getCommission() {
+        return commission;
+    }
+
+    public void setCommission(BigDecimal commission) {
+        this.commission = commission;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -155,6 +197,10 @@ public class UserExt implements Serializable {
         sb.append(", headImgUrl=").append(headImgUrl);
         sb.append(", remark=").append(remark);
         sb.append(", isVip=").append(isVip);
+        sb.append(", inviteCode=").append(inviteCode);
+        sb.append(", inviteUserNo=").append(inviteUserNo);
+        sb.append(", vipLevel=").append(vipLevel);
+        sb.append(", commission=").append(commission);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

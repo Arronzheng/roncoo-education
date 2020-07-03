@@ -84,6 +84,11 @@ public class OrderInfoStatisticalREQ implements Serializable {
 	@ApiModelProperty(value = "订单状态：1待支付，2成功支付，3支付失败，4已关闭，5已退款，6订单解绑", required = false)
 	private Integer orderStatus;
 	/**
+	 * 订单类型：1普通订单，2拼团订单，3砍价订单
+	 */
+	@ApiModelProperty(value = "订单类型：1普通订单，2拼团订单，3砍价订单", required = false)
+	private Integer orderType;
+	/**
 	 * 支付开始时间
 	 */
 	@ApiModelProperty(value = "支付开始时间", required = false)

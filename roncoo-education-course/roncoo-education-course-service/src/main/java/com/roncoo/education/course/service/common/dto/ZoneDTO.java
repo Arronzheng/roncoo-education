@@ -45,6 +45,6 @@ public class ZoneDTO implements Serializable {
 	 * 课程信息
 	 */
 	@ApiModelProperty(value = "课程信息")
-	private List<ZoneCourseDTO> zoneCourseList = new ArrayList<>();
+	private List<CourseDTO> courseList = new ArrayList<>();
 
 }

@@ -4,8 +4,10 @@ import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.roncoo.education.util.tools.IpUtil;
+import com.roncoo.education.util.tools.NOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -21,34 +23,23 @@ public class WeixinPayUtil {
     /*
     * 统一下单：
     */
-    public static Map<String, String> weixinPay(String out_trade_no, String body, BigDecimal total_fee, String notify_url, String orderType){
+    public static Map<String, String> weixinPay(String out_trade_no, String body, BigDecimal total_fee, String notify_url, String tradeType, String orderType, String openId) throws Exception {
         WeixinConfig config = new WeixinConfig();
         WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, true);
 
         Map<String, String> data = new HashMap<String, String>();
-        /*
-         *列出的参数都是必传的，注释掉的参数unifiedOrder（）方法中微信已经添加了。
-         *更多参数请查看文档：https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1
-         */
-        //data.put("appid", appid);
-        //data.put("mch_id", mchId);//商户号
-        //data.put("nonce_str", nonceStr);//随机字符串
-        data.put("sign",getSignKey(config, wxpay));//签名
+//      data.put("sign",getSignKey(config, wxpay));//签名
         data.put("body", body);//商品描述(标题)
         data.put("out_trade_no", out_trade_no);//商户订单号
         data.put("total_fee", total_fee.stripTrailingZeros().toPlainString());//订单总金额，单位为分
         data.put("spbill_create_ip", IpUtil.getLocalIp4Address().toString());//用户的客户端IP,Native支付填调用微信支付API的机器IP
         data.put("notify_url", notify_url);//回调地址
-        data.put("trade_type", "NATIVE");  // 此处指定为扫码支付
-        data.put("attach", orderType);  // 此处指定为扫码支付
-        Map<String, String> resp = null;
-        try {
-            resp = wxpay.unifiedOrder(data);
-            System.out.println(resp);
-        } catch (Exception e) {
-            logger.error("微信下单接口请求失败，resp={}", e.getMessage());
+        data.put("trade_type", tradeType);  // 交易类型：JSAPI -JSAPI支付 NATIVE -Native支付 APP -APP支付
+        data.put("attach", orderType);  // 附加数据,原样返回
+        if ("JSAPI".equals(tradeType) && !StringUtils.isEmpty(openId)) {
+            data.put("openid", openId); // JSAPI支付，此参数必传
         }
-        return resp;
+        return wxpay.unifiedOrder(data);
     }
     /*
      *订单查询：
@@ -67,6 +58,19 @@ public class WeixinPayUtil {
             return resp;
         }
         return resp;
+    }
+    /*
+     *申请退款
+     */
+    public static Map<String, String> refund(String outTradeNo, BigDecimal totalFee, BigDecimal refundFee) throws Exception {
+        WeixinConfig config = new WeixinConfig();
+        WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, false);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no",outTradeNo); // 商户订单号
+        data.put("out_refund_no", NOUtil.getSerialNumber().toString()); // 商户退款单号
+        data.put("total_fee",totalFee.toPlainString()); // 订单金额
+        data.put("refund_fee",refundFee.toPlainString()); // 退款金额
+        return wxpay.refund(data);
     }
 
     /*

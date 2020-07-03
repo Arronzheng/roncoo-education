@@ -43,10 +43,20 @@ public class CourseCategoryDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "备注", required = true)
 	private String remark;
-	
+	/**
+	 * 分类图标
+	 */
+	@ApiModelProperty(value = "分类图标", required = true)
+	private String categoryIcon;
+
 	/**
 	 * 课程分类,二级分类列表
 	 */
 	@ApiModelProperty(value = "二级分类信息列表", required = true)
 	private List<CourseCategoryTwoDTO> twoList = new ArrayList<>();
+	/**
+	 * 课程,该分类下课程列表
+	 */
+	@ApiModelProperty(value = "该分类下课程列表", required = true)
+	private List<CourseViewDTO> courseList = new ArrayList<>();
 }

@@ -2,6 +2,7 @@ package com.roncoo.education.course.service.controller.biz;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,10 +13,13 @@ import com.roncoo.education.course.service.biz.auth.AuthApiOrderInfoBiz;
 import com.roncoo.education.course.service.dao.CourseAuditDao;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
+import com.roncoo.education.user.common.bean.qo.UserExtQO;
+import com.roncoo.education.user.common.bean.qo.UserLogCommissionSaveQO;
 import com.roncoo.education.user.common.bean.vo.LecturerExtVO;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
-import com.roncoo.education.user.feign.IBossLecturer;
-import com.roncoo.education.user.feign.IBossLecturerExt;
+import com.roncoo.education.user.common.bean.vo.UserExtVO;
+import com.roncoo.education.user.common.bean.vo.UserLogInviteVO;
+import com.roncoo.education.user.feign.*;
 import com.roncoo.education.util.base.Result;
 import com.roncoo.education.util.pay.AlipayUtil;
 import com.roncoo.education.util.pay.WeixinPayUtil;
@@ -58,9 +62,13 @@ public class BossOrderInfoBiz extends BaseBiz {
 	@Autowired
 	private CourseAuditDao courseAuditDao;
 	@Autowired
-	private IBossLecturer bossLecturer;
-	@Autowired
 	private IBossLecturerExt bossLecturerExt;
+	@Autowired
+	private IBossUserExt bossUserExt;
+	@Autowired
+	private IBossUserLogInvite bossUserLogInvite;
+	@Autowired
+	private IBossUserLogCommission bossUserLogCommission;
 
 	public Page<OrderInfoVO> listForPage(OrderInfoQO qo) {
 		OrderInfoExample example = new OrderInfoExample();
@@ -136,7 +144,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 订单信息汇总（导出报表）
-	 * 
+	 *
 	 * @param orderInfoQO
 	 * @author wuyun
 	 */
@@ -146,7 +154,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 统计时间段的总订单数
-	 * 
+	 *
 	 * @param orderEchartsQO
 	 * @return
 	 * @author wuyun
@@ -166,7 +174,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 统计时间段的总收入
-	 * 
+	 *
 	 * @param orderEchartsQO
 	 * @return
 	 * @author wuyun
@@ -186,7 +194,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 统计订单收入情况
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	public CountIncomeVO countIncome(OrderInfoQO qo) {
@@ -196,9 +204,8 @@ public class BossOrderInfoBiz extends BaseBiz {
 
 	/**
 	 * 30分钟后如果订单不支付，就关闭订单和标记订单支付日志，每次处理10条数据
-	 * 
+	 *
 	 * @return
-	 * @author wuyun
 	 */
 	public int handleScheduledTasks() {
 		// 1.订单信息的处理
@@ -339,6 +346,32 @@ public class BossOrderInfoBiz extends BaseBiz {
 		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
 		orderPay.setPayTime(new Date());
 		orderPayDao.updateById(orderPay);
+
+		UserExtVO userExtVO = bossUserExt.getByUserNo(orderInfo.getUserNo());
+		if (!StringUtils.isEmpty(userExtVO.getVipLevel())) {
+			userExtVO.setVipLevel(2);
+			UserExtQO userExtQO = BeanUtil.copyProperties(userExtVO, UserExtQO.class);
+			bossUserExt.updateById(userExtQO);
+		}
+		//判断是否有邀请人，如果有判断邀请人会员等级，如果为1级，就返佣
+		UserLogInviteVO userLogInviteVO = bossUserLogInvite.getByInvitedNo(orderInfo.getUserNo());
+		if (!StringUtils.isEmpty(userLogInviteVO)) {
+			UserExtVO extVO = bossUserExt.getByUserNo(userLogInviteVO.getInviteUserNo());
+			if (extVO.getVipLevel().equals("1")) {
+				// 返佣
+				UserExtQO userExtQO = new UserExtQO();
+				userExtQO.setId(extVO.getId()).setCommission(extVO.getCommission().add(new BigDecimal("5")));
+				bossUserExt.updateById(userExtQO);
+				// 返佣记录
+				UserLogCommissionSaveQO userLogCommissionSaveQO = new UserLogCommissionSaveQO();
+				userLogCommissionSaveQO.setAddTime(LocalDateTime.now());
+				userLogCommissionSaveQO.setCommission(userExtQO.getCommission());
+				userLogCommissionSaveQO.setOrderNo(orderInfo.getOrderNo());
+				userLogCommissionSaveQO.setSourceUserNo(userLogInviteVO.getInvitedUserNo());
+				userLogCommissionSaveQO.setUserNo(userLogInviteVO.getInviteUserNo());
+				bossUserLogCommission.save(userLogCommissionSaveQO);
+			}
+		}
 	}
 
 	/**
@@ -377,4 +410,9 @@ public class BossOrderInfoBiz extends BaseBiz {
 		bossLecturerExt.updateTotalIncomeByLecturerUserNo(lecturerExtQO);
 	}
 
+    public OrderInfoVO getByOrderNo(Long orderNo) {
+		OrderInfo orderInfo = dao.getByOrderNo(orderNo);
+		OrderInfoVO orderInfoVO = BeanUtil.copyProperties(orderInfo, OrderInfoVO.class);
+		return orderInfoVO;
+    }
 }

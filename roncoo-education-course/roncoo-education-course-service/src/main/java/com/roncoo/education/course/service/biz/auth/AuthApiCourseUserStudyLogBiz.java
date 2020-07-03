@@ -1,5 +1,6 @@
 package com.roncoo.education.course.service.biz.auth;
 
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserStudyLogCountBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +36,8 @@ public class AuthApiCourseUserStudyLogBiz extends BaseBiz {
 
 	/**
 	 * 最近学习日志分页列出接口
-	 * 
-	 * @param bo
+	 *
+	 * @param authCourseUserStudyLogPageBO
 	 * @return
 	 * @author wuyun
 	 */

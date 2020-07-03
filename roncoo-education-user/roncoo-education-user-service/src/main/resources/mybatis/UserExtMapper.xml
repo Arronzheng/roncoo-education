@@ -15,6 +15,10 @@
     <result column="head_img_url" property="headImgUrl" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="is_vip" property="isVip" jdbcType="TINYINT" />
+    <result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
+    <result column="invite_user_no" property="inviteUserNo" jdbcType="BIGINT" />
+    <result column="vip_level" property="vipLevel" jdbcType="TINYINT" />
+    <result column="commission" property="commission" jdbcType="DECIMAL" />
   </resultMap>
 
   <resultMap id="ResultMapUnionSvip" type="com.roncoo.education.user.service.common.resq.UserExtPageRESQ">
@@ -31,6 +35,9 @@
     <result column="head_img_url" property="headImgUrl" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="is_vip" property="isVip" jdbcType="TINYINT" />
+    <result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
+    <result column="vip_level" property="vipLevel" jdbcType="TINYINT" />
+    <result column="commission" property="commission" jdbcType="DECIMAL" />
 <!--    resultMap="com.roncoo.education.user.service.dao.impl.mapper.SvipMapper.BaseResultMap"-->
     <association property="vip" column="user_no" select="com.roncoo.education.user.service.dao.impl.mapper.SvipMapper.getVipByUserNo"></association>
   </resultMap>
@@ -94,8 +101,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, gmt_create, gmt_modified, status_id, user_no, user_type, mobile, sex, age, nickname, 
-    head_img_url, remark, is_vip
+    id, gmt_create, gmt_modified, status_id, user_no, user_type, mobile, sex, age, nickname,
+    head_img_url, remark, is_vip, invite_code, vip_level, commission
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserExtExample" >
     select
@@ -139,7 +146,7 @@
     limit #{paramMap.limitStart} , #{paramMap.pageSize}
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from user_ext
     where id = #{id,jdbcType=BIGINT}
@@ -155,14 +162,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt" >
-    insert into user_ext (id, gmt_create, gmt_modified, 
-      status_id, user_no, user_type, 
-      mobile, sex, age, nickname, 
-      head_img_url, remark, is_vip)
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{statusId,jdbcType=TINYINT}, #{userNo,jdbcType=BIGINT}, #{userType,jdbcType=TINYINT}, 
-      #{mobile,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{age,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, 
-      #{headImgUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}), #{isVip,jdbcType=TINYINT})
+    insert into user_ext (id, gmt_create, gmt_modified,
+      status_id, user_no, user_type,
+      mobile, sex, age, nickname,
+      head_img_url, remark, is_vip, invite_code, vip_level, commission)
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP},
+      #{statusId,jdbcType=TINYINT}, #{userNo,jdbcType=BIGINT}, #{userType,jdbcType=TINYINT},
+      #{mobile,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{age,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR},
+      #{headImgUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}), #{isVip,jdbcType=TINYINT}, #{inviteCode,jdbcType=VARCHAR}
+      , #{vipLevel,jdbcType=TINYINT}, #{commission,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt" >
     insert into user_ext
@@ -206,6 +214,15 @@
       <if test="isVip != null" >
         is_vip,
       </if>
+      <if test="inviteCode != null" >
+        invite_code,
+      </if>
+      <if test="vipLevel != null" >
+        vip_level,
+      </if>
+      <if test="commission != null" >
+        commission,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -246,6 +263,15 @@
       </if>
       <if test="isVip != null" >
         #{isVip,jdbcType=TINYINT},
+      </if>
+      <if test="inviteCode != null" >
+        #{inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vipLevel != null" >
+        #{vipLevel,jdbcType=TINYINT},
+      </if>
+      <if test="commission != null" >
+        #{commission,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -297,6 +323,15 @@
       <if test="record.isVip != null" >
         is_vip = #{record.isVip,jdbcType=TINYINT},
       </if>
+      <if test="record.inviteCode != null" >
+        invite_code = #{record.inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vipLevel != null" >
+        vip_level = #{record.vipLevel,jdbcType=TINYINT},
+      </if>
+      <if test="record.commission != null" >
+        commission = #{record.commission,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -316,7 +351,10 @@
       nickname = #{record.nickname,jdbcType=VARCHAR},
       head_img_url = #{record.headImgUrl,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
-      is_vip = #{record.isVip,jdbcType=TINYINT}
+      is_vip = #{record.isVip,jdbcType=TINYINT},
+      invite_code = #{record.inviteCode,jdbcType=VARCHAR},
+      vip_level = #{record.vipLevel,jdbcType=TINYINT},
+      commission = #{record.commission,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +398,15 @@
       <if test="isVip != null" >
         is_vip = #{isVip,jdbcType=TINYINT},
       </if>
+      <if test="inviteCode != null" >
+        invite_code = #{inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vipLevel != null" >
+        vip_level = #{vipLevel,jdbcType=TINYINT},
+      </if>
+      <if test="commission != null" >
+        commission = #{commission,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -376,7 +423,10 @@
       nickname = #{nickname,jdbcType=VARCHAR},
       head_img_url = #{headImgUrl,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      is_vip = #{isVip,jdbcType=TINYINT}
+      is_vip = #{isVip,jdbcType=TINYINT},
+      invite_code = #{inviteCode,jdbcType=VARCHAR},
+      vip_level = #{vipLevel,jdbcType=TINYINT},
+      commission = #{commission,jdbcType=DECIMAL},
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

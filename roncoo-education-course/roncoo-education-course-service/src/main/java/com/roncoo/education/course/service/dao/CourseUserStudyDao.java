@@ -17,10 +17,12 @@ public interface CourseUserStudyDao {
 
     /**
      * 根据用户编号、课程编号查找課程用户关联表
-     * 
+     *
      * @param userNo
-     * @param courseNo
+     * @param courseId
      * @return
      */
 	CourseUserStudy getByUserNoAndCourseId(Long userNo, Long courseId);
+
+    int countByUserNo(CourseUserStudyExample example);
 }

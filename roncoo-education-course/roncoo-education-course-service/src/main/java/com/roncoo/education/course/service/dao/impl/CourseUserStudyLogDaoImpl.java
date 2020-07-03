@@ -200,4 +200,5 @@ public class CourseUserStudyLogDaoImpl implements CourseUserStudyLogDao {
 		}
 		return courseUserStudyLogList.get(0);
 	}
+
 }

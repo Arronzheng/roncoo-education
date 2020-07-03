@@ -3,14 +3,19 @@ package com.roncoo.education.course.service.biz.auth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
+import com.roncoo.education.course.service.common.dto.AssemblePageDTO;
+import com.roncoo.education.course.service.common.dto.auth.*;
 import com.roncoo.education.course.service.dao.*;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
+import com.roncoo.education.user.common.bean.vo.UserExtVO;
 import com.roncoo.education.user.feign.IBossUserExt;
 import com.roncoo.education.util.enums.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseSignBO;
@@ -18,9 +23,6 @@ import com.roncoo.education.course.service.common.bo.auth.AuthCourseViewBO;
 import com.roncoo.education.course.service.common.dto.CourseChapterDTO;
 import com.roncoo.education.course.service.common.dto.CourseChapterPeriodDTO;
 import com.roncoo.education.course.service.common.dto.CourseIntroduceDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthCourseSignDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthCourseViewDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthLecturerDTO;
 import com.roncoo.education.system.common.bean.vo.SysVO;
 import com.roncoo.education.system.feign.IBossSys;
 import com.roncoo.education.user.common.bean.vo.LecturerVO;
@@ -57,6 +59,8 @@ public class AuthApiCourseBiz extends BaseBiz {
 	@Autowired
 	private CourseUserStudyLogDao courseUserStudyLogDao;
 	@Autowired
+	private CourseUserCollectionDao courseUserCollectionDao;
+	@Autowired
 	private IBossLecturer bossLecturer;
 	@Autowired
 	private OrderInfoDao orderInfoDao;
@@ -64,6 +68,12 @@ public class AuthApiCourseBiz extends BaseBiz {
 	private CourseCommentDao courseCommentDao;
 	@Autowired
 	private IBossUserExt bossUserExt;
+	@Autowired
+	private AssembleCourseDao assembleCourseDao;
+	@Autowired
+	private BargainCourseDao bargainCourseDao;
+	@Autowired
+	private AssembleDao assembleDao;
 
 	@Autowired
 	private IBossSys bossSys;
@@ -128,7 +138,37 @@ public class AuthApiCourseBiz extends BaseBiz {
 			return Result.error("找不到该课程");
 		}
 		AuthCourseViewDTO dto = BeanUtil.copyProperties(courseAudit, AuthCourseViewDTO.class);
+		//查询是否是拼团或砍价课程
+		List<AssembleCourse> assembleCourses = assembleCourseDao.getByProductId(dto.getId());
+		List<AuthAssembleCourseViewDTO> authAssembleCourseViewDTO = BeanUtil.copyProperties(assembleCourses, AuthAssembleCourseViewDTO.class);
+		if (!assembleCourses.isEmpty()) {
+			dto.setAssemble(true);
+			dto.setAuthAssembleCourseViewDTO(authAssembleCourseViewDTO.get(0));
+			//查询发起拼团的拼团列表
+			List<Assemble> assembles = assembleDao.getByCid(assembleCourses.get(0).getId(), authCourseViewBO.getUserNo());
+			List<AssemblePageDTO> assemblePageDTOS = BeanUtil.copyProperties(assembles, AssemblePageDTO.class);
 
+			for (AssemblePageDTO assemblePageDTO : assemblePageDTOS) {
+				assemblePageDTO.setLackAssembleNum(1);
+				UserExtVO userExtVO = bossUserExt.getByUserNo(assemblePageDTO.getUid());
+				assemblePageDTO.setUserExtVO(userExtVO);
+			}
+			dto.setAssemblePageList(assemblePageDTOS);
+		} else {
+			dto.setAssemble(false);
+		}
+
+		List<BargainCourse> bargainCourses = bargainCourseDao.getByProductId(dto.getId());
+		List<AuthBargainCourseViewDTO> authBargainCourseViewDTO = BeanUtil.copyProperties(bargainCourses, AuthBargainCourseViewDTO.class);
+		if (!bargainCourses.isEmpty()) {
+			dto.setBargain(true);
+			dto.setAuthBargainCourseViewDTO(authBargainCourseViewDTO.get(0));
+		} else {
+			dto.setBargain(false);
+		}
+		//查询收藏信息
+		CourseUserCollection courseUserCollection = courseUserCollectionDao.getByUserNoAndCourseId(authCourseViewBO.getUserNo(), authCourseViewBO.getCourseId());
+		dto.setUserCollect(!ObjectUtils.isEmpty(courseUserCollection));
 		// 查询课程介绍
 		CourseIntroduceAudit courseIntroduce = courseIntroduceAuditDao.getById(courseAudit.getIntroduceId());
 		dto.setIntroduce(BeanUtil.copyProperties(courseIntroduce, CourseIntroduceDTO.class).getIntroduce());
@@ -194,7 +234,7 @@ public class AuthApiCourseBiz extends BaseBiz {
 
 	/**
 	 * 获取播放sign值
-	 * 
+	 *
 	 * @param authCourseSignBO
 	 * @return
 	 */

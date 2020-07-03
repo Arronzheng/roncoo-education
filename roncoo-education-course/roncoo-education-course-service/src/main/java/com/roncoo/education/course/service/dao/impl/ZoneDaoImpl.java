@@ -51,4 +51,10 @@ public class ZoneDaoImpl implements ZoneDao {
 		List<Zone> list= this.zoneMapper.selectByExample(example);
 		return list;
 	}
+
+    @Override
+    public List<Zone> listByLocation(ZoneExample example) {
+        List<Zone> list= this.zoneMapper.selectByExample(example);
+        return list;
+    }
 }

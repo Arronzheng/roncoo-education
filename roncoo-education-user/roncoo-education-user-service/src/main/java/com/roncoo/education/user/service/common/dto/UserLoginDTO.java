@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.roncoo.education.user.service.dao.impl.mapper.entity.UserExt;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -31,4 +32,9 @@ public class UserLoginDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "token，有效期为1天")
 	private String token;
+	/**
+	 * 用户基本信息
+	 */
+	@ApiModelProperty(value = "用户基本信息")
+	private UserExt userExt;
 }

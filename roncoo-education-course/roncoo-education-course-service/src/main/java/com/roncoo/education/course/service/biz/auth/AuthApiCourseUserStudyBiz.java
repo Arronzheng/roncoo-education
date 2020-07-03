@@ -1,5 +1,6 @@
 package com.roncoo.education.course.service.biz.auth;
 
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserStudyLogCountBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserStudyPageBO;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseUserStudyPageDTO;
 import com.roncoo.education.course.service.dao.CourseAuditDao;
@@ -48,5 +49,16 @@ public class AuthApiCourseUserStudyBiz extends BaseBiz {
 
         }
         return Result.success(dtoList);
+    }
+
+    public Result<Integer> count(AuthCourseUserStudyLogCountBO authCourseUserStudyLogCountBO) {
+        CourseUserStudyExample example = new CourseUserStudyExample();
+        CourseUserStudyExample.Criteria c = example.createCriteria();
+        if (authCourseUserStudyLogCountBO.getUserNo() == null) {
+            return Result.error("userNo不能为空");
+        }
+        c.andUserNoEqualTo(authCourseUserStudyLogCountBO.getUserNo());
+        int count = courseUserStudyDao.countByUserNo(example);
+        return Result.success(count);
     }
 }

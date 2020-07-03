@@ -62,6 +62,8 @@ public class PcApiCourseAuditBiz {
 	private CourseIntroduceAuditDao courseIntroduceAuditDao;
 	@Autowired
 	private ZoneCourseDao zoneCourseDao;
+	@Autowired
+	private ActivityCourseDao activityCourseDao;
 
 	public Result<Page<CourseAuditPageRESQ>> list(CourseAuditPageREQ req) {
 		CourseAuditExample example = new CourseAuditExample();
@@ -77,7 +79,7 @@ public class PcApiCourseAuditBiz {
 //			c.andAuditStatusNotEqualTo(AuditStatusEnum.SUCCESS.getCode());默认不查审核通过
 			c.andAuditStatusEqualTo(req.getAuditStatus());
 		}
-		if (req.getIsFree() != null) { 
+		if (req.getIsFree() != null) {
 			c.andIsFreeEqualTo(req.getIsFree());
 		}
 		if (req.getIsPutaway() != null) {
@@ -128,7 +130,7 @@ public class PcApiCourseAuditBiz {
 
 	/**
 	 * 更新
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -175,7 +177,7 @@ public class PcApiCourseAuditBiz {
 
 	/**
 	 * 查看(课程修改使用)
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -217,7 +219,7 @@ public class PcApiCourseAuditBiz {
 
 	/**
 	 * 查看详情
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */

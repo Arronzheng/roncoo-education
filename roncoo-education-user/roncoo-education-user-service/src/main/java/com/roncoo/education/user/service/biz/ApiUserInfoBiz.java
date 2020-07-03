@@ -1,26 +1,32 @@
 package com.roncoo.education.user.service.biz;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import com.roncoo.education.user.service.common.WeChatUtil;
+import com.roncoo.education.user.service.common.bo.*;
+import com.roncoo.education.user.service.common.dto.JssdkConfigDTO;
 import com.roncoo.education.user.service.common.dto.UserWXLoginDTO;
+import com.roncoo.education.user.service.common.wechat.AccessToken;
+import com.roncoo.education.user.service.common.wechat.JsapiTicket;
 import com.roncoo.education.util.config.SystemUtil;
 import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.tencentcloud.Tencent;
 import com.roncoo.education.util.tencentcloud.TencentUtil;
+import com.roncoo.education.util.tools.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import com.aliyuncs.exceptions.ClientException;
 import com.roncoo.education.system.common.bean.vo.SysVO;
 import com.roncoo.education.system.feign.IBossSys;
-import com.roncoo.education.user.service.common.bo.UserLoginCodeBO;
-import com.roncoo.education.user.service.common.bo.UserLoginPasswordBO;
-import com.roncoo.education.user.service.common.bo.UserRegisterBO;
-import com.roncoo.education.user.service.common.bo.UserSendCodeBO;
 import com.roncoo.education.user.service.common.bo.auth.UserUpdateBO;
 import com.roncoo.education.user.service.common.dto.UserLoginDTO;
 import com.roncoo.education.user.service.dao.PlatformDao;
@@ -38,14 +44,11 @@ import com.roncoo.education.util.aliyun.AliyunUtil;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.BaseException;
 import com.roncoo.education.util.base.Result;
-import com.roncoo.education.util.tools.BeanUtil;
-import com.roncoo.education.util.tools.Constants;
-import com.roncoo.education.util.tools.JWTUtil;
-import com.roncoo.education.util.tools.NOUtil;
-import com.roncoo.education.util.tools.StrUtil;
 import com.xiaoleilu.hutool.crypto.DigestUtil;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户基本信息
@@ -288,6 +291,7 @@ public class ApiUserInfoBiz extends BaseBiz {
 		userExt.setUserNo(user.getUserNo());
 		userExt.setUserType(UserTypeEnum.USER.getCode());
 		userExt.setMobile(user.getMobile());
+		userExt.setInviteCode(StrUtil.getCode());
 		userExtDao.save(userExt);
 
 		return user;
@@ -359,10 +363,174 @@ public class ApiUserInfoBiz extends BaseBiz {
 		UserWXLoginDTO userWXLoginDTO = new UserWXLoginDTO();
 		userWXLoginDTO.setAppid(SystemUtil.APP_ID);
 		userWXLoginDTO.setRedirectUri(SystemUtil.REDIRECT_URI);
-		String state = "47CC68A6508DA7038DA8E7EDFD03BE7E3398DA68943D4CFAE2A4A9DFCE3117207037171CAF5D77F789A2260CB831DA66";//测试
-//		String state = String.valueOf(System.currentTimeMillis());
+//		String state = "47CC68A6508DA7038DA8E7EDFD03BE7E3398DA68943D4CFAE2A4A9DFCE3117207037171CAF5D77F789A2260CB831DA66";//测试
+		String state = String.valueOf(System.currentTimeMillis());
 		redisTemplate.opsForValue().set("state", state);
 		userWXLoginDTO.setState(state);
 		return Result.success(userWXLoginDTO);
+	}
+
+	public Result<JssdkConfigDTO> getConfig(String url) {
+//		String url = request.getScheme() +"://" + request.getServerName();
+
+//		String url = "http://bify8t.natappfree.cc";
+		JssdkConfigDTO ret = WeChatUtil.sign(getJsapiTicket(), url);
+		System.out.println(ret);
+		return Result.success(ret);
+	}
+
+	/**
+	 * 向外暴露的获取ticket的方法
+	 * @return
+	 */
+	public String getJsapiTicket() {
+		String jt = null;
+		if (redisTemplate.hasKey("ticket")) {
+			jt = redisTemplate.opsForValue().get("ticket");
+		}
+		System.out.println("缓存获取ticket：" + jt);
+		if (StringUtils.isEmpty(jt)) {
+			jt = getTicket();
+		}
+		return jt;
+	}
+
+	/**
+	 * 从微信获取jsapi_ticket并保存
+	 */
+	private String getTicket() {
+		String url = SystemUtil.JSAPI_TICKET_URL.replace("ACCESS_TOKEN", getAccessToken());
+		Map<String, Object> resultMap = HttpUtil.doGet(url);
+		JsapiTicket jt = new JsapiTicket(resultMap.get("ticket").toString(), resultMap.get("expires_in").toString());
+		System.out.println("微信获取ticket：" + jt);
+		redisTemplate.opsForValue().set("ticket", jt.getTicket(), Long.valueOf(jt.getExpireIn()), TimeUnit.SECONDS);
+		return jt.getTicket();
+	}
+
+	/**
+	 * 向外暴露的获取token的方法
+	 * @return
+	 */
+	public String getAccessToken() {
+		String at = null;
+		if (redisTemplate.hasKey("access_token")) {
+			at = redisTemplate.opsForValue().get("access_token");
+		}
+		System.out.println("缓存获取token：" + at);
+		if (StringUtils.isEmpty(at)) {
+			at = getToken();
+		}
+		return at;
+	}
+
+	/**
+	 * 从微信获取普通AccessToken并保存
+	 */
+	private String getToken() {
+		String url = SystemUtil.ACCESS_TOKEN_URL.replace("APPID", SystemUtil.APP_ID).replace("APPSECRET", SystemUtil.APP_SECRET);
+		Map<String, Object> resultMap = HttpUtil.doGet(url);
+		AccessToken at = new AccessToken(resultMap.get("access_token").toString(), resultMap.get("expires_in").toString());
+		System.out.println("微信获取token：" + at.getAccessToken());
+		redisTemplate.opsForValue().set("access_token", at.getAccessToken(), Long.valueOf(at.getExpireIn()), TimeUnit.SECONDS);
+		return at.getAccessToken();
+	}
+
+	public Result<UserLoginDTO> getCode(WeChatCodeBO weChatCodeBO) {
+		String storage = redisTemplate.opsForValue().get("state");
+		if(weChatCodeBO.getCode() == null){
+			return Result.error("请求错误！");
+		}
+		if(!weChatCodeBO.getState().equals(storage)){
+			return Result.error("请求错误！");
+		}
+		//1、通过openAppid和openAppsecret和微信返回的code，拼接URL
+		String accessTokenUrl = SystemUtil.OAUTH_ACCESS_TOKEN_URL.replace("APPID", SystemUtil.APP_ID)
+				.replace("SECRET", SystemUtil.APP_SECRET)
+				.replace("CODE", weChatCodeBO.getCode());
+
+		//2、通过URL再去回调微信接口 (使用了httpclient和gson工具）
+		Map<String ,Object> baseMap =  HttpUtil.doGet(accessTokenUrl);
+
+		//3、回调成功后获取access_token和oppid
+		if(baseMap == null || baseMap.isEmpty()){
+			return  Result.error("微信登录失败！");
+		}
+		String accessToken = (String)baseMap.get("access_token");
+		String openId  = (String) baseMap.get("openid");
+
+		//4、去数据库查看该用户之前是否已经扫码登陆过（openid是用户唯一标志）
+		User user = userDao.findByopenid(openId);
+		UserLoginDTO userLoginDTO = new UserLoginDTO();
+		if(user!=null) { //如果用户已经存在，直接返回
+			userLoginDTO.setUserNo(user.getUserNo());
+			userLoginDTO.setMobile(user.getMobile());
+			userLoginDTO.setToken(JWTUtil.create(user.getUserNo(), JWTUtil.DATE));
+			userLoginDTO.setUserExt(userExtDao.getByUserNo(user.getUserNo()));
+			return Result.success(userLoginDTO);
+		}
+
+		//4、access_token和openid拼接URL
+		String userInfoUrl = SystemUtil.USER_INFO_URL.replace("ACCESS_TOKEN", accessToken)
+				.replace("OPENID", openId);
+
+		//5、通过URL再去调微信接口获取用户基本信息
+		Map<String ,Object> baseUserMap =  HttpUtil.doGet(userInfoUrl);
+
+		if(baseUserMap == null || baseUserMap.isEmpty()){ return  null; }
+
+		//6、获取用户姓名、性别、城市、头像等基本信息
+		String nickname = (String)baseUserMap.get("nickname");
+//        Double sexTemp  = (Double) baseUserMap.get("sex");
+		int sex = (int) baseUserMap.get("sex");
+		String headimgurl = (String)baseUserMap.get("headimgurl");
+		try {
+			//解决用户名乱码
+			nickname = new String(nickname.getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		//7、新用户存入数据库
+		UserExt userExt = new UserExt();
+		userExt.setNickname(nickname);
+		userExt.setHeadImgUrl(headimgurl);
+		userExt.setUserNo(NOUtil.getUserNo());
+		userExt.setSex(sex);
+		userExt.setGmtCreate(new Date());
+		userExtDao.save(userExt);
+		user = new User();
+		user.setUserNo(userExt.getUserNo());
+		user.setStatusId(StatusIdEnum.YES.getCode());
+		user.setOpenId(openId);
+		userDao.save(user);
+
+		userLoginDTO.setUserNo(user.getUserNo());
+		userLoginDTO.setMobile(user.getMobile());
+		userLoginDTO.setToken(JWTUtil.create(user.getUserNo(), JWTUtil.DATE));
+		userLoginDTO.setUserExt(userExt);
+		return Result.success(userLoginDTO);
+	}
+
+	public Result<UserLoginDTO> wechatLogin(WeChatLoginBO weChatLoginBO) {
+		if (ObjectUtils.isEmpty(weChatLoginBO)) {
+			return Result.error("请求错误！");
+		}
+		if (1 != weChatLoginBO.getPlatShow()) {
+			return Result.error("请求错误！");
+		}
+		if (!StringUtils.isEmpty(weChatLoginBO.getUserNo())) {
+			UserLoginDTO userLoginDTO = new UserLoginDTO();
+			UserExt userExt = userExtDao.getByUserNo(weChatLoginBO.getUserNo());
+			if(ObjectUtils.isEmpty(userExt)){
+				return Result.error("找不到用户信息!");
+			}
+			userLoginDTO.setUserNo(userExt.getUserNo());
+			userLoginDTO.setMobile(userExt.getMobile());
+			userLoginDTO.setToken(JWTUtil.create(userExt.getUserNo(), JWTUtil.DATE));
+			userLoginDTO.setUserExt(userExt);
+			return Result.success(userLoginDTO);
+		} else {
+			return Result.error("userNo不能为空!");
+		}
 	}
 }

@@ -54,6 +54,10 @@ public class CourseCategoryBO implements Serializable {
      */
     private Integer floor;
     /**
+     * 图标
+     */
+    private String categoryIcon;
+    /**
      * 备注
      */
     private String remark;

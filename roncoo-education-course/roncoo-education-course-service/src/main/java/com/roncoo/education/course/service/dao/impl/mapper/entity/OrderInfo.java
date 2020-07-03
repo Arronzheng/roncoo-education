@@ -47,6 +47,8 @@ public class OrderInfo implements Serializable {
 
     private Integer orderStatus;
 
+    private Integer orderType;
+
     private Integer isShowLecturer;
 
     private Integer isShowUser;
@@ -58,8 +60,16 @@ public class OrderInfo implements Serializable {
     private String remark;
 
     private Date payTime;
-    
+
 	private static final long serialVersionUID = 1L;
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
 
     public Long getId() {
         return id;
@@ -304,6 +314,7 @@ public class OrderInfo implements Serializable {
         sb.append(", payType=").append(payType);
         sb.append(", channelType=").append(channelType);
         sb.append(", orderStatus=").append(orderStatus);
+        sb.append(", orderType=").append(orderType);
         sb.append(", isShowLecturer=").append(isShowLecturer);
         sb.append(", isShowUser=").append(isShowUser);
         sb.append(", shippingAddressId=").append(shippingAddressId);

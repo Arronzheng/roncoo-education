@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程分类-添加
- * 
+ *
  * @author wujing
  */
 @Data
@@ -37,6 +37,11 @@ public class CourseCategorySaveREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "分类名称", required = true)
 	private String categoryName;
+	/**
+	 * 分类图标
+	 */
+	@ApiModelProperty(value = "分类图标", required = true)
+	private String categoryIcon;
 	/**
 	 * 备注
 	 */

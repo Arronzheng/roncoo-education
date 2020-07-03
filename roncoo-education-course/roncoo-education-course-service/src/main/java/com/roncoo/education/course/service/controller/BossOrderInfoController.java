@@ -79,4 +79,9 @@ public class BossOrderInfoController extends BaseController implements BossOrder
 		return biz.countIncome(qo);
 	}
 
+	@Override
+	public OrderInfoVO getByOrderNo(@PathVariable(value = "orderNo") Long orderNo) {
+		return biz.getByOrderNo(orderNo);
+	}
+
 }

@@ -31,7 +31,7 @@ public enum ResultEnum {
 	SYSTEM_SAVE_FAIL(601, "添加失败"), SYSTEM_UPDATE_FAIL(602, "更新失败"), SYSTEM_DELETE_FAIL(603, "删除失败"),
 
 	// 错误
-	ERROR(999, "错误");
+	ERROR(999, "错误"), BARGAIN_HELP_FAIL(701, "帮助砍价失败"), BARGAIN_HELP_END(702, "砍价已结束");
 
 	private Integer code;
 

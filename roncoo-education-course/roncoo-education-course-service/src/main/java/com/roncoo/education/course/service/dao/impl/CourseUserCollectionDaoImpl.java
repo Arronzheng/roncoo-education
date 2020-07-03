@@ -1,6 +1,7 @@
 
 package com.roncoo.education.course.service.dao.impl;
 
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionCountBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionDelBO;
 import com.roncoo.education.course.service.dao.CourseUserCollectionDao;
 import com.roncoo.education.course.service.dao.impl.mapper.CourseUserCollectionMapper;
@@ -85,5 +86,13 @@ public class CourseUserCollectionDaoImpl implements CourseUserCollectionDao {
         CourseUserCollectionExample.Criteria c =example.createCriteria();
         c.andCourseIdEqualTo(authCourseUserCollectionDelBO.getCourseId()).andUserNoEqualTo(authCourseUserCollectionDelBO.getUserNo());
         return this.courseUserCollectionMapper.deleteByExample(example);
+    }
+
+    @Override
+    public int countCollectionByUserNo(AuthCourseUserCollectionCountBO authCourseUserCollectionCountBO) {
+        CourseUserCollectionExample example = new CourseUserCollectionExample();
+        CourseUserCollectionExample.Criteria c =example.createCriteria();
+        c.andUserNoEqualTo(authCourseUserCollectionCountBO.getUserNo());
+        return this.courseUserCollectionMapper.countByExample(example);
     }
 }

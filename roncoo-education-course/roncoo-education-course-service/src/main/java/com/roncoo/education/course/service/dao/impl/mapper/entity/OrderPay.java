@@ -12,6 +12,8 @@ public class OrderPay implements Serializable {
 
     private Long serialNumber;
 
+    private String tradeNo;
+
     private Integer orderStatus;
 
     private Integer payType;
@@ -76,6 +78,14 @@ public class OrderPay implements Serializable {
         this.payTime = payTime;
     }
 
+    public String getTradeNo() {
+        return tradeNo;
+    }
+
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -86,6 +96,7 @@ public class OrderPay implements Serializable {
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", orderNo=").append(orderNo);
         sb.append(", serialNumber=").append(serialNumber);
+        sb.append(", tradeNo=").append(tradeNo);
         sb.append(", orderStatus=").append(orderStatus);
         sb.append(", payType=").append(payType);
         sb.append(", payTime=").append(payTime);

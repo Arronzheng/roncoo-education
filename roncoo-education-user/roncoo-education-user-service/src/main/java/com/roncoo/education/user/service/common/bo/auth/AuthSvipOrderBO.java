@@ -32,4 +32,7 @@ public class AuthSvipOrderBO implements Serializable {
         @ApiModelProperty(value = "订单名称", required = true)
         private String orderName;
 
+        @ApiModelProperty(value = "交易类型：JSAPI -JSAPI支付，NATIVE -Native支付，APP -APP支付", required = true)
+        private String tradeType;
+
 }

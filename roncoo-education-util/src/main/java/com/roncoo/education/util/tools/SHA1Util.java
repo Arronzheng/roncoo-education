@@ -54,4 +54,26 @@ public final class SHA1Util {
 		return new String(tempArr);
 	}
 
+	/**
+	 * 微信签名
+	 * @param str
+	 * @return
+	 */
+	public static String encryption(String str){
+		try {
+			MessageDigest md = MessageDigest.getInstance("sha1");
+			byte [] digest = md.digest(str.getBytes());
+			char[] chars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+			StringBuilder sb = new StringBuilder();
+			for (byte b: digest) {
+				sb.append(chars[b>>4&15]);
+				sb.append(chars[b&15]);
+			}
+			return sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 }

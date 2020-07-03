@@ -21,7 +21,7 @@ public interface CourseUserStudyLogDao {
 
 	/**
 	 * 分页-课程播放量排行榜
-	 * 
+	 *
 	 * @param qo
 	 * @return
 	 * @author YZJ
@@ -30,7 +30,7 @@ public interface CourseUserStudyLogDao {
 
 	/**
 	 * 根据时间取得前五播放量的课程
-	 * 
+	 *
 	 * @param qo
 	 * @return
 	 * @author YZJ
@@ -39,7 +39,7 @@ public interface CourseUserStudyLogDao {
 
 	/**
 	 * 分页-课时播放量排行榜
-	 * 
+	 *
 	 * @param qo
 	 * @return
 	 * @author YZJ
@@ -48,7 +48,7 @@ public interface CourseUserStudyLogDao {
 
 	/**
 	 * 根据时间和课程ID取得前五播放量的课时
-	 * 
+	 *
 	 * @param qo
 	 * @return
 	 * @author YZJ

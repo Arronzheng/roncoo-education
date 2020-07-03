@@ -1,5 +1,6 @@
 package com.roncoo.education.course.service.api.auth;
 
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserStudyLogCountBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class AuthApiCourseUserStudyLogController extends BaseController {
 
 	/**
 	 * 最近学习日志分页列出接口
-	 * 
+	 *
 	 * @param authCourseUserStudyLogPageBO
 	 * @return
 	 * @author wuyun

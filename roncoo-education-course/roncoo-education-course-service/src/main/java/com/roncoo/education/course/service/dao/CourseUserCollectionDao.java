@@ -1,6 +1,7 @@
 
 package com.roncoo.education.course.service.dao;
 
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionCountBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserCollectionDelBO;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseUserCollection;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseUserCollectionExample;
@@ -30,4 +31,6 @@ public interface CourseUserCollectionDao {
             List<CourseUserCollection> getCollectionListByUserNo(Long userNo);
 
             int deleteByCourseIdAndUserNo(AuthCourseUserCollectionDelBO authCourseUserCollectionDelBO);
+
+            int countCollectionByUserNo(AuthCourseUserCollectionCountBO authCourseUserCollectionCountBO);
 }

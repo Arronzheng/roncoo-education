@@ -28,4 +28,17 @@ public class AuthOrderPayDTO implements Serializable {
 
 	private String serialNumber;
 
+	//下面几个字段是JSAPI支付需要的
+	private String prepayId;
+
+	private String appId;
+
+	private String timeStamp;
+
+	private String nonceStr;
+
+	private String signType;
+
+	private String paySign;
+
 }

@@ -110,6 +110,32 @@ public final class HttpUtil {
 	}
 
 	/**
+	 *
+	 * @param url
+	 * @param json
+	 * @return
+	 */
+	public static String post(String url, String json) {
+		logger.info("POST 请求， url={}，map={}", url, json);
+		try {
+			HttpPost httpPost = new HttpPost(url.trim());
+			RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT).setSocketTimeout(TIMEOUT).build();
+			httpPost.setConfig(requestConfig);
+			httpPost.addHeader(HTTP.CONTENT_TYPE, APPLICATION_JSON);
+			StringEntity se = new StringEntity(json, CHARSET_UTF_8);
+			se.setContentType(CONTENT_TYPE_TEXT_JSON);
+			se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, APPLICATION_JSON));
+			httpPost.setEntity(se);
+			HttpResponse httpResponse = HttpClientBuilder.create().build().execute(httpPost);
+			return EntityUtils.toString(httpResponse.getEntity(), CHARSET_UTF_8);
+		} catch (Exception e) {
+			logger.info("HTTP请求出错", e);
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	/**
 	 * get方法
 	 * @param url
 	 * @return

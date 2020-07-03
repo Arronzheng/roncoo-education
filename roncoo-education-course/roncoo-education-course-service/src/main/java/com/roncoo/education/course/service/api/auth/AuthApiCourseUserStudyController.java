@@ -2,6 +2,7 @@ package com.roncoo.education.course.service.api.auth;
 
 import com.roncoo.education.course.service.biz.auth.AuthApiCourseUserStudyBiz;
 import com.roncoo.education.course.service.biz.auth.AuthApiCourseUserStudyLogBiz;
+import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserStudyLogCountBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserStudyLogPageBO;
 import com.roncoo.education.course.service.common.bo.auth.AuthCourseUserStudyPageBO;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseUserStudyLogPageDTO;
@@ -28,7 +29,7 @@ public class AuthApiCourseUserStudyController extends BaseController {
 
 	/**
 	 * 我的课程分页列出接口
-	 * 
+	 *
 	 * @param authCourseUserStudyPageBO
 	 * @return
 	 * @author wuyun
@@ -37,6 +38,18 @@ public class AuthApiCourseUserStudyController extends BaseController {
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	public Result<Page<AuthCourseUserStudyPageDTO>> list(@RequestBody AuthCourseUserStudyPageBO authCourseUserStudyPageBO) {
 		return biz.list(authCourseUserStudyPageBO);
+	}
+
+	/**
+	 *
+	 * @param authCourseUserStudyLogCountBO
+	 * @return
+	 * @author wuyun
+	 */
+	@ApiOperation(value = "统计购买课程数", notes = "统计购买课程数")
+	@RequestMapping(value = "/count", method = RequestMethod.POST)
+	public Result<Integer> count(@RequestBody AuthCourseUserStudyLogCountBO authCourseUserStudyLogCountBO) {
+		return biz.count(authCourseUserStudyLogCountBO);
 	}
 
 }

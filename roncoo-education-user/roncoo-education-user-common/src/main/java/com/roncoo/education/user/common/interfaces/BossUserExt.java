@@ -2,6 +2,7 @@ package com.roncoo.education.user.common.interfaces;
 
 import java.util.List;
 
+import com.roncoo.education.user.common.bean.qo.UserExtInviteQO;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +44,7 @@ public interface BossUserExt {
 
 	/**
 	 * 获取用户注册量
-	 * 
+	 *
 	 * @param userExtEchartsQO
 	 * @return
 	 * @author wuyun
@@ -53,9 +54,16 @@ public interface BossUserExt {
 
 	/**
 	 * 批量缓存用户信息,发送站内信用
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	@RequestMapping(value = "/boss/user/userExt/cachUserForMsg")
 	void cachUserForMsg();
+
+	/**
+	 * 根据邀请码查询用户
+	 *
+	 */
+	@RequestMapping(value = "/boss/user/userExt/getByInviteCode", method = RequestMethod.POST)
+    UserExtVO getByInviteCode(@RequestBody UserExtInviteQO userExtInviteQO);
 }

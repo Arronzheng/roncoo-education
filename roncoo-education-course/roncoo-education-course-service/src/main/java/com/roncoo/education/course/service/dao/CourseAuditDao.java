@@ -19,7 +19,7 @@ public interface CourseAuditDao {
 
 	/**
 	 * 根据课程编号更新课程审核状态
-	 * 
+	 *
 	 * @param auditStatus
 	 * @param courseId
 	 * @return
@@ -29,7 +29,9 @@ public interface CourseAuditDao {
 
     CourseAudit getByCourseName(String courseName);
 
-	List<CourseAudit> listByCategoryId(Long courseId);
+	List<CourseAudit> listByCategoryId(Long courseId, String courseName);
 
 	CourseAudit getByCourseIdAndStatusId(Long courseId, Integer code);
+
+	List<CourseAudit> listByCourseId(Long courseId);
 }

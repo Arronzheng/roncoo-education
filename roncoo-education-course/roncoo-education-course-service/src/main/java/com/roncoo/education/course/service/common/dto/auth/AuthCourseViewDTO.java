@@ -3,11 +3,14 @@ package com.roncoo.education.course.service.common.dto.auth;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.roncoo.education.course.service.common.dto.AssemblePageDTO;
 import com.roncoo.education.course.service.common.dto.CourseChapterDTO;
 
+import com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -91,7 +94,7 @@ public class AuthCourseViewDTO implements Serializable {
 	@ApiModelProperty(value = "会员价", required = false)
 	private BigDecimal courseSvipDiscount;
 	/**
-	 * 拼团价
+	 * 拼团价(弃用)
 	 */
 	@ApiModelProperty(value = "拼团价", required = false)
 	private BigDecimal courseAssembleDiscount;
@@ -113,10 +116,35 @@ public class AuthCourseViewDTO implements Serializable {
 	@ApiModelProperty(value = "是否支付(1:已支付;0:未支付)")
 	private int isPay;
 	/**
+	 * 是否收藏
+	 */
+	@ApiModelProperty(value = "是否收藏(true:已收藏;false:未收藏)")
+	private boolean userCollect;
+	/**
 	 * 视频播放平台
 	 */
 	@ApiModelProperty(value = "视频播放平台(1:保利威视;2:腾讯)")
 	private int videoType;
+	/**
+	 * 是否拼团课程
+	 */
+	@ApiModelProperty(value = "是否拼团课程")
+	private boolean isAssemble;
+	/**
+	 * 拼团课程
+	 */
+	@ApiModelProperty(value = "拼团课程")
+	private AuthAssembleCourseViewDTO authAssembleCourseViewDTO;
+	/**
+	 * 砍价课程
+	 */
+	@ApiModelProperty(value = "拼团课程")
+	private AuthBargainCourseViewDTO authBargainCourseViewDTO;
+	/**
+	 * 是否砍价课程
+	 */
+	@ApiModelProperty(value = "是否砍价课程")
+	private boolean isBargain;
 	/**
 	 * 章节信息
 	 */
@@ -132,4 +160,9 @@ public class AuthCourseViewDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "课程评论")
 	private List<AuthCourseCommentDTO> courseCommentList;
+	/**
+	 * 拼团列表
+	 */
+	@ApiModelProperty(value = "拼团列表")
+	private List<AssemblePageDTO> assemblePageList;
 }

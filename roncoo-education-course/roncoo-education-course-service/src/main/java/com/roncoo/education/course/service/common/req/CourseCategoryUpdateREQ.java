@@ -32,6 +32,11 @@ public class CourseCategoryUpdateREQ implements Serializable {
 	@ApiModelProperty(value = "分类名称")
 	private String categoryName;
 	/**
+	 * 分类图标
+	 */
+	@ApiModelProperty(value = "分类图标", required = true)
+	private String categoryIcon;
+	/**
 	 * 备注
 	 */
 	@ApiModelProperty(value = "备注", required = false)

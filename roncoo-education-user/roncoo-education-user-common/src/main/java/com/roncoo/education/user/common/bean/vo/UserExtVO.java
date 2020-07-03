@@ -1,7 +1,10 @@
 package com.roncoo.education.user.common.bean.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -64,5 +67,17 @@ public class UserExtVO implements Serializable {
 	 * 备注
 	 */
 	private String remark;
+	/**
+	 * 邀请码
+	 */
+	private String inviteCode;
+	/**
+	 * 会员等级（1：一级，2：二级）
+	 */
+	private Integer vipLevel;
+	/**
+	 * 佣金
+	 */
+	private BigDecimal commission;
 
 }

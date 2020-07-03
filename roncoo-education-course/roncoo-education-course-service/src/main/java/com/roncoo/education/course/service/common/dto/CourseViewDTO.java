@@ -3,11 +3,14 @@ package com.roncoo.education.course.service.common.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.roncoo.education.course.service.common.dto.auth.AuthAssembleCourseViewDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -82,7 +85,7 @@ public class CourseViewDTO implements Serializable {
 	@ApiModelProperty(value = "会员价", required = false)
 	private BigDecimal courseSvipDiscount;
 	/**
-	 * 拼团价
+	 * 拼团价(弃用，使用拼团课程里面的价格)
 	 */
 	@ApiModelProperty(value = "拼团价", required = false)
 	private BigDecimal courseAssembleDiscount;
@@ -114,6 +117,21 @@ public class CourseViewDTO implements Serializable {
 	@ApiModelProperty(value = "讲师信息")
 	private LecturerDTO lecturer;
 	/**
+	 * 是否拼团课程
+	 */
+	@ApiModelProperty(value = "是否拼团课程")
+	private boolean isAssemble;
+	/**
+	 * 拼团课程
+	 */
+	@ApiModelProperty(value = "拼团课程")
+	private AuthAssembleCourseViewDTO authAssembleCourseViewDTO;
+	/**
+	 * 是否砍价课程
+	 */
+	@ApiModelProperty(value = "是否砍价课程")
+	private boolean isBargain;
+	/**
 	 * 章节信息
 	 */
 	@ApiModelProperty(value = "章节信息")
@@ -123,5 +141,11 @@ public class CourseViewDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "课程评论")
 	private List<AuthCourseCommentDTO> courseCommentList;
+
+	/**
+	 * 拼团列表
+	 */
+	@ApiModelProperty(value = "拼团列表")
+	private List<AssemblePageDTO> assemblePageList;
 
 }

@@ -33,6 +33,11 @@ public class CourseCategoryThreeDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "分类名称")
 	private Integer floor;
+	/**
+	 * 分类图标
+	 */
+	@ApiModelProperty(value = "分类图标", required = true)
+	private String categoryIcon;
 
 	/**
 	 * 分页备注信息

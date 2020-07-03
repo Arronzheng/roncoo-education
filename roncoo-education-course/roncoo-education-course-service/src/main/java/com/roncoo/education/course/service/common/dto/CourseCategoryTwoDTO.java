@@ -40,6 +40,11 @@ public class CourseCategoryTwoDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "分类层级")
 	private Integer floor;
+	/**
+	 * 分类图标
+	 */
+	@ApiModelProperty(value = "分类图标", required = true)
+	private String categoryIcon;
 
 	/**
 	 * 分类备注信息

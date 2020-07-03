@@ -9,9 +9,13 @@ import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAuditExa
 import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseExample;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
+import com.roncoo.education.util.enums.AuditStatusEnum;
+import com.roncoo.education.util.enums.StatusIdEnum;
 import com.roncoo.education.util.tools.IdWorker;
+import com.roncoo.education.util.tools.SqlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -66,19 +70,26 @@ public class CourseAuditDaoImpl implements CourseAuditDao {
     public CourseAudit getByCourseName(String courseName) {
         CourseAuditExample example = new CourseAuditExample();
         CourseAuditExample.Criteria c = example.createCriteria();
+        c.andStatusIdEqualTo(StatusIdEnum.YES.getCode());
+        c.andAuditStatusEqualTo(AuditStatusEnum.SUCCESS.getCode());
         c.andCourseNameLike(PageUtil.rightLike(courseName));
         List<CourseAudit> courseAuditList =  this.courseAuditMapper.selectByExample(example);
-        if (courseAuditList.isEmpty()) {
+        if (courseAuditList == null || courseAuditList.isEmpty()) {
             return null;
         }
         return courseAuditList.get(0);
     }
 
     @Override
-    public List<CourseAudit> listByCategoryId(Long courseId) {
+    public List<CourseAudit> listByCategoryId(Long categoryId, String courseName) {
         CourseAuditExample example = new CourseAuditExample();
         Criteria c = example.createCriteria();
-        c.andIdEqualTo(courseId);
+        c.andCategoryId1EqualTo(categoryId);
+        c.andStatusIdEqualTo(StatusIdEnum.YES.getCode());
+        c.andAuditStatusEqualTo(AuditStatusEnum.SUCCESS.getCode());
+        if(!StringUtils.isEmpty(courseName)){
+            c.andCourseNameLike(PageUtil.like(SqlUtil.checkSql(courseName)));
+        }
         List<CourseAudit> list = this.courseAuditMapper.selectByExample(example);
         return list;
     }
@@ -94,5 +105,14 @@ public class CourseAuditDaoImpl implements CourseAuditDao {
             return null;
         }
         return list.get(0);
+    }
+
+    @Override
+    public List<CourseAudit> listByCourseId(Long courseId) {
+        CourseAuditExample example = new CourseAuditExample();
+        Criteria c = example.createCriteria();
+        c.andIdEqualTo(courseId);
+        List<CourseAudit> list = this.courseAuditMapper.selectByExample(example);
+        return list;
     }
 }

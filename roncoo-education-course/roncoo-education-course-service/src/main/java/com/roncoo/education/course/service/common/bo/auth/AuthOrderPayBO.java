@@ -29,7 +29,10 @@ public class AuthOrderPayBO implements Serializable {
 	@ApiModelProperty(value = "购买渠道：1web", required = true)
 	private Integer channelType;
 
-	@ApiModelProperty(value = "用户备注", required = false)	
+	@ApiModelProperty(value = "用户备注", required = false)
 	private String remarkCus;
+
+	@ApiModelProperty(value = "交易类型：JSAPI -JSAPI支付，NATIVE -Native支付，APP -APP支付", required = true)
+	private String tradeType;
 
 }

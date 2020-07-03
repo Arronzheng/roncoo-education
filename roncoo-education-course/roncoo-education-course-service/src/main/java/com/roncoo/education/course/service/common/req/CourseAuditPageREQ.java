@@ -72,4 +72,9 @@ public class CourseAuditPageREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "专区编号", required = false)
 	private Long zoneId;
+	/**
+	 * 专区编号
+	 */
+	@ApiModelProperty(value = "专区编号", required = false)
+	private Long activityId;
 }

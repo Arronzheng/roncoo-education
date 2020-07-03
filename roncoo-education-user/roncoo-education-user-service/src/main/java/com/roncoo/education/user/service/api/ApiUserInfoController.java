@@ -1,18 +1,13 @@
 package com.roncoo.education.user.service.api;
 
+import com.roncoo.education.user.service.common.WeChatUtil;
+import com.roncoo.education.user.service.common.bo.*;
+import com.roncoo.education.user.service.common.dto.JssdkConfigDTO;
 import com.roncoo.education.user.service.common.dto.UserWXLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.roncoo.education.user.service.biz.ApiUserInfoBiz;
-import com.roncoo.education.user.service.common.bo.UserAuthBO;
-import com.roncoo.education.user.service.common.bo.UserLoginCodeBO;
-import com.roncoo.education.user.service.common.bo.UserLoginPasswordBO;
-import com.roncoo.education.user.service.common.bo.UserRegisterBO;
-import com.roncoo.education.user.service.common.bo.UserSendCodeBO;
 import com.roncoo.education.user.service.common.bo.auth.UserUpdateBO;
 import com.roncoo.education.user.service.common.dto.UserLoginDTO;
 import com.roncoo.education.util.base.BaseController;
@@ -20,10 +15,11 @@ import com.roncoo.education.util.base.Result;
 
 import io.swagger.annotations.ApiOperation;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 用户基本信息
- *
- * @author wujing
+ * @author
  */
 @RestController
 @RequestMapping(value = "/user/api/user")
@@ -69,17 +65,8 @@ public class ApiUserInfoController extends BaseController {
 	}
 
 	/**
-	 * 授权登录接口
-	 */
-	@ApiOperation(value = "授权登录接口", notes = "后台登录到讲师中心时使用")
-	@RequestMapping(value = "/auth", method = RequestMethod.POST)
-	public Result<String> auth(@RequestBody UserAuthBO userAuthBO) {
-		return null;
-	}
-
-	/**
 	 * 用户修改密码接口
-	 * 
+	 *
 	 * @author wuyun
 	 */
 	@ApiOperation(value = "用户修改密码接口", notes = "用户修改密码接口")
@@ -91,10 +78,56 @@ public class ApiUserInfoController extends BaseController {
 	/**
 	 * 获取开放平台appId
 	 */
-	@ApiOperation(value = "用户微信登录接口", notes = "用户微信登录接口")
+	@ApiOperation(value = "微信回调参数接口", notes = "获取微信回调参数")
 	@RequestMapping(value = "/getAppId", method = RequestMethod.POST)
 	public Result<UserWXLoginDTO> getAppId(){
 		return biz.getAppId();
+	}
+
+	/**
+	 * 获取jssdk配置参数
+	 * @param url
+	 * @return Result<JssdkConfigDTO>
+	 */
+	@ApiOperation(value = "jssdk配置参数接口", notes = "获取jssdk配置参数")
+	@RequestMapping(value = "/config", method = RequestMethod.GET)
+	public Result<JssdkConfigDTO> jssdkConfig(String url) {
+		return biz.getConfig(url);
+	}
+
+	/**
+	 * 微信授权登录
+	 * @param weChatCodeBO
+	 * @return Result<UserLoginDTO>
+	 */
+	@ApiOperation(value = "微信授权登录接口", notes = "微信授权登录")
+	@RequestMapping(value = "/getCode", method = RequestMethod.POST)
+	public Result<UserLoginDTO> getCode(@RequestBody WeChatCodeBO weChatCodeBO){
+		return biz.getCode(weChatCodeBO);
+	}
+
+	/**
+	 * 微信二次登录
+	 * @param weChatLoginBO
+	 * @return Result<UserLoginDTO>
+	 */
+	@ApiOperation(value = "微信二次登录接口", notes = "微信二次登录")
+	@RequestMapping(value = "/wechatLogin", method = RequestMethod.POST)
+	public Result<UserLoginDTO> wechatLogin(@RequestBody WeChatLoginBO weChatLoginBO){
+		return biz.wechatLogin(weChatLoginBO);
+	}
+
+	/**
+	 * 授权登录接口
+	 */
+	@ApiOperation(value = "接入微信", notes = "接入微信")
+	@RequestMapping(value = "/auth", method = RequestMethod.GET)
+	public String auth(WeCheckBO weCheckBO) {
+		if(WeChatUtil.check(weCheckBO.getSignature(), weCheckBO.getTimestamp(), weCheckBO.getNonce())){
+			System.out.println("接入成功");
+			return weCheckBO.getEchostr();
+		}
+		return "接入失败";
 	}
 
 }

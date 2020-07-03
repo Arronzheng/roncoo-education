@@ -3,6 +3,7 @@ package com.roncoo.education.user.service.api.auth;
 import com.roncoo.education.course.common.bean.vo.CourseUserCollectionVO;
 import com.roncoo.education.user.service.common.bo.auth.AuthUserUpdateBO;
 import com.roncoo.education.user.service.common.dto.auth.AuthApiUserCollectionsDTO;
+import com.roncoo.education.user.service.common.dto.auth.AuthUserExtInviteCodeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,6 +76,24 @@ public class AuthApiUserExtController extends BaseController {
 	@RequestMapping(value = "/collections", method = RequestMethod.POST)
 	public Result<AuthApiUserCollectionsDTO> collections(@RequestBody AuthUserExtViewBO authUserExtViewBO) {
 		return biz.collections(authUserExtViewBO);
+	}
+
+	/**
+	 * 检测会员等级
+	 */
+	@ApiOperation(value = "检测会员等级", notes = "检测会员等级")
+	@RequestMapping(value = "/getVipLevel", method = RequestMethod.POST)
+	public Result<Integer> getVipLevel(@RequestBody AuthUserExtViewBO authUserExtViewBO) {
+		return biz.getVipLevel(authUserExtViewBO);
+	}
+
+	/**
+	 * 获取邀请码和推荐记录
+	 */
+	@ApiOperation(value = "获取邀请码和推荐记录", notes = "获取邀请码和推荐记录")
+	@RequestMapping(value = "/getInviteCode", method = RequestMethod.POST)
+	public Result<AuthUserExtInviteCodeDTO> getInviteCode(@RequestBody AuthUserExtViewBO authUserExtViewBO) {
+		return biz.getInviteCode(authUserExtViewBO);
 	}
 
 

@@ -1,5 +1,6 @@
 package com.roncoo.education.user.service.dao.impl.mapper.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -937,6 +938,241 @@ public class UserExtExample {
 
         public Criteria andIsVipBetween(Integer value1, Integer value2) {
             addCriterion("is_vip between", value1, value2, "isVip");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeIsNull() {
+            addCriterion("invite_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeIsNotNull() {
+            addCriterion("invite_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeEqualTo(String value) {
+            addCriterion("invite_code =", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeNotEqualTo(String value) {
+            addCriterion("invite_code <>", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeGreaterThan(String value) {
+            addCriterion("invite_code >", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("invite_code >=", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeLessThan(String value) {
+            addCriterion("invite_code <", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeLessThanOrEqualTo(String value) {
+            addCriterion("invite_code <=", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeLike(String value) {
+            addCriterion("invite_code like", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeNotLike(String value) {
+            addCriterion("invite_code not like", value, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeIn(List<String> values) {
+            addCriterion("invite_code in", values, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeNotIn(List<String> values) {
+            addCriterion("invite_code not in", values, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeBetween(String value1, String value2) {
+            addCriterion("invite_code between", value1, value2, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteCodeNotBetween(String value1, String value2) {
+            addCriterion("invite_code not between", value1, value2, "inviteCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoIsNull() {
+            addCriterion("invite_user_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoIsNotNull() {
+            addCriterion("invite_user_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoEqualTo(Long value) {
+            addCriterion("invite_user_no =", value, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoNotEqualTo(Long value) {
+            addCriterion("invite_user_no <>", value, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoGreaterThan(Long value) {
+            addCriterion("invite_user_no >", value, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoGreaterThanOrEqualTo(Long value) {
+            addCriterion("invite_user_no >=", value, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoLessThan(Long value) {
+            addCriterion("invite_user_no <", value, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoLessThanOrEqualTo(Long value) {
+            addCriterion("invite_user_no <=", value, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoIn(List<Long> values) {
+            addCriterion("invite_user_no in", values, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoNotIn(List<Long> values) {
+            addCriterion("invite_user_no not in", values, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoBetween(Long value1, Long value2) {
+            addCriterion("invite_user_no between", value1, value2, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviteUserNoNotBetween(Long value1, Long value2) {
+            addCriterion("invite_user_no not between", value1, value2, "inviteUserNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelIsNull() {
+            addCriterion("vip_level is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelIsNotNull() {
+            addCriterion("vip_level is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelEqualTo(Integer value) {
+            addCriterion("vip_level =", value, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelNotEqualTo(Integer value) {
+            addCriterion("vip_level <>", value, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelGreaterThan(Integer value) {
+            addCriterion("vip_level >", value, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelGreaterThanOrEqualTo(Integer value) {
+            addCriterion("vip_level >=", value, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelLessThan(Integer value) {
+            addCriterion("vip_level <", value, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelLessThanOrEqualTo(Integer value) {
+            addCriterion("vip_level <=", value, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelIn(List<Integer> values) {
+            addCriterion("vip_level in", values, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelNotIn(List<Integer> values) {
+            addCriterion("vip_level not in", values, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andVipLevelBetween(Integer value1, Integer value2) {
+            addCriterion("vip_level between", value1, value2, "vipLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionEqualTo(BigDecimal value) {
+            addCriterion("commission =", value, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionNotEqualTo(BigDecimal value) {
+            addCriterion("commission <>", value, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionGreaterThan(BigDecimal value) {
+            addCriterion("commission >", value, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("commission >=", value, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionLessThan(BigDecimal value) {
+            addCriterion("commission <", value, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("commission <=", value, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionIn(List<BigDecimal> values) {
+            addCriterion("commission in", values, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionNotIn(List<BigDecimal> values) {
+            addCriterion("commission not in", values, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("commission between", value1, value2, "commission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommissionNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("commission not between", value1, value2, "commission");
             return (Criteria) this;
         }
     }

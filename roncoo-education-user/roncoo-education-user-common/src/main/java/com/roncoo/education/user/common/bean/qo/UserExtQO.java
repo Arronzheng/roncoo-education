@@ -1,6 +1,7 @@
 package com.roncoo.education.user.common.bean.qo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +16,7 @@ import lombok.experimental.Accessors;
 public class UserExtQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */
@@ -76,11 +77,23 @@ public class UserExtQO implements Serializable {
      * 备注
      */
     private String remark;
-    
+
 	private String beginGmtCreate;
 	private String endGmtCreate;
     /**
      * 是否vip
      */
     private Integer isVip;
+    /**
+     * 邀请码
+     */
+    private String inviteCode;
+    /**
+     * 会员等级（1：一级，2：二级）
+     */
+    private Integer vipLevel;
+    /**
+     * 佣金
+     */
+    private BigDecimal commission;
 }

@@ -40,11 +40,16 @@ public class CourseCategoryPageREQ implements Serializable {
 	@ApiModelProperty(value = "层级", required = false)
 	private Integer floor;
 	/**
+	 * 分类图标
+	 */
+	@ApiModelProperty(value = "分类图标", required = true)
+	private String categoryIcon;
+	/**
 	 * 当前页
 	 */
 	@ApiModelProperty(value = "当前页", required = true)
 	private Integer pageCurrent = 1;
-	
+
 	/**
 	 * 父分类ID
 	 */

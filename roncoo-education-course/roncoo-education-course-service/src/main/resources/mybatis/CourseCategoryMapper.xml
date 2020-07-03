@@ -11,6 +11,7 @@
     <result column="category_type" property="categoryType" jdbcType="TINYINT" />
     <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
     <result column="floor" property="floor" jdbcType="TINYINT" />
+    <result column="category_icon" property="categoryIcon" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, gmt_create, gmt_modified, status_id, sort, parent_id, category_type, category_name, 
-    floor, remark
+    id, gmt_create, gmt_modified, status_id, sort, parent_id, category_type, category_name,
+    floor, category_icon, remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CourseCategoryExample" >
     select
@@ -93,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from course_category
     where id = #{id,jdbcType=BIGINT}
@@ -109,14 +110,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CourseCategory" >
-    insert into course_category (id, gmt_create, gmt_modified, 
-      status_id, sort, parent_id, 
-      category_type, category_name, floor, 
+    insert into course_category (id, gmt_create, gmt_modified,
+      status_id, sort, parent_id,
+      category_type, category_name, floor, category_icon,
       remark)
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{statusId,jdbcType=TINYINT}, #{sort,jdbcType=INTEGER}, #{parentId,jdbcType=BIGINT}, 
-      #{categoryType,jdbcType=TINYINT}, #{categoryName,jdbcType=VARCHAR}, #{floor,jdbcType=TINYINT}, 
-      #{remark,jdbcType=VARCHAR})
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP},
+      #{statusId,jdbcType=TINYINT}, #{sort,jdbcType=INTEGER}, #{parentId,jdbcType=BIGINT},
+      #{categoryType,jdbcType=TINYINT}, #{categoryName,jdbcType=VARCHAR}, #{floor,jdbcType=TINYINT},
+      #{remark,jdbcType=VARCHAR}), #{categoryIcon,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CourseCategory" >
     insert into course_category
@@ -147,6 +148,9 @@
       </if>
       <if test="floor != null" >
         floor,
+      </if>
+      <if test="categoryIcon != null" >
+        category_icon,
       </if>
       <if test="remark != null" >
         remark,
@@ -179,6 +183,9 @@
       </if>
       <if test="floor != null" >
         #{floor,jdbcType=TINYINT},
+      </if>
+      <if test="categoryIcon != null" >
+        #{categoryIcon,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
@@ -221,6 +228,9 @@
       <if test="record.floor != null" >
         floor = #{record.floor,jdbcType=TINYINT},
       </if>
+      <if test="record.categoryIcon != null" >
+        category_icon = #{record.categoryIcon,jdbcType=VARCHAR},
+      </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
@@ -240,6 +250,7 @@
       category_type = #{record.categoryType,jdbcType=TINYINT},
       category_name = #{record.categoryName,jdbcType=VARCHAR},
       floor = #{record.floor,jdbcType=TINYINT},
+      category_icon = #{record.categoryIcon,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,8 +283,11 @@
       <if test="floor != null" >
         floor = #{floor,jdbcType=TINYINT},
       </if>
+      <if test="categoryIcon != null" >
+        category_icon = #{categoryIcon,jdbcType=VARCHAR},
+      </if>
       <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR},category_icon = #{record.categoryIcon,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -288,6 +302,7 @@
       category_type = #{categoryType,jdbcType=TINYINT},
       category_name = #{categoryName,jdbcType=VARCHAR},
       floor = #{floor,jdbcType=TINYINT},
+      category_icon = #{categoryIcon,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>

@@ -1,6 +1,7 @@
 package com.roncoo.education.user.service.common.req;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 用户教育信息更新
- * 
+ *
  */
 @Data
 @Accessors(chain = true)
@@ -56,5 +57,20 @@ public class UserExtUpdateREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "备注", required = false)
 	private String remark;
+	/**
+	 * 邀请码
+	 */
+	@ApiModelProperty(value = "邀请码", required = false)
+	private String inviteCode;
+	/**
+	 * 会员等级（1：一级，2：二级）
+	 */
+	@ApiModelProperty(value = "会员等级（1：一级，2：二级）", required = false)
+	private Integer vipLevel;
+	/**
+	 * 佣金
+	 */
+	@ApiModelProperty(value = "佣金", required = false)
+	private BigDecimal commission;
 
 }
