@@ -216,7 +216,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 		Criteria c = example.createCriteria();
 		List<Integer> list = new ArrayList<Integer>();
 		list.add(OrderStatusEnum.WAIT.getCode());
-		list.add(OrderStatusEnum.FAIL.getCode());
+		list.add(OrderStatusEnum.FAIL.getCode());//
 		c.andOrderStatusIn(list);
 		c.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 1800000L));
 		example.setOrderByClause(" id desc ");
