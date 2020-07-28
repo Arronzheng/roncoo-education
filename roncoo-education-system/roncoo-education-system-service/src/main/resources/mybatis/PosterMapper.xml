@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roncoo.education.system.service.dao.impl.mapper.PosterMapper">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.roncoo.education.system.service.dao.impl.mapper.entity.Poster">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+            <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+            <result column="status_id" property="statusId" jdbcType="TINYINT"/>
+            <result column="poster" property="poster" jdbcType="VARCHAR"/>
+            <result column="poster_type" property="posterType" jdbcType="TINYINT"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+        <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, gmt_create, gmt_modified, status_id, poster, poster_type, remark
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.PosterExample">
+        select
+            <if test="distinct" >
+                distinct
+            </if>
+            <include refid="Base_Column_List" />
+        from poster
+            <if test="_parameter != null" >
+                <include refid="Example_Where_Clause" />
+            </if>
+            <if test="orderByClause != null" >
+                order by ${orderByClause}
+            </if>
+            <if test="limitStart >= 0" >
+                limit ${limitStart} , ${pageSize}
+            </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+            <include refid="Base_Column_List" />
+        from poster
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from poster
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.PosterExample" >
+        delete from poster
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.Poster" >
+        insert into poster
+        (
+         id, gmt_create, gmt_modified, status_id, poster, poster_type, remark
+        ) values (
+            #{id,jdbcType=BIGINT},
+            #{gmtCreate,jdbcType=TIMESTAMP},
+            #{gmtModified,jdbcType=TIMESTAMP},
+            #{statusId,jdbcType=TINYINT},
+            #{poster,jdbcType=VARCHAR},
+            #{posterType,jdbcType=TINYINT},
+            #{remark,jdbcType=VARCHAR},
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.Poster" >
+        insert into poster
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create,
+            </if>
+            <if test="gmtModified != null" >
+                gmt_modified,
+            </if>
+            <if test="statusId != null" >
+                status_id,
+            </if>
+            <if test="poster != null" >
+                poster,
+            </if>
+            <if test="posterType != null" >
+                poster_type,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null" >
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null" >
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="statusId != null" >
+                #{statusId,jdbcType=TINYINT},
+            </if>
+            <if test="poster != null" >
+                #{poster,jdbcType=VARCHAR},
+            </if>
+            <if test="posterType != null" >
+                #{posterType,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null" >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.PosterExample" resultType="java.lang.Integer" >
+        select count(*) from poster
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update poster
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.gmtCreate != null" >
+                gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.gmtModified != null" >
+                gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.statusId != null" >
+                status_id = #{record.statusId,jdbcType=TINYINT},
+            </if>
+            <if test="record.poster != null" >
+                poster = #{record.poster,jdbcType=VARCHAR},
+            </if>
+            <if test="record.posterType != null" >
+                poster_type = #{record.posterType,jdbcType=TINYINT},
+            </if>
+            <if test="record.remark != null" >
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update poster
+        set
+            id = #{record.id,jdbcType=BIGINT},
+            gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+            status_id = #{record.statusId,jdbcType=TINYINT},
+            poster = #{record.poster,jdbcType=VARCHAR},
+            poster_type = #{record.posterType,jdbcType=TINYINT},
+            remark = #{record.remark,jdbcType=VARCHAR},
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.Poster" >
+        update poster
+        <set >
+                <if test="gmtCreate != null" >
+                    gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="gmtModified != null" >
+                    gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+                </if>
+                <if test="statusId != null" >
+                    status_id = #{statusId,jdbcType=TINYINT},
+                </if>
+                <if test="poster != null" >
+                    poster = #{poster,jdbcType=VARCHAR},
+                </if>
+                <if test="posterType != null" >
+                    poster_type = #{posterType,jdbcType=TINYINT},
+                </if>
+                <if test="remark != null" >
+                    remark = #{remark,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.roncoo.education.system.service.dao.impl.mapper.entity.Poster" >
+        update poster
+        set
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+                status_id = #{statusId,jdbcType=TINYINT},
+                poster = #{poster,jdbcType=VARCHAR},
+                poster_type = #{posterType,jdbcType=TINYINT},
+                remark = #{remark,jdbcType=VARCHAR},
+        where
+        id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
