@@ -32,7 +32,7 @@ public class AuthApiCourseUserStudyController extends BaseController {
 	 *
 	 * @param authCourseUserStudyPageBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "分页列出接口", notes = "我的课程分页列出接口")
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -44,7 +44,7 @@ public class AuthApiCourseUserStudyController extends BaseController {
 	 *
 	 * @param authCourseUserStudyLogCountBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "统计购买课程数", notes = "统计购买课程数")
 	@RequestMapping(value = "/count", method = RequestMethod.POST)

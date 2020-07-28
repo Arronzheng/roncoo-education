@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * 用户修改日志
  *
- * @author wujing
+ *
  */
 @Data
 @Accessors(chain = true)

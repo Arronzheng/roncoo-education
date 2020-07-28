@@ -13,16 +13,16 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 讲师提现日志表 
+ * 讲师提现日志表
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossLecturerProfitController extends BaseController implements BossLecturerProfit{
 
 	@Autowired
 	private BossLecturerProfitBiz biz;
-	
+
 	@Override
 	public Page<LecturerProfitVO> listForPage(@RequestBody LecturerProfitQO qo){
 		return biz.listForPage(qo);
@@ -33,16 +33,16 @@ public class BossLecturerProfitController extends BaseController implements Boss
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody LecturerProfitQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public LecturerProfitVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);

@@ -44,7 +44,7 @@ import net.sf.json.JSONObject;
 /**
  * 保利威视工具类
  *
- * @author wujing
+ *
  */
 public final class PolyvUtil {
 

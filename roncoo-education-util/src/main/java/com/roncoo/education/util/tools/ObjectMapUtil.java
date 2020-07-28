@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Object To Map and Map To Object
  *
- * @author wujing
+ *
  */
 public final class ObjectMapUtil {
 

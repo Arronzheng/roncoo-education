@@ -57,8 +57,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 课程信息-审核
- *
- * @author wujing
  */
 @Component
 public class BossCourseAuditBiz extends BaseBiz {
@@ -111,7 +109,7 @@ public class BossCourseAuditBiz extends BaseBiz {
 		if (qo.getIsPutaway() != null) {
 			c.andIsPutawayEqualTo(qo.getIsPutaway());
 		}
-	
+
 		example.setOrderByClause(" status_id desc, is_putaway desc, sort desc, id desc ");
 		Page<CourseAudit> page = dao.listForPage(qo.getPageCurrent(), qo.getPageSize(), example);
 		Page<CourseAuditVO> CourseAuditVOList = PageUtil.transform(page, CourseAuditVO.class);
@@ -360,10 +358,10 @@ public class BossCourseAuditBiz extends BaseBiz {
 
 	/**
 	 * 更新状态信息
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public int updateStatusId(CourseAuditQO qo) {
 		CourseAudit audit = BeanUtil.copyProperties(qo, CourseAudit.class);

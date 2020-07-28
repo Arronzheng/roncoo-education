@@ -13,8 +13,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 讲师信息
- *
- * @author wujing
  */
 public interface BossLecturer {
 
@@ -41,7 +39,7 @@ public interface BossLecturer {
 
 	/**
 	 * 列出所有讲师信息
-	 * 
+	 *
 	 * @author LHR
 	 */
 	@RequestMapping(value = "/boss/user/lecturer/listAllForLecturer", method = RequestMethod.POST)

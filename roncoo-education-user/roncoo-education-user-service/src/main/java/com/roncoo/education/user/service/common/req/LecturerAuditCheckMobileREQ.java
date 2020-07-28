@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 讲师信息-审核-校验手机号是否是否存在
  *
- * @author wujing
+ *
  */
 @Data
 @Accessors(chain = true)

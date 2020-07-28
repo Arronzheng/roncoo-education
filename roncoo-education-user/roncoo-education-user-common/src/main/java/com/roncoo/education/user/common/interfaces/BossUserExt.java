@@ -16,8 +16,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 用户教育信息
- *
- * @author wujing
  */
 public interface BossUserExt {
 
@@ -47,7 +45,7 @@ public interface BossUserExt {
 	 *
 	 * @param userExtEchartsQO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/user/userExt/sumByCounts", method = RequestMethod.POST)
 	List<UserEchartsVO> sumByCounts(@RequestBody UserExtEchartsQO userExtEchartsQO);
@@ -55,7 +53,7 @@ public interface BossUserExt {
 	/**
 	 * 批量缓存用户信息,发送站内信用
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/user/userExt/cachUserForMsg")
 	void cachUserForMsg();

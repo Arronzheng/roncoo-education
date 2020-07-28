@@ -12,8 +12,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息-审核
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -92,4 +90,14 @@ public class AuthCourseAuditListDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "是否可删除（1:可删除，0:不可删除）")
 	private Integer isDelete;
+    /**
+     * 是否有教具（1没有，2有）
+     */
+    @ApiModelProperty(value = "是否有教具（1没有，2有）")
+    private Integer hasTrainaid;
+    /**
+     * 课程简介
+     */
+    @ApiModelProperty(value = "课程简介")
+    private String courseShortIntroduce;
 }

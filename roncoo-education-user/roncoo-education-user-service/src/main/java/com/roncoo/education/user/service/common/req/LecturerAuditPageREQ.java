@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 讲师信息分页列出
  *
- * @author wujing
+ *
  */
 @Data
 @Accessors(chain = true)

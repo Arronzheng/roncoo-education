@@ -17,8 +17,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 后台操作日志表
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/system/pc/sys/log")

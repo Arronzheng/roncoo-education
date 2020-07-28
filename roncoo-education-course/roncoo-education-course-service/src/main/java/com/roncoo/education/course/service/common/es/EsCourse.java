@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 /**
  * 课程信息表
  *
- * @author wuyun
+ *
  */
 @Document(indexName = "edu_course", type = "edu_course")
 public class EsCourse implements Serializable {

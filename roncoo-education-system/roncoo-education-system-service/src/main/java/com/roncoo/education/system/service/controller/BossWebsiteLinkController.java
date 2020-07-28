@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 站点友情链接
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossWebsiteLinkController extends BaseController implements BossWebsiteLink {

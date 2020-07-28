@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 站点信息
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossWebsiteController extends BaseController implements BossWebsite {

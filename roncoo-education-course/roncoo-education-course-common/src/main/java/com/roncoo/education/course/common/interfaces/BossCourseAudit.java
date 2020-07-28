@@ -11,8 +11,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课程信息-审核
- *
- * @author wujing
  */
 public interface BossCourseAudit {
 
@@ -36,10 +34,10 @@ public interface BossCourseAudit {
 
 	/**
 	 * 更新状态信息
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/courseAudit/updateStatusId", method = RequestMethod.PUT)
 	int updateStatusId(CourseAuditQO qo);

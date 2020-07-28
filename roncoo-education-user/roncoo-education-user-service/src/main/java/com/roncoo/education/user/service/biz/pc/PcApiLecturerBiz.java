@@ -33,7 +33,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 讲师信息
  *
- * @author wujing
+ *
  */
 @Component
 public class PcApiLecturerBiz {
@@ -68,7 +68,7 @@ public class PcApiLecturerBiz {
 
 	/**
 	 * 讲师信息查看接口
-	 * 
+	 *
 	 * @param req
 	 */
 	public Result<LecturerViewRESQ> view(LecturerViewREQ req) {
@@ -94,7 +94,7 @@ public class PcApiLecturerBiz {
 
 	/**
 	 * 更新讲师信息直接生效
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */

@@ -22,7 +22,7 @@ public interface BossBargain {
 	/**
 	 * 砍价倒计时定时任务
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/bargain/handleScheduledTasks", method = RequestMethod.POST)
 	int handleScheduledTasks();

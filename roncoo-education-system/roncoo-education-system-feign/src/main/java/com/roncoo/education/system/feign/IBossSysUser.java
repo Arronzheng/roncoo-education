@@ -5,9 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import com.roncoo.education.system.common.interfaces.BossSysUser;
 
 /**
- * 后台用户信息 
- *
- * @author wujing
+ * 后台用户信息
  */
 @FeignClient(value = "roncoo-education-system-service")
 public interface IBossSysUser extends BossSysUser {

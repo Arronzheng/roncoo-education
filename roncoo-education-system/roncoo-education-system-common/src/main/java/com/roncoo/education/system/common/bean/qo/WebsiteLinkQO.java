@@ -9,14 +9,14 @@ import lombok.experimental.Accessors;
 /**
  * 站点友情链接
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)
 public class WebsiteLinkQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

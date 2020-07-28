@@ -13,9 +13,7 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 课程介绍信息 
- *
- * @author wujing
+ * 课程介绍信息
  */
 @Component
 public class BossCourseIntroduceBiz {
@@ -48,5 +46,5 @@ public class BossCourseIntroduceBiz {
 	    CourseIntroduce record = BeanUtil.copyProperties(qo, CourseIntroduce.class);
 		return dao.updateById(record);
 	}
-	
+
 }

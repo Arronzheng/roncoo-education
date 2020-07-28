@@ -17,8 +17,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 角色用户关联表
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/system/pc/sys/role/user")

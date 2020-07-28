@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 是否显示客服信息
  *
- * @author wuyun
+ *
  */
 @Getter
 @AllArgsConstructor

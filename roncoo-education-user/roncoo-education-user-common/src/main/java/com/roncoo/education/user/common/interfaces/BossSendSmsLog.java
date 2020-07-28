@@ -10,7 +10,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 用户发送短信日志
  *
- * @author YZJ
+ *
  */
 public interface BossSendSmsLog {
 
@@ -31,10 +31,10 @@ public interface BossSendSmsLog {
 
 	/**
 	 * 用户发送短信日志
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	@RequestMapping(value = "/boss/user/sendSmsLog/send")
 	int send(@RequestBody SendSmsLogQO qo);

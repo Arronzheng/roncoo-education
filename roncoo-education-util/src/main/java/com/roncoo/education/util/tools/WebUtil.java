@@ -13,7 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
 /**
- * @author wujing
+ *
  */
 public final class WebUtil {
 

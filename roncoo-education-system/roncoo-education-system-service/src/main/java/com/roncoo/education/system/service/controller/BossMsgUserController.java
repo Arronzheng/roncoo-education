@@ -13,16 +13,16 @@ import com.roncoo.education.util.base.Page;
 
 
 /**
- * 站内信用户记录表 
+ * 站内信用户记录表
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossMsgUserController extends BaseController implements BossMsgUser{
 
 	@Autowired
 	private BossMsgUserBiz biz;
-	
+
 	@Override
 	public Page<MsgUserVO> listForPage(@RequestBody MsgUserQO qo){
 		return biz.listForPage(qo);
@@ -33,19 +33,19 @@ public class BossMsgUserController extends BaseController implements BossMsgUser
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@RequestBody Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody MsgUserQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public MsgUserVO getById(@RequestBody Long id){
 		return biz.getById(id);
 	}
-    
+
 }

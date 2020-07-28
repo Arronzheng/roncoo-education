@@ -14,9 +14,7 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 角色用户关联表 
- *
- * @author wujing
+ * 角色用户关联表
  */
 @Component
 public class BossSysRoleUserBiz {
@@ -50,5 +48,5 @@ public class BossSysRoleUserBiz {
 	    SysRoleUser record = BeanUtil.copyProperties(qo, SysRoleUser.class);
 		return dao.updateById(record);
 	}
-	
+
 }

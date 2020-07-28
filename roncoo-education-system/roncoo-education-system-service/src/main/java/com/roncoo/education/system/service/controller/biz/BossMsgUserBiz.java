@@ -17,7 +17,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 /**
  * 站内信用户记录表
  *
- * @author wuyun
+ *
  */
 @Component
 public class BossMsgUserBiz {

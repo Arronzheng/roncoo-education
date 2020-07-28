@@ -18,8 +18,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 课程信息-审核
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/course/auth/course/user/study/log")
@@ -33,7 +31,7 @@ public class AuthApiCourseUserStudyLogController extends BaseController {
 	 *
 	 * @param authCourseUserStudyLogPageBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "分页列出接口", notes = "最近学习分页列出接口")
 	@RequestMapping(value = "/list", method = RequestMethod.POST)

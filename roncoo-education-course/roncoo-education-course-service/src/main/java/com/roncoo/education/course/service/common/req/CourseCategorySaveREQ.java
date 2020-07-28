@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * 课程分类-添加
- *
- * @author wujing
+ * 课程分类-添加X
  */
 @Data
 @Accessors(chain = true)

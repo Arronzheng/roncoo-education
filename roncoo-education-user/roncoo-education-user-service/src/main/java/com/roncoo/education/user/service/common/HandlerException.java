@@ -10,8 +10,7 @@ import com.roncoo.education.util.base.BaseException;
 import com.roncoo.education.util.base.Result;
 
 /**
- * 
- * @author wujing
+ *
  */
 @RestControllerAdvice(basePackages = "com.roncoo.education.user.service.controller.gateway")
 public class HandlerException extends BaseController {

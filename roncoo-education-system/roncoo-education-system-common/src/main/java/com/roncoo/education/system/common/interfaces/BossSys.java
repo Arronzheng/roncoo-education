@@ -11,7 +11,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 系统配置表
  *
- * @author YZJ
+ *
  */
 public interface BossSys {
 
@@ -32,9 +32,9 @@ public interface BossSys {
 
 	/**
 	 * 获得系统配置表信息
-	 * 
+	 *
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	@RequestMapping(value = "/boss/system/sys/getSys", method = RequestMethod.POST)
 	SysVO getSys();

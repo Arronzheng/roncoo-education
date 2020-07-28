@@ -15,9 +15,9 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 import java.util.List;
 
 /**
- * 讲师信息 
+ * 讲师信息
  *
- * @author wujing
+ *
  */
 @Component
 public class AuthApiLecturerBiz {
@@ -27,9 +27,9 @@ public class AuthApiLecturerBiz {
 
 	/**
 	 * 讲师信息查看接口
-	 * 
+	 *
 	 * @param lecturerUserNo
-	 * @author wuyun
+	 *
 	 */
 	public Result<LecturerViewDTO> view(LecturerViewBO lecturerViewBO) {
 		if (null == lecturerViewBO.getLecturerUserNo()) {

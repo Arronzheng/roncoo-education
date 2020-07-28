@@ -21,8 +21,6 @@ import com.roncoo.education.util.base.Result;
 
 /**
  * 课程信息
- *
- * @author wujing
  */
 @Component
 public class AuthApiCourseUserStudyLogBiz extends BaseBiz {
@@ -39,7 +37,7 @@ public class AuthApiCourseUserStudyLogBiz extends BaseBiz {
 	 *
 	 * @param authCourseUserStudyLogPageBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<Page<AuthCourseUserStudyLogPageDTO>> list(AuthCourseUserStudyLogPageBO authCourseUserStudyLogPageBO) {
 		CourseUserStudyLogExample example = new CourseUserStudyLogExample();

@@ -18,8 +18,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 讲师信息-审核
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/user/auth/lecturer/audit")
@@ -50,7 +48,7 @@ public class AuthApiLecturerAuditController extends BaseController {
 	 * 讲师申请接口
 	 *
 	 * @param authLecturerAuditSaveBO
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "讲师申请接口", notes = "保存讲师信息接口,需要审核")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

@@ -7,7 +7,6 @@ import java.io.Serializable;
  * 订单信息表
  * </p>
  *
- * @author wujing123
  */
 public class CallbackOrderBO implements Serializable {
 

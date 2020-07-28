@@ -10,8 +10,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -139,6 +137,6 @@ public class CourseQO implements Serializable {
 	 * 课程简介
 	 */
 	private String introduce;
-	
+
 	private String ids;
 }

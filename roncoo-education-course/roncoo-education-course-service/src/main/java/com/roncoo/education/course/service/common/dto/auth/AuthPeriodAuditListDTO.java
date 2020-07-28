@@ -10,8 +10,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课时信息-审核
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -22,7 +20,7 @@ public class AuthPeriodAuditListDTO implements Serializable {
 	/**
 	 * 课时集合信息
 	 */
-	@ApiModelProperty(value = "课时集合信息")	
+	@ApiModelProperty(value = "课时集合信息")
 	private List<AuthPeriodAuditDTO> userPeriodAuditList = new ArrayList<>();
 
 	/**

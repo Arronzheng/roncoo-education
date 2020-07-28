@@ -17,8 +17,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -165,4 +163,19 @@ public class AuthCourseViewDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "拼团列表")
 	private List<AssemblePageDTO> assemblePageList;
+	/**
+	 * 是否有教具（1没有，2有）
+	 */
+	@ApiModelProperty(value = "是否有教具（1没有，2有）")
+	private Integer hasTrainaid;
+	/**
+	 * 课程简介
+	 */
+	@ApiModelProperty(value = "课程简介")
+	private String courseShortIntroduce;
+	/**
+	 * 是否有库存
+	 */
+	@ApiModelProperty(value = "是否有库存")
+	private Boolean hasStock;
 }

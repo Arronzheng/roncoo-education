@@ -12,7 +12,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 站点友情链接
  *
- * @author wuyun
+ *
  */
 public interface BossWebsiteLink {
 

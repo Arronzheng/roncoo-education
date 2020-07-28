@@ -11,8 +11,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课时信息-审核
- *
- * @author wujing
  */
 public interface BossCourseChapterPeriodAudit {
 
@@ -33,10 +31,10 @@ public interface BossCourseChapterPeriodAudit {
 
 	/**
 	 * 根据视频编号查询课时信息
-	 * 
+	 *
 	 * @param videoNo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/periodVideoInfoAudit/getByVideoNo", method = RequestMethod.GET)
 	CourseChapterPeriodAuditVO getByVideoNo(@RequestBody Long videoNo);

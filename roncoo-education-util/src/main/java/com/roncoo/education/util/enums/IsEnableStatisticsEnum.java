@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 是否开启统计
  *
- * @author wuyun
+ *
  */
 @Getter
 @AllArgsConstructor

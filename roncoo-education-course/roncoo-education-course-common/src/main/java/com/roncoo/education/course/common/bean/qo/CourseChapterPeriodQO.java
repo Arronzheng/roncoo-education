@@ -9,15 +9,13 @@ import lombok.experimental.Accessors;
 
 /**
  * 课时信息
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
 public class CourseChapterPeriodQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

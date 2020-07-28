@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 站点导航文章
  *
- * @author wuyun
+ *
  */
 @RestController
 public class ApiWebsiteNavArticleController extends BaseController {
@@ -27,9 +27,9 @@ public class ApiWebsiteNavArticleController extends BaseController {
 
 	/**
 	 * 获取站点导航文章接口
-	 * 
+	 *
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "获取站点导航文章接口", notes = "根据站点导航ID获取站点导航文章信息")
 	@RequestMapping(value = "/system/api/website/nav/article/get", method = RequestMethod.POST)

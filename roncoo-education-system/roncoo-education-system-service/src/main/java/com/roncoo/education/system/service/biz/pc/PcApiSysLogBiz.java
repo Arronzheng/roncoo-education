@@ -17,8 +17,6 @@ import com.roncoo.education.util.tools.DateUtil;
 
 /**
  * 后台操作日志表
- *
- * @author wujing
  */
 @Component
 public class PcApiSysLogBiz {

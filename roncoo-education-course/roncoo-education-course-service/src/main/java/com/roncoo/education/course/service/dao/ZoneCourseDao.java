@@ -19,17 +19,17 @@ public interface ZoneCourseDao {
 
 	/**
 	 * 根据专区编号获取可用的专区课程信息集合
-	 * 
+	 *
 	 * @param zoneId
 	 * @param statusId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	List<ZoneCourse> listByZoneIdAndStatusId(Long zoneId, Integer statusId);
 
 	/**
 	 * 根据专区编号,获取可以专区课程信息
-	 * 
+	 *
 	 * @param zoneId
 	 * @return
 	 */

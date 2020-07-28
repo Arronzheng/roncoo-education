@@ -37,8 +37,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 菜单信息
- *
- * @author wujing
  */
 @Component
 public class PcApiSysMenuBiz {

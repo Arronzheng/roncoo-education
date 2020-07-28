@@ -11,8 +11,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 讲师信息
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)

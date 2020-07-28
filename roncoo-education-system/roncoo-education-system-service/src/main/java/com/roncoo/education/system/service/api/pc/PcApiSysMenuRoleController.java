@@ -17,8 +17,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 菜单角色关联表
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/system/pc/menu/role")

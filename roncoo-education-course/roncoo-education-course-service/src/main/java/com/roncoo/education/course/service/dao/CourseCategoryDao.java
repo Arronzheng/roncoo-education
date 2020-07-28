@@ -19,7 +19,7 @@ public interface CourseCategoryDao {
 
 	/**
 	 * 根据父类编号查找课程分类信息
-	 * 
+	 *
 	 * @param parentId
 	 * @author WY
 	 */
@@ -27,7 +27,7 @@ public interface CourseCategoryDao {
 
 	/**
 	 * 根据层级列出分类信息
-	 * 
+	 *
 	 * @param floor
 	 * @author WY
 	 */
@@ -35,7 +35,7 @@ public interface CourseCategoryDao {
 
 	/**
 	 * 根据层级、父类ID列出分类信息
-	 * 
+	 *
 	 * @param floor
 	 * @param parentId
 	 * @author WY
@@ -44,11 +44,11 @@ public interface CourseCategoryDao {
 
 	/**
 	 * 根据分类类型、层级查询可用状态的课程分类集合
-	 * 
+	 *
 	 * @param categoryType
 	 * @param floor
 	 * @param statusId
-	 * @author wuyun
+	 *
 	 */
 	List<CourseCategory> listByCategoryTypeAndFloorAndStatusId(Integer categoryType, Integer floor, Integer statusId);
 }

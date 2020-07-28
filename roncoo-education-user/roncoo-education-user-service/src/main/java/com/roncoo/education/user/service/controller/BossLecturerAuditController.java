@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 讲师信息-审核
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossLecturerAuditController extends BaseController implements BossLecturerAudit {

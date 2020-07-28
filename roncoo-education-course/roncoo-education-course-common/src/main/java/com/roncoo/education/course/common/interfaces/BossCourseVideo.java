@@ -12,7 +12,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 课程视频信息
  *
- * @author wuyun
+ *
  */
 public interface BossCourseVideo {
 
@@ -33,9 +33,9 @@ public interface BossCourseVideo {
 
 	/**
 	 * 定时任务-视频处理
-	 * 
+	 *
 	 * @param targetFile
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/courseVideo/gethandleScheduledTasksById")
 	void handleScheduledTasks(@RequestBody File targetFile);

@@ -16,15 +16,13 @@ import lombok.experimental.Accessors;
  * <p>
  * 订单信息表
  * </p>
- *
- * @author wujing123
  */
 @Data
 @Accessors(chain = true)
 public class AuthOrderInfoListForLecturerDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 订单号
      */

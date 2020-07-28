@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 用户教育信息
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)
@@ -62,5 +62,5 @@ public class AuthUserExtBankBO implements Serializable {
 	 */
 	@ApiModelProperty(value = "clientId", required = true)
     private String clientId;
-	
+
 }

@@ -145,15 +145,26 @@ public class OrderInfoDaoImpl implements OrderInfoDao {
 	}
 
 	@Override
-	public OrderInfo getByUserNoAndCourseIdAndOrderStatus(Long userNo, Long courseId) {
+	public OrderInfo getByUserNoAndCourseIdAndOrderStatus(Long userNo, Long courseId, Integer orderType) {
 		OrderInfoExample example = new OrderInfoExample();
-		example.createCriteria().andUserNoEqualTo(userNo).andCourseIdEqualTo(courseId).andOrderStatusBetween(OrderStatusEnum.WAIT.getCode(),OrderStatusEnum.SUCCESS.getCode());
+		example.createCriteria().andUserNoEqualTo(userNo)
+				.andCourseIdEqualTo(courseId)
+				.andOrderTypeEqualTo(orderType)
+				.andOrderStatusBetween(OrderStatusEnum.WAIT.getCode(),OrderStatusEnum.SUCCESS.getCode());
 		example.setOrderByClause(" id desc ");
 		List<OrderInfo> list = this.orderInfoMapper.selectByExample(example);
 		if (list.isEmpty()) {
 			return null;
 		}
 		return list.get(0);
+	}
+
+	@Override
+	public int getByUserNoForCount(Long userNo, Integer code) {
+		OrderInfoExample example = new OrderInfoExample();
+		example.createCriteria().andUserNoEqualTo(userNo).andOrderStatusEqualTo(code);
+		int r = this.orderInfoMapper.countByExample(example);
+		return r;
 	}
 
 	/**
@@ -199,7 +210,7 @@ public class OrderInfoDaoImpl implements OrderInfoDao {
 
 	/**
 	 * 统计订单收入情况
-	 * 
+	 *
 	 */
 	@Override
 	public CountIncomeRESQ countIncome(OrderInfoQO qo) {
@@ -235,7 +246,7 @@ public class OrderInfoDaoImpl implements OrderInfoDao {
 
 	/**
 	 * 拼接sql查询条件
-	 * 
+	 *
 	 * @param bean
 	 * @return
 	 */

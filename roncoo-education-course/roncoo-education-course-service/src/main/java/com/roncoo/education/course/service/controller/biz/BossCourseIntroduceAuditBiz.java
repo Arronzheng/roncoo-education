@@ -15,7 +15,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 /**
  * 课程介绍信息
  *
- * @author wujing
+ *
  */
 @Component
 public class BossCourseIntroduceAuditBiz {

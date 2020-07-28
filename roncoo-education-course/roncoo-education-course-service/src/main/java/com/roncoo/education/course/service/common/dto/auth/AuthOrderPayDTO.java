@@ -7,8 +7,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 订单支付信息表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -27,6 +25,8 @@ public class AuthOrderPayDTO implements Serializable {
 	private Integer payType;
 
 	private String serialNumber;
+
+	private Integer orderType;
 
 	//下面几个字段是JSAPI支付需要的
 	private String prepayId;

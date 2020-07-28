@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息-查看
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)

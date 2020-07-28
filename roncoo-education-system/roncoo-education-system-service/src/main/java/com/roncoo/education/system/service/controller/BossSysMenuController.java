@@ -15,8 +15,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 菜单信息
- *
- * @author wujing
  */
 @RestController
 public class BossSysMenuController extends BaseController implements BossSysMenu {

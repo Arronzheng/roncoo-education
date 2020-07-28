@@ -5,9 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import com.roncoo.education.user.common.interfaces.BossUserLogModified;
 
 /**
- * 用户修改日志 
- *
- * @author wujing
+ * 用户修改日志
  */
 @FeignClient(value = "roncoo-education-user-service")
 public interface IBossUserLogModified extends BossUserLogModified {

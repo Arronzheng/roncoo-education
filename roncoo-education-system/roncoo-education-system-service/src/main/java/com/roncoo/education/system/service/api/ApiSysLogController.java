@@ -7,14 +7,12 @@ import com.roncoo.education.system.service.biz.ApiSysLogBiz;
 import com.roncoo.education.util.base.BaseController;
 
 /**
- * 后台操作日志表 
- *
- * @author wujing
+ * 后台操作日志表
  */
 @RestController
 public class ApiSysLogController extends BaseController {
 
     @Autowired
     private ApiSysLogBiz biz;
-    
+
 }

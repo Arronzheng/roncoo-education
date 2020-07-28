@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 课时信息-审核
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossCourseChapterPeriodAuditController extends BaseController implements BossCourseChapterPeriodAudit {

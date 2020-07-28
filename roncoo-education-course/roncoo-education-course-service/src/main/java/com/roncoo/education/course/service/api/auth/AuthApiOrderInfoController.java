@@ -1,6 +1,7 @@
 package com.roncoo.education.course.service.api.auth;
 
 import com.roncoo.education.course.service.common.bo.auth.*;
+import com.roncoo.education.course.service.common.dto.auth.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.abel533.echarts.Option;
 import com.roncoo.education.course.service.biz.auth.AuthApiOrderInfoBiz;
 import com.roncoo.education.course.service.common.bo.OrderInfoCloseBO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoListDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoListForLecturerDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderPayDTO;
 import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.Result;
@@ -23,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 订单信息表
  *
- * @author YZJ
+ *
  */
 @RestController
 @RequestMapping(value = "/course/auth/order/info")
@@ -114,6 +111,18 @@ public class AuthApiOrderInfoController extends BaseController {
 	@RequestMapping(value = "/charts", method = RequestMethod.POST)
 	public Result<Option> charts(@RequestBody AuthOrderInfoForChartsBO authOrderInfoForChartsBO) {
 		return biz.charts(authOrderInfoForChartsBO);
+	}
+
+	/**
+	 * 统计各订单数量
+	 *
+	 * @param authOrderInfoDataBO
+	 * @return
+	 */
+	@ApiOperation(value = "统计各订单数量", notes = "统计各订单数量")
+	@RequestMapping(value = "/getData", method = RequestMethod.POST)
+	public Result<AuthOrderInfoDataDTO> getData(@RequestBody AuthOrderInfoDataBO authOrderInfoDataBO){
+		return biz.getData(authOrderInfoDataBO);
 	}
 
 }

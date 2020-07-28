@@ -8,8 +8,6 @@ import com.roncoo.education.util.base.BaseController;
 
 /**
  * 角色用户关联表
- *
- * @author wujing
  */
 @RestController
 public class ApiSysRoleUserController extends BaseController {

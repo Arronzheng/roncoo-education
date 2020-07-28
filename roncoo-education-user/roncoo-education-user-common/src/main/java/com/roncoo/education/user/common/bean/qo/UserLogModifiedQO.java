@@ -7,15 +7,13 @@ import lombok.experimental.Accessors;
 
 /**
  * 用户修改日志
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
 public class UserLogModifiedQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

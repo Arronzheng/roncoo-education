@@ -5,7 +5,7 @@ import java.util.Random;
 import com.xiaoleilu.hutool.crypto.SecureUtil;
 
 /**
- * @author wujing
+ *
  */
 public final class StrUtil {
 

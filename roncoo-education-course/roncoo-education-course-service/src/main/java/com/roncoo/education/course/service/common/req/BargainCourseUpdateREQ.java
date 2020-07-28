@@ -90,4 +90,12 @@ public class BargainCourseUpdateREQ implements Serializable {
         private Integer look;
         @ApiModelProperty(value = "砍价产品分享量")
         private Integer share;
+        @ApiModelProperty(value = "第一刀砍价最大比率")
+        private String firstBargainMaxRate;
+        @ApiModelProperty(value = "第一刀砍价最小比率")
+        private String firstBargainMinRate;
+        @ApiModelProperty(value = "其他砍价最大比率")
+        private String bargainMaxRate;
+        @ApiModelProperty(value = "其他砍价最小比率")
+        private String bargainMinRate;
 }

@@ -15,16 +15,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 专区 
- *
- * @author wujing
+ * 专区
  */
 @RestController
 public class BossZoneController extends BaseController implements BossZone{
 
 	@Autowired
 	private BossZoneBiz biz;
-	
+
 	@Override
 	public Page<ZoneVO> listForPage(@RequestBody ZoneQO qo){
 		return biz.listForPage(qo);
@@ -35,16 +33,16 @@ public class BossZoneController extends BaseController implements BossZone{
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody ZoneQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public ZoneVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);
@@ -54,5 +52,5 @@ public class BossZoneController extends BaseController implements BossZone{
 	public List<ZoneVO> listAllZone() {
 		return biz.listAllZone();
 	}
-	
+
 }

@@ -26,7 +26,7 @@ public interface UserExtDao {
 	 *
 	 * @param mobile
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	UserExt getByMobile(String mobile);
 
@@ -35,7 +35,7 @@ public interface UserExtDao {
 	 *
 	 * @param date
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	Integer sumByCountOrders(String date);
 

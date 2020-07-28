@@ -12,16 +12,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 菜单角色关联表 
- *
- * @author wujing
+ * 菜单角色关联表
  */
 @RestController
 public class BossSysMenuRoleController extends BaseController implements BossSysMenuRole{
 
 	@Autowired
 	private BossSysMenuRoleBiz biz;
-	
+
 	@Override
 	public Page<SysMenuRoleVO> listForPage(@RequestBody SysMenuRoleQO qo){
 		return biz.listForPage(qo);
@@ -32,19 +30,19 @@ public class BossSysMenuRoleController extends BaseController implements BossSys
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@RequestBody Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody SysMenuRoleQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public SysMenuRoleVO getById(@RequestBody Long id){
 		return biz.getById(id);
 	}
-	
+
 }

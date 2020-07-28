@@ -16,7 +16,7 @@ import com.roncoo.education.util.enums.StatusIdEnum;
 /**
  * 站点友情链接
  *
- * @author wuyun
+ *
  */
 @Component
 public class ApiWebsiteLinkBiz {

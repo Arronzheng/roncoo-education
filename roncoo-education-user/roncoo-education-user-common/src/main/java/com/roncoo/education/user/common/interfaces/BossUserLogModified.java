@@ -10,25 +10,23 @@ import com.roncoo.education.user.common.bean.vo.UserLogModifiedVO;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 用户修改日志 
- *
- * @author wujing
+ * 用户修改日志
  */
 public interface BossUserLogModified {
-	
+
 	@RequestMapping(value = "/boss/user/userLogModified/listForPage", method = RequestMethod.POST)
 	Page<UserLogModifiedVO> listForPage(@RequestBody UserLogModifiedQO qo);
-	
+
 	@RequestMapping(value = "/boss/user/userLogModified/save", method = RequestMethod.POST)
 	int save(@RequestBody UserLogModifiedQO qo);
-	
+
 	@RequestMapping(value = "/boss/user/userLogModified/delete/{id}", method = RequestMethod.DELETE)
 	int deleteById(@PathVariable(value = "id") Long id);
-	
+
 	@RequestMapping(value = "/boss/user/userLogModified/update", method = RequestMethod.PUT)
 	int updateById(@RequestBody UserLogModifiedQO qo);
-	
+
 	@RequestMapping(value = "/boss/user/userLogModified/get/{id}", method = RequestMethod.GET)
 	UserLogModifiedVO getById(@PathVariable(value = "id") Long id);
-	
+
 }

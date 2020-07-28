@@ -15,7 +15,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 站点导航
  *
- * @author wuyun
+ *
  */
 @RestController
 public class ApiWebsiteNavController extends BaseController {
@@ -25,9 +25,9 @@ public class ApiWebsiteNavController extends BaseController {
 
 	/**
 	 * 获取站点导航信息接口
-	 * 
+	 *
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "获取站点导航信息接口", notes = "获取站点导航信息")
 	@RequestMapping(value = "/system/api/website/nav/list", method = RequestMethod.POST)

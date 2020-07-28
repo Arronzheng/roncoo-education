@@ -13,7 +13,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 /**
- * @author wujing
+ *
  */
 public final class JWTUtil {
 

@@ -14,8 +14,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课程推荐
- *
- * @author wujing
  */
 @RestController
 public class BossCourseRecommendController extends BaseController implements BossCourseRecommend {

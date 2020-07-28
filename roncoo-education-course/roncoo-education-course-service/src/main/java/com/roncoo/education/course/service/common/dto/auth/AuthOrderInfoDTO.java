@@ -7,14 +7,17 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.roncoo.education.course.common.bean.vo.CourseAuditVO;
+import com.roncoo.education.course.service.common.req.CourseAuditSaveREQ;
+import com.roncoo.education.course.service.common.resq.CourseAuditViewRESQ;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
+import com.roncoo.education.user.common.bean.vo.UserShippingAddressVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
  * 订单信息表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -33,6 +36,11 @@ public class AuthOrderInfoDTO implements Serializable {
 	@ApiModelProperty(value = "订单编号", required = true)
 	@JsonSerialize(using = ToStringSerializer.class)
 	private Long orderNo;
+    /**
+     * 实付金额
+     */
+    @ApiModelProperty(value = "应付金额", required = true)
+    private BigDecimal pricePayable;
 	/**
 	 * 实付金额
 	 */
@@ -53,4 +61,14 @@ public class AuthOrderInfoDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "支付时间", required = true)
 	private Date payTime;
+    /**
+     * 课程信息
+     */
+    @ApiModelProperty(value = "课程信息", required = true)
+	private CourseAudit courseAudit;
+	/**
+	 * 收货地址
+	 */
+	@ApiModelProperty(value = "收货地址", required = false)
+	private UserShippingAddressVO shippingAddress;
 }

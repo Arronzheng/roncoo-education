@@ -20,8 +20,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 讲师信息-审核
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/user/pc/lecturer")
@@ -32,7 +30,7 @@ public class PcApiLecturerController extends BaseController {
 
 	/**
 	 * 讲师分页列表接口
-	 * 
+	 *
 	 * @param lecturerViewPageREQ
 	 */
 	@ApiOperation(value = "讲师分页列表接口", notes = "讲师分页列表接口")
@@ -43,7 +41,7 @@ public class PcApiLecturerController extends BaseController {
 
 	/**
 	 * 讲师信息查看接口
-	 * 
+	 *
 	 * @param lecturerViewREQ
 	 */
 	@ApiOperation(value = "讲师查看接口", notes = "根据讲师用户编号查看讲师信息")
@@ -54,7 +52,7 @@ public class PcApiLecturerController extends BaseController {
 
 	/**
 	 * 更新讲师信息(更新直接生效)接口
-	 * 
+	 *
 	 * @param lecturerViewUpdateREQ
 	 */
 	@ApiOperation(value = "更新讲师信息(更新直接生效)接口", notes = "更新讲师信息(更新直接生效)接口")

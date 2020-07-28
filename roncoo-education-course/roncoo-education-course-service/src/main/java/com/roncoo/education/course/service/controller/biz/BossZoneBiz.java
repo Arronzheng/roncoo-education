@@ -18,8 +18,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 专区
- *
- * @author wujing
  */
 @Component
 public class BossZoneBiz {

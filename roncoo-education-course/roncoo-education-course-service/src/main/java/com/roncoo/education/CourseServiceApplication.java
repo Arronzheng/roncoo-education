@@ -9,8 +9,6 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 
 /**
  * 课程服务
- *
- * @author wujing
  */
 @EnableSwagger2Doc
 @EnableFeignClients

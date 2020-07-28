@@ -1,16 +1,11 @@
 package com.roncoo.education.course.service.biz.callback;
 
 import com.github.wxpay.sdk.WXPay;
+import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.roncoo.education.course.service.common.bo.OrderInfoPayNotifyBO;
-import com.roncoo.education.course.service.dao.CourseAuditDao;
-import com.roncoo.education.course.service.dao.CourseDao;
-import com.roncoo.education.course.service.dao.OrderInfoDao;
-import com.roncoo.education.course.service.dao.OrderPayDao;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.Course;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo;
-import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderPay;
+import com.roncoo.education.course.service.dao.*;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
 import com.roncoo.education.user.common.bean.qo.UserExtQO;
 import com.roncoo.education.user.common.bean.qo.UserLogCommissionSaveQO;
@@ -27,6 +22,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +30,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,6 +57,11 @@ public class CallbackAlipayBiz extends BaseBiz {
 	private IBossUserLogInvite bossUserLogInvite;
 	@Autowired
 	private IBossUserLogCommission bossUserLogCommission;
+	@Autowired
+	private AssembleDao assembleDao;
+	@Autowired
+	private CouponUserDao couponUserDao;
+
 	@Transactional
 	public String alipayNotify(HttpServletRequest request) {
 		boolean signVerified = AlipayUtil.checkSign(request.getParameterMap());
@@ -91,7 +93,7 @@ public class CallbackAlipayBiz extends BaseBiz {
 		String success="<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
 		String notifyData = WeixinPayUtil.readData(request);
 		WeixinConfig config = new WeixinConfig();
-		WXPay wxpay = new WXPay(config);
+		WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, false);
 		boolean result = false;
 		try {
 			Map<String, String> notifyMap = WXPayUtil.xmlToMap(notifyData);  // 转换成map
@@ -208,7 +210,7 @@ public class CallbackAlipayBiz extends BaseBiz {
 	 * @param orderInfo
 	 * @param orderPay
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private void course(OrderInfo orderInfo, OrderPay orderPay) {
 		// 根据课程No查找课程信息
@@ -236,12 +238,51 @@ public class CallbackAlipayBiz extends BaseBiz {
 		courseAuditDao.updateById(courseAudit);
 		// 更新订单信息
 		orderInfo.setPayTime(new Date());
-		orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+		if (courseAudit.getHasTrainaid() == 2) {
+			orderInfo.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+			orderPay.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+		} else {
+			orderInfo.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+			orderPay.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+		}
 		orderInfoDao.updateById(orderInfo);
 		// 更新订单支付信息
-		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
 		orderPay.setPayTime(new Date());
 		orderPayDao.updateById(orderPay);
+
+		// 更新拼团信息
+		Assemble assemble = assembleDao.getOrderId(orderInfo.getOrderNo());
+		if (!ObjectUtils.isEmpty(assemble)) {
+			assemble.setStatus(1);
+			assembleDao.updateById(assemble);
+			// 设置为8待拼成状态
+			orderInfo.setOrderStatus(OrderStatusEnum.WAITASSEMBLE.getCode());
+			orderPay.setOrderStatus(OrderStatusEnum.WAITASSEMBLE.getCode());
+		}
+        // 根据拼团id查询状态为1(1表示已支付的拼团)的拼团记录判断拼团是否完成
+        List<Assemble> assembleList = assembleDao.getByAssembleId(assemble.getAssembleId());
+        if (assembleList.size() > 1) {
+            for (Assemble assemble1: assembleList) {
+                assemble1.setStatus(2); //2表示已完成的拼团
+                assembleDao.updateById(assemble1);
+
+				if (courseAudit.getHasTrainaid() == 2) {
+					orderInfo.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+					orderPay.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+				} else {
+					orderInfo.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+					orderPay.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+				}
+            }
+        }
+
+		// 更新优惠券信息
+		if (!StringUtils.isEmpty(orderInfo.getCouponUserId())) {
+			CouponUser record = new CouponUser();
+			record.setId(orderInfo.getCouponUserId());
+			record.setStatus(1);
+			couponUserDao.updateById(record);
+		}
 
 		UserExtVO userExtVO = bossUserExt.getByUserNo(orderInfo.getUserNo());
 		if (!StringUtils.isEmpty(userExtVO.getVipLevel())) {
@@ -277,7 +318,7 @@ public class CallbackAlipayBiz extends BaseBiz {
 	 * @param lecturerExtVO
 	 * @param lecturerProportion
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private OrderInfo countProfit(OrderInfo orderInfo, LecturerExtVO lecturerExtVO, BigDecimal lecturerProportion) {
 		// 讲师收入 = 订单价格x讲师分成比例
@@ -296,7 +337,7 @@ public class CallbackAlipayBiz extends BaseBiz {
 	 *
 	 * @param orderInfo
 	 * @param lecturerExtVO
-	 * @author wuyun
+	 *
 	 */
 	private void updateLecturerExtVO(OrderInfo orderInfo, LecturerExtVO lecturerExtVO) {
 		LecturerExtQO lecturerExtQO = new LecturerExtQO();

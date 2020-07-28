@@ -13,8 +13,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 专区
- *
- * @author wujing
  */
 public interface BossZone {
 

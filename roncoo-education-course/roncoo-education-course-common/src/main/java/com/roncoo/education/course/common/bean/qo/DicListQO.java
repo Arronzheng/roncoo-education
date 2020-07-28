@@ -8,15 +8,13 @@ import lombok.experimental.Accessors;
 
 /**
  * 数据字典明细表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
 public class DicListQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

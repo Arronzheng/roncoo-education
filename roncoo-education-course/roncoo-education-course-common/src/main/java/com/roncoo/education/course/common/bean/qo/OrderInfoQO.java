@@ -9,15 +9,13 @@ import lombok.experimental.Accessors;
 
 /**
  * 订单信息表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
 public class OrderInfoQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

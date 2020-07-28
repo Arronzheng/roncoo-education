@@ -67,7 +67,7 @@ public class ApiUserInfoController extends BaseController {
 	/**
 	 * 用户修改密码接口
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "用户修改密码接口", notes = "用户修改密码接口")
 	@RequestMapping(value = "/update/password", method = RequestMethod.POST)

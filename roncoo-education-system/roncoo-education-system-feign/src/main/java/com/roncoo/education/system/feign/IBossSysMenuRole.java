@@ -5,9 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import com.roncoo.education.system.common.interfaces.BossSysMenuRole;
 
 /**
- * 菜单角色关联表 
- *
- * @author wujing
+ * 菜单角色关联表
  */
 @FeignClient(value = "roncoo-education-system-service")
 public interface IBossSysMenuRole extends BossSysMenuRole {

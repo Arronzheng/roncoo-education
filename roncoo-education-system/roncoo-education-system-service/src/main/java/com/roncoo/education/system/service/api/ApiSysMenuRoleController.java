@@ -8,8 +8,6 @@ import com.roncoo.education.util.base.BaseController;
 
 /**
  * 菜单角色关联表
- *
- * @author wujing
  */
 @RestController
 public class ApiSysMenuRoleController extends BaseController {

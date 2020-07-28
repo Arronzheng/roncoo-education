@@ -36,7 +36,7 @@ import com.xiaoleilu.hutool.util.RandomUtil;
 /**
  * 用户发送短信日志
  *
- * @author YZJ
+ *
  */
 @Component
 public class BossSendSmsLogBiz {

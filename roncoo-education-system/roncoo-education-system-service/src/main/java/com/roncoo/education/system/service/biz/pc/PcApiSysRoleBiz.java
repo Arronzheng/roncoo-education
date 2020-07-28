@@ -26,8 +26,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 角色信息
- *
- * @author wujing
  */
 @Component
 public class PcApiSysRoleBiz {

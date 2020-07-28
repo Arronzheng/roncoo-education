@@ -2,6 +2,7 @@ package com.roncoo.education.course.service.api.auth;
 
 import com.roncoo.education.course.service.biz.auth.AuthApiBargainUserBiz;
 import com.roncoo.education.course.service.common.bo.AssembleViewBO;
+import com.roncoo.education.course.service.common.bo.BargainIngBO;
 import com.roncoo.education.course.service.common.bo.BargainRecordBO;
 import com.roncoo.education.course.service.common.dto.BargainUserHelpSaveDTO;
 import com.roncoo.education.course.service.common.dto.BargainUserViewDTO;
@@ -12,6 +13,7 @@ import com.roncoo.education.course.service.common.req.BargainUserHelpREQ;
 import com.roncoo.education.course.service.common.req.BargainUserSaveREQ;
 import com.roncoo.education.course.service.common.req.BargainUserViewREQ;
 import com.roncoo.education.course.service.common.resq.BargainUserPageRESQ;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.BargainUser;
 import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Result;
 import io.swagger.annotations.ApiOperation;
@@ -68,7 +70,7 @@ import org.springframework.web.bind.annotation.RestController;
         }
 
     /**
-     * Assemble记录接口
+     * BargainUser记录接口
      * @param bargainRecordBO
      * @return
      */
@@ -76,6 +78,17 @@ import org.springframework.web.bind.annotation.RestController;
     @RequestMapping(value = "/record", method = RequestMethod.POST)
     public Result<AuthBargainUserViewDTO> record(@RequestBody BargainRecordBO bargainRecordBO) {
         return biz.record(bargainRecordBO);
+    }
+
+    /**
+     * 是否有正在砍价接口
+     * @param bargainIngBO
+     * @return
+     */
+    @ApiOperation(value = "是否有正在砍价接口", notes = "是否有正在砍价接口")
+    @RequestMapping(value = "/isBargainIng", method = RequestMethod.POST)
+    public Result<BargainUserViewDTO> isBargainIng(@RequestBody BargainIngBO bargainIngBO) {
+        return biz.isBargainIng(bargainIngBO);
     }
 
     }

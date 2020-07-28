@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 站内信息表
  *
- * @author wuyun
+ *
  */
 @RestController
 @RequestMapping(value = "/system/auth/msg")

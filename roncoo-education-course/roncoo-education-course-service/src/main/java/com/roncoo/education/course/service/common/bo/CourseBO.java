@@ -7,8 +7,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -43,5 +41,13 @@ public class CourseBO implements Serializable {
      * 是否免费：1免费，0收费
      */
     private Integer isFree;
+	/**
+	 * 是否有教具（1没有，2有）
+	 */
+	private Integer hasTrainaid;
+	/**
+	 * 课程简介
+	 */
+	private String courseShortIntroduce;
 
 }

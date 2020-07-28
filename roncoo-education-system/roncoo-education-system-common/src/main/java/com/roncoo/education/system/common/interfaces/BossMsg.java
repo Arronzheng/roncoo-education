@@ -10,7 +10,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 站内信息表
  *
- * @author wuyun
+ *
  */
 public interface BossMsg {
 
@@ -31,19 +31,19 @@ public interface BossMsg {
 
 	/**
 	 * 手动推送站内信
-	 * 
+	 *
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/system/msg/pushByManual")
 	int pushByManual(@RequestBody Long id);
 
 	/**
 	 * 定时器推送站内信
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/system/msg/push")
 	int push();

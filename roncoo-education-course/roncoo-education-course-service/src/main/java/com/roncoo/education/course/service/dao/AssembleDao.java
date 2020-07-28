@@ -1,6 +1,7 @@
 
 package com.roncoo.education.course.service.dao;
 
+import com.roncoo.education.course.service.common.bo.AssembleIngBO;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.Assemble;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleCourse;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleExample;
@@ -32,4 +33,8 @@ public interface AssembleDao {
             List<Assemble> getByCid(Long id, Long userNo);
 
             List<Assemble> getByUid(Long userNo);
+
+            Assemble getOrderId(Long orderNo);
+
+            Assemble getByUserNoAndPidAndStatus(AssembleIngBO assembleIngBO);
 }

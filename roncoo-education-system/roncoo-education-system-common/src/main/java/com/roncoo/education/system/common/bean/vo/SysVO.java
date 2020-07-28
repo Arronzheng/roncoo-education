@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 /**
  * 系统配置表
  *
- * @author YZJ
+ *
  */
 @Data
 @Accessors(chain = true)

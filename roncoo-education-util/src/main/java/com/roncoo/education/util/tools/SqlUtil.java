@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 
 /**
  * sql工具类
- * 
- * @author wujing
+ *
+ *
  */
 public final class SqlUtil {
 	private SqlUtil() {
@@ -24,7 +24,7 @@ public final class SqlUtil {
 
 	/**
 	 * 检测sql，防止sql注入
-	 * 
+	 *
 	 * @param sql
 	 *            sql
 	 * @return 正常返回sql；异常返回""
@@ -173,7 +173,7 @@ public final class SqlUtil {
 
 	/**
 	 * 模糊查询
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */

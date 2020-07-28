@@ -30,4 +30,6 @@ public interface UserShippingAddressDao {
              * @return List<UserShippingAddress>
              */
             List<UserShippingAddress> getByUserNo(Long userNo);
+
+            UserShippingAddress getByUserNoAndIsToleration(Long userNo, int i);
 }

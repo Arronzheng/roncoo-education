@@ -13,16 +13,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 广告信息 
- *
- * @author wujing
+ * 广告信息
  */
 @RestController
 public class BossAdvController extends BaseController implements BossAdv{
 
 	@Autowired
 	private BossAdvBiz biz;
-	
+
 	@Override
 	public Page<AdvVO> listForPage(@RequestBody AdvQO qo){
 		return biz.listForPage(qo);
@@ -33,19 +31,19 @@ public class BossAdvController extends BaseController implements BossAdv{
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody AdvQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public AdvVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);
 	}
-	
+
 }

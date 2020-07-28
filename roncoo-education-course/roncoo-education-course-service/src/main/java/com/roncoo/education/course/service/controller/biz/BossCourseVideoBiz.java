@@ -40,7 +40,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 课程视频信息
  *
- * @author wuyun
+ *
  */
 @Component
 public class BossCourseVideoBiz {
@@ -81,9 +81,9 @@ public class BossCourseVideoBiz {
 
 	/**
 	 * 定时任务-视频处理
-	 * 
+	 *
 	 * @param targetFile
-	 * @author wuyun
+	 *
 	 */
 	public void handleScheduledTasks(File targetFile) {
 		SysVO sys = bossSys.getSys();

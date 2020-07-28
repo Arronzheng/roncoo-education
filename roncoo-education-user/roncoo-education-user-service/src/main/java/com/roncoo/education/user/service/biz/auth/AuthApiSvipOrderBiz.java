@@ -37,8 +37,6 @@ import java.util.*;
 
 /**
  * 订单信息表
- *
- * @author wujing
  */
 @Component
 public class AuthApiSvipOrderBiz extends BaseBiz {
@@ -164,7 +162,10 @@ public class AuthApiSvipOrderBiz extends BaseBiz {
 							if("SUCCESS".equals(response.get("trade_state"))){
 								//微信已交易成功
 								//处理课程信息
-								course(vipOrder);
+								// 如果订单状态不是待支付状态证明订单已经处理过,不用再处理
+								if (OrderStatusEnum.WAIT.getCode().equals(vipOrder.getOrderStatus())) {
+									course(vipOrder);
+								}
 							}else{
 								//微信支付失败
 								//更新订单信息
@@ -185,7 +186,10 @@ public class AuthApiSvipOrderBiz extends BaseBiz {
 						if (response.getTradeStatus().equals("TRADE_FINISHED") || response.getTradeStatus().equals("TRADE_SUCCESS")) {
 							//交易结束，不可退款 或 交易支付成功
 							// 处理课程信息
-							course(vipOrder);
+							// 如果订单状态不是待支付状态证明订单已经处理过,不用再处理
+							if (OrderStatusEnum.WAIT.getCode().equals(vipOrder.getOrderStatus())) {
+								course(vipOrder);
+							}
 						}else if(response.getTradeStatus().equals("WAIT_BUYER_PAY")){
 							// 不做处理
 						}else{

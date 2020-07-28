@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 是否高亮(1高亮;0不高亮)
  *
- * @author wuyun
+ *
  */
 @Getter
 @AllArgsConstructor

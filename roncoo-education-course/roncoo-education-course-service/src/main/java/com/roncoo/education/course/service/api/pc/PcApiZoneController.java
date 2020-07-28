@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 专区表
  *
- * @author wuyun
+ *
  */
 @RestController
 @RequestMapping(value = "/course/pc/zone")
@@ -34,7 +34,7 @@ public class PcApiZoneController extends BaseController {
 
 	/**
 	 * 分页列出专区信息
-	 * 
+	 *
 	 * @param zonePageREQ
 	 * @return
 	 */
@@ -46,7 +46,7 @@ public class PcApiZoneController extends BaseController {
 
 	/**
 	 * 添加专区信息
-	 * 
+	 *
 	 * @param zoneSaveREQ
 	 * @return
 	 */
@@ -58,7 +58,7 @@ public class PcApiZoneController extends BaseController {
 
 	/**
 	 * 删除专区信息
-	 * 
+	 *
 	 * @param zoneDeleteREQ
 	 * @return
 	 */
@@ -70,7 +70,7 @@ public class PcApiZoneController extends BaseController {
 
 	/**
 	 * 更新专区信息
-	 * 
+	 *
 	 * @param zoneUpdateREQ
 	 * @return
 	 */
@@ -82,7 +82,7 @@ public class PcApiZoneController extends BaseController {
 
 	/**
 	 * 查看专区信息
-	 * 
+	 *
 	 * @param zoneViewREQ
 	 * @return
 	 */

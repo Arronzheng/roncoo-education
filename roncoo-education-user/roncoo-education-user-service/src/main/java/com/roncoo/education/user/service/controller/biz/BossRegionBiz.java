@@ -13,9 +13,9 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 行政区域表 
+ * 行政区域表
  *
- * @author wujing
+ *
  */
 @Component
 public class BossRegionBiz {
@@ -48,5 +48,5 @@ public class BossRegionBiz {
 	    Region record = BeanUtil.copyProperties(qo, Region.class);
 		return dao.updateById(record);
 	}
-	
+
 }

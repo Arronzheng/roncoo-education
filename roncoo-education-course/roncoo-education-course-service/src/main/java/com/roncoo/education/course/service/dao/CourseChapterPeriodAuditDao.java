@@ -51,10 +51,10 @@ public interface CourseChapterPeriodAuditDao {
 
 	/**
 	 * 根据课程编号删除课时信息
-	 * 
+	 *
 	 * @param courseId
 	 * @return int
-	 * @author wuyun
+	 *
 	 */
 	int deleteByCourseId(Long courseId);
 
@@ -63,13 +63,13 @@ public interface CourseChapterPeriodAuditDao {
 	 *
 	 * @param chapterId
 	 * @return statusId
-	 * @author wuyun
+	 *
 	 */
 	List<CourseChapterPeriodAudit> listByChapterIdAndStatusId(Long chapterId, Integer statusId);
 
 	/**
 	 * 根据视频编号获取课时信息
-	 * 
+	 *
 	 * @param videoNo
 	 * @author kyh
 	 */
@@ -86,7 +86,7 @@ public interface CourseChapterPeriodAuditDao {
 	 *
 	 * @param videoNo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	CourseChapterPeriodAudit getByVideoNo(Long videoNo);
 }

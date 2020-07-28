@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 短信类型
  *
- * @author wuyun
+ *
  *
  */
 @Getter

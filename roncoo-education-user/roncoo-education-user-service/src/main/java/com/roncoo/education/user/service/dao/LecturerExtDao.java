@@ -17,7 +17,7 @@ public interface LecturerExtDao {
 
 	/**
 	 * 根据传入讲师用户编号获取讲师账户信息
-	 * 
+	 *
 	 * @param lecturerUserNo
 	 * @return
 	 */
@@ -25,10 +25,10 @@ public interface LecturerExtDao {
 
 	/**
 	 * 根据传入讲师用户编号更新讲师账户信息
-	 * 
+	 *
 	 * @param lecturerUserNo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	int updateByLecturerUserNo(LecturerExt record);
 

@@ -19,8 +19,6 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 
 /**
  * 广告信息
- *
- * @author wujing
  */
 @Component
 public class ApiAdvBiz {

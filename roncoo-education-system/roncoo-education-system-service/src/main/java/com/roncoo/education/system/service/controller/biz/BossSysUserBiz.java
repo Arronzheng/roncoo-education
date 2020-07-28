@@ -15,8 +15,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 后台用户信息
- *
- * @author wujing
  */
 @Component
 public class BossSysUserBiz {

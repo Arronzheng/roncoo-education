@@ -15,7 +15,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 /**
  * 站点信息
  *
- * @author wuyun
+ *
  */
 @Component
 public class BossWebsiteBiz {

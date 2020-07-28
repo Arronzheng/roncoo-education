@@ -37,7 +37,7 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 /**
  * 站内信息表
  *
- * @author wuyun
+ *
  */
 @Component
 public class BossMsgBiz extends BaseBiz {
@@ -156,7 +156,7 @@ public class BossMsgBiz extends BaseBiz {
 
 	/**
 	 * 定时器任务：推送站内信到用户
-	 * 
+	 *
 	 * @return
 	 */
 	@Transactional

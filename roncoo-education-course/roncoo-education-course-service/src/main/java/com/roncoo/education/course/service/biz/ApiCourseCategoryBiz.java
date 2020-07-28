@@ -28,8 +28,6 @@ import com.roncoo.education.util.base.Result;
 
 /**
  * 课程分类
- *
- * @author wujing
  */
 @Component
 public class ApiCourseCategoryBiz {
@@ -47,7 +45,7 @@ public class ApiCourseCategoryBiz {
 	 * 获取课程分类列表
 	 *
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<CourseCategoryListDTO> list(CourseInfoPageBO courseInfoPageBO) {
 		CourseCategoryListDTO dto = new CourseCategoryListDTO();

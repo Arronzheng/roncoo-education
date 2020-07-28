@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 /**
  * http调用工具类
  *
- * @author wujing
+ *
  */
 public final class HttpUtil {
 

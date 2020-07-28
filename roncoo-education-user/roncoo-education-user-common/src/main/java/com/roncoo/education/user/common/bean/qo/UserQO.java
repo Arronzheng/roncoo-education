@@ -8,14 +8,14 @@ import lombok.experimental.Accessors;
 /**
  * 用户基本信息
  *
- * @author wujing
+ *
  */
 @Data
 @Accessors(chain = true)
 public class UserQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

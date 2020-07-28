@@ -41,7 +41,7 @@ public class ApiZoneBiz {
 	 * 专区课程分页列表接口
 	 *
 	 * @param zoneBO
-	 * @author wuyun
+	 *
 	 */
 	public Result<Page<ZoneDTO>> listForPage(ZoneBO zoneBO) {
 		if (StringUtils.isEmpty(zoneBO.getZoneLocation())) {

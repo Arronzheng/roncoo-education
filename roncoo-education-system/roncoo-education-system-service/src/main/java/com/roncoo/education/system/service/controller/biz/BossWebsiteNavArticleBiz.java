@@ -13,9 +13,9 @@ import com.roncoo.education.system.service.dao.impl.mapper.entity.WebsiteNavArti
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 站点导航文章 
+ * 站点导航文章
  *
- * @author wuyun
+ *
  */
 @Component
 public class BossWebsiteNavArticleBiz {
@@ -53,5 +53,5 @@ public class BossWebsiteNavArticleBiz {
 		WebsiteNavArticle record = dao.getByNavId(navId);
 		return BeanUtil.copyProperties(record, WebsiteNavArticleVO.class);
 	}
-	
+
 }

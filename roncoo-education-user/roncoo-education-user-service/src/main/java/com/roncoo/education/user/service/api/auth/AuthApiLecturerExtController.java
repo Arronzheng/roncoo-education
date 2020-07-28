@@ -16,9 +16,7 @@ import com.roncoo.education.util.base.Result;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * 讲师账户信息表
- *
- * @author wujing
+ * 讲师账户信息表X
  */
 @RestController
 @RequestMapping(value = "/user/auth/lecturer/ext")
@@ -29,9 +27,9 @@ public class AuthApiLecturerExtController extends BaseController {
 
 	/**
 	 * 账户信息详情接口
-	 * 
+	 *
 	 * @param authLecturerExtViewBO
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "账户信息查看接口", notes = "账户信息详情接口")
 	@RequestMapping(value = "/view", method = RequestMethod.POST)
@@ -41,9 +39,9 @@ public class AuthApiLecturerExtController extends BaseController {
 
 	/**
 	 * 更新用户银行卡信息接口
-	 * 
+	 *
 	 * @param authUserExtBankBO
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "更新用户银行卡信息", notes = "更新用户银行卡信息接口")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)

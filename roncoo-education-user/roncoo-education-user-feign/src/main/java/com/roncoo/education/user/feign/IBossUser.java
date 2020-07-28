@@ -6,8 +6,6 @@ import com.roncoo.education.user.common.interfaces.BossUser;
 
 /**
  * 用户基本信息
- *
- * @author wujing
  */
 @FeignClient(value = "roncoo-education-user-service")
 public interface IBossUser extends BossUser {

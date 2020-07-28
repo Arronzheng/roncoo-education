@@ -14,8 +14,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 订单信息表-查看
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -129,5 +127,21 @@ public class OrderInfoViewRESQ implements Serializable {
 	@ApiModelProperty(value = "流水号")
 	@JsonSerialize(using = ToStringSerializer.class)
 	private Long serialNumber;
+	/**
+	 * 用户优惠券id
+	 */
+	@ApiModelProperty(value = "用户优惠券id")
+	@JsonSerialize(using = ToStringSerializer.class)
+	private Long couponUserId;
+	/**
+	 * 快递公司名称
+	 */
+	@ApiModelProperty(value = "快递公司名称")
+	private String deliveryName;
+	/**
+	 * 快递单号
+	 */
+	@ApiModelProperty(value = "快递单号")
+	private String deliveryId;
 
 }

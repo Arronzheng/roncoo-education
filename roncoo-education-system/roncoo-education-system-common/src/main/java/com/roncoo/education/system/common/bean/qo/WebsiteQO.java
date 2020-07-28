@@ -10,14 +10,14 @@ import lombok.experimental.Accessors;
 /**
  * 设置信息集合，有站点信息，讲师招募信息，代理招募信息
  *
- * @author YZJ
+ *
  */
 @Data
 @Accessors(chain = true)
 public class WebsiteQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */
@@ -130,5 +130,5 @@ public class WebsiteQO implements Serializable {
      * 会员价格
      */
     private BigDecimal vipPrice;
-	
+
 }

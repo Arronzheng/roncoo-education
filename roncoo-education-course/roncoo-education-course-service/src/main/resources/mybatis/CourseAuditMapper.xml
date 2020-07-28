@@ -30,6 +30,8 @@
             <result column="count_buy" property="countBuy" jdbcType="INTEGER"/>
             <result column="count_study" property="countStudy" jdbcType="INTEGER"/>
             <result column="period_total" property="periodTotal" jdbcType="INTEGER"/>
+            <result column="has_trainaid" property="hasTrainaid" jdbcType="TINYINT"/>
+            <result column="course_short_introduce" property="courseShortIntroduce" jdbcType="VARCHAR"/>
         </resultMap>
 
     <sql id="Example_Where_Clause" >
@@ -96,7 +98,8 @@
         audit_opinion, lecturer_user_no, category_id1, category_id2,
         category_id3, course_name, course_logo, introduce_id, is_free,
         is_vip_free, is_only_vip_buy, course_original, course_discount,
-        course_svip_discount, course_assemble_discount, is_putaway, course_sort, count_buy, count_study, period_total
+        course_svip_discount, course_assemble_discount, is_putaway, course_sort,
+        count_buy, count_study, period_total, has_trainaid, course_short_introduce
     </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAuditExample">
         select
@@ -136,7 +139,10 @@
     <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit" >
         insert into course_audit
         (
-         id, gmt_create, gmt_modified, status_id, sort, audit_status, audit_opinion, lecturer_user_no, category_id1, category_id2, category_id3, course_name, course_logo, introduce_id, is_free, is_vip_free, is_only_vip_buy, course_original, course_discount, course_svip_discount, course_assemble_discount, is_putaway, course_sort, count_buy, count_study, period_total
+         id, gmt_create, gmt_modified, status_id, sort, audit_status, audit_opinion, lecturer_user_no,
+         category_id1, category_id2, category_id3, course_name, course_logo, introduce_id, is_free, is_vip_free,
+         is_only_vip_buy, course_original, course_discount, course_svip_discount, course_assemble_discount, is_putaway,
+         course_sort, count_buy, count_study, period_total, has_trainaid, course_short_introduce
         ) values (
             #{id,jdbcType=BIGINT},
             #{gmtCreate,jdbcType=TIMESTAMP},
@@ -164,6 +170,8 @@
             #{countBuy,jdbcType=INTEGER},
             #{countStudy,jdbcType=INTEGER},
             #{periodTotal,jdbcType=INTEGER},
+            #{hasTrainaid,jdbcType=TINYINT},
+            #{courseShortIntroduce,jdbcType=VARCHAR},
         )
     </insert>
     <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.CourseAudit" >
@@ -247,6 +255,12 @@
             <if test="periodTotal != null" >
                 period_total,
             </if>
+            <if test="hasTrainaid != null" >
+                has_trainaid,
+            </if>
+            <if test="courseShortIntroduce != null" >
+                course_short_introduce,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -326,6 +340,12 @@
             </if>
             <if test="periodTotal != null" >
                 #{periodTotal,jdbcType=INTEGER},
+            </if>
+            <if test="hasTrainaid != null" >
+                #{hasTrainaid,jdbcType=TINYINT},
+            </if>
+            <if test="courseShortIntroduce != null" >
+                #{courseShortIntroduce,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -416,6 +436,12 @@
             <if test="record.periodTotal != null" >
                 period_total = #{record.periodTotal,jdbcType=INTEGER},
             </if>
+            <if test="record.hasTrainaid != null" >
+                has_trainaid = #{record.hasTrainaid,jdbcType=TINYINT},
+            </if>
+            <if test="record.courseShortIntroduce != null" >
+                course_short_introduce = #{record.courseShortIntroduce,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null" >
             <include refid="Update_By_Example_Where_Clause" />
@@ -450,6 +476,8 @@
             count_buy = #{record.countBuy,jdbcType=INTEGER},
             count_study = #{record.countStudy,jdbcType=INTEGER},
             period_total = #{record.periodTotal,jdbcType=INTEGER},
+            has_trainaid = #{record.hasTrainaid,jdbcType=TINYINT},
+            course_short_introduce = #{record.courseShortIntroduce,jdbcType=VARCHAR},
         <if test="_parameter != null" >
             <include refid="Update_By_Example_Where_Clause" />
         </if>
@@ -532,6 +560,12 @@
                 <if test="periodTotal != null" >
                     period_total = #{periodTotal,jdbcType=INTEGER},
                 </if>
+                <if test="courseShortIntroduce != null" >
+                    has_trainaid = #{hasTrainaid,jdbcType=TINYINT},
+                </if>
+                <if test="courseShortIntroduce != null" >
+                    course_short_introduce = #{courseShortIntroduce,jdbcType=VARCHAR},
+                </if>
         </set>
         where
                 id = #{id,jdbcType=BIGINT}
@@ -564,6 +598,8 @@
                 count_buy = #{countBuy,jdbcType=INTEGER},
                 count_study = #{countStudy,jdbcType=INTEGER},
                 period_total = #{periodTotal,jdbcType=INTEGER},
+                has_trainaid = #{hasTrainaid,jdbcType=TINYINT},
+                course_short_introduce = #{courseShortIntroduce,jdbcType=VARCHAR},
         where
         id = #{id,jdbcType=BIGINT}
   </update>

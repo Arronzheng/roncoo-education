@@ -31,7 +31,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 讲师信息-审核
  *
- * @author wujing
+ *
  */
 @Component
 public class BossLecturerAuditBiz extends BaseBiz {
@@ -77,10 +77,10 @@ public class BossLecturerAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师审核
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public int audit(LecturerAuditQO qo) {
@@ -117,10 +117,10 @@ public class BossLecturerAuditBiz extends BaseBiz {
 
 	/**
 	 * 手机号码校验用户信息表是否存在
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public LecturerAuditVO checkUserAndLecturer(LecturerAuditQO qo) {
 		// 手机号码校验

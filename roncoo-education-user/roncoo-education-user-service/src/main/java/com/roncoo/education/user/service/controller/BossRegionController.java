@@ -13,16 +13,16 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 行政区域表 
+ * 行政区域表
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossRegionController extends BaseController implements BossRegion{
 
 	@Autowired
 	private BossRegionBiz biz;
-	
+
 	@Override
 	public Page<RegionVO> listForPage(@RequestBody RegionQO qo){
 		return biz.listForPage(qo);
@@ -33,19 +33,19 @@ public class BossRegionController extends BaseController implements BossRegion{
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody RegionQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public RegionVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);
 	}
-	
+
 }

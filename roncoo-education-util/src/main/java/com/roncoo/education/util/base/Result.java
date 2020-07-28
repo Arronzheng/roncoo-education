@@ -10,7 +10,7 @@ import com.roncoo.education.util.enums.ResultEnum;
 /**
  * 接口返回对象实体
  *
- * @author wujing
+ *
  * @param <T>
  */
 public final class Result<T extends Serializable> implements Serializable {

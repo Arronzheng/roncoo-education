@@ -17,7 +17,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 /**
  * 平台信息
  *
- * @author wujing
+ *
  */
 @Component
 public class BossPlatformBiz {

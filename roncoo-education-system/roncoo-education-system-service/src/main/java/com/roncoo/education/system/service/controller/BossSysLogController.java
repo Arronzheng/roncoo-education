@@ -12,16 +12,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 后台操作日志表 
- *
- * @author wujing
+ * 后台操作日志表
  */
 @RestController
 public class BossSysLogController extends BaseController implements BossSysLog{
 
 	@Autowired
 	private BossSysLogBiz biz;
-	
+
 	@Override
 	public Page<SysLogVO> listForPage(@RequestBody SysLogQO qo){
 		return biz.listForPage(qo);
@@ -32,19 +30,19 @@ public class BossSysLogController extends BaseController implements BossSysLog{
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@RequestBody Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody SysLogQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public SysLogVO getById(@RequestBody Long id){
 		return biz.getById(id);
 	}
-	
+
 }

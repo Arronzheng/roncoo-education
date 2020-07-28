@@ -17,9 +17,9 @@ public interface SysDao {
 
 	/**
 	 * 获得系统配置表信息
-	 * 
+	 *
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	Sys getSys();
 }

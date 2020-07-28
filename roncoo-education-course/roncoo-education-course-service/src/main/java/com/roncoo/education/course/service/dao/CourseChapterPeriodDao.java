@@ -21,7 +21,7 @@ public interface CourseChapterPeriodDao {
 
 	/**
 	 * 根据章节编号和状态查找可用的课时信息集合
-	 * 
+	 *
 	 * @author LHR
 	 * @param chapterId
 	 * @return
@@ -30,16 +30,16 @@ public interface CourseChapterPeriodDao {
 
 	/**
 	 * 根据课时编号查找课时信息集合
-	 * 
+	 *
 	 * @param videoNo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	CourseChapterPeriod getByVideoNo(Long videoNo);
 
 	/**
 	 * 根据视频编号查找课时信息
-	 * 
+	 *
 	 * @param videoNo
 	 * @return
 	 */

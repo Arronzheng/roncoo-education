@@ -11,8 +11,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 讲师提现日志表
- *
- * @author wujing
  */
 public interface BossLecturerProfit {
 

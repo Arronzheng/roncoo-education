@@ -2,6 +2,7 @@ package com.roncoo.education.course.service.api.auth;
 
 import com.roncoo.education.course.service.biz.ApiAssembleBiz;
 import com.roncoo.education.course.service.biz.auth.AuthApiAssembleBiz;
+import com.roncoo.education.course.service.common.bo.AssembleIngBO;
 import com.roncoo.education.course.service.common.bo.AssembleRecordBO;
 import com.roncoo.education.course.service.common.bo.AssembleViewBO;
 import com.roncoo.education.course.service.common.dto.AssembleViewDTO;
@@ -65,6 +66,17 @@ import org.springframework.web.bind.annotation.RestController;
     @RequestMapping(value = "/record", method = RequestMethod.POST)
     public Result<AuthAssembleViewDTO> record(@RequestBody AssembleRecordBO assembleRecordBO) {
         return biz.record(assembleRecordBO);
+    }
+
+    /**
+     * Assemble是否有正在拼团接口
+     * @param assembleIngBO
+     * @return
+     */
+    @ApiOperation(value = "是否有正在拼团接口", notes = "是否有正在拼团接口")
+    @RequestMapping(value = "/isAssemble", method = RequestMethod.POST)
+    public Result<Boolean> isAssemble(@RequestBody AssembleIngBO assembleIngBO) {
+        return biz.isAssemble(assembleIngBO);
     }
 
     }

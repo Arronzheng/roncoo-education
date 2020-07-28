@@ -13,9 +13,9 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 课程用户关联表 
+ * 课程用户关联表
  *
- * @author wujing
+ *
  */
 @Component
 public class BossCourseUserStudyBiz {
@@ -48,5 +48,5 @@ public class BossCourseUserStudyBiz {
 	    CourseUserStudy record = BeanUtil.copyProperties(qo, CourseUserStudy.class);
 		return dao.updateById(record);
 	}
-	
+
 }

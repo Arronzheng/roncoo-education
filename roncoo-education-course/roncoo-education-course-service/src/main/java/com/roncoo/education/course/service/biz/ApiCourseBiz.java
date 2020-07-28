@@ -1,9 +1,16 @@
 package com.roncoo.education.course.service.biz;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.alibaba.druid.util.Base64;
+import com.roncoo.education.course.service.common.bo.PicToBaseBO;
 import com.roncoo.education.course.service.common.dto.*;
 import com.roncoo.education.course.service.common.dto.auth.AuthAssembleCourseViewDTO;
 import com.roncoo.education.course.service.common.dto.auth.AuthCourseCommentDTO;
@@ -12,6 +19,7 @@ import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.user.common.bean.vo.UserExtVO;
 import com.roncoo.education.user.feign.IBossUserExt;
 import com.roncoo.education.util.enums.*;
+import com.roncoo.education.util.tools.ImgUtil;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -44,8 +52,6 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 
 /**
  * 课程信息
- *
- * @author wujing
  */
 @Component
 public class ApiCourseBiz {
@@ -169,7 +175,7 @@ public class ApiCourseBiz {
 	 *
 	 * @param courseInfoPageBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<Page<CourseInfoPageDTO>> list(CourseInfoPageBO courseInfoPageBO) {
 		CourseAuditExample example = new CourseAuditExample();
@@ -204,7 +210,7 @@ public class ApiCourseBiz {
 	 * 课程搜索列表接口
 	 *
 	 * @param bo
-	 * @author wuyun
+	 *
 	 */
 	public Result<Page<CourseInfoSearchPageDTO>> searchList(CourseInfoSearchBO bo) {
 		if (StringUtils.isEmpty(bo.getOrgNo())) {
@@ -247,4 +253,17 @@ public class ApiCourseBiz {
 		org.springframework.data.domain.Page<EsCourse> page = elasticsearchTemplate.queryForPage(nsb.build(), EsCourse.class, resultMapperExt);
 		return Result.success(EsPageUtil.transform(page, CourseInfoSearchPageDTO.class));
 	}
+
+    public Result<PicToBaseDTO> toBase(PicToBaseBO picToBaseBO) {
+		PicToBaseDTO picToBaseDTO = new PicToBaseDTO();
+		if (!StringUtils.isEmpty(picToBaseBO.getImage())) {
+			String image = ImgUtil.getImgBase(picToBaseBO.getImage());
+			picToBaseDTO.setImage(image);
+		}
+		if (!StringUtils.isEmpty(picToBaseBO.getHeadImg())) {
+			String headImg = ImgUtil.getImgBase(picToBaseBO.getHeadImg());
+			picToBaseDTO.setHeadImg(headImg);
+		}
+		return Result.success(picToBaseDTO);
+    }
 }

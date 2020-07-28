@@ -9,14 +9,14 @@ import lombok.experimental.Accessors;
 /**
  * 课程视频信息
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)
 public class CourseVideoQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

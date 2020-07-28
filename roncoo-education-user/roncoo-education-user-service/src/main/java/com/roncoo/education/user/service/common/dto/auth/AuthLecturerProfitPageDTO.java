@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 /**
  * 讲师提现日志表
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)

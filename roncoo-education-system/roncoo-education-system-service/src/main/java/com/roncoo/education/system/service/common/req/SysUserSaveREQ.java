@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 后台用户信息-添加
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -36,5 +34,5 @@ public class SysUserSaveREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "备注", required = false)
 	private String remark;
-	
+
 }

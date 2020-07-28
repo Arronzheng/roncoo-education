@@ -69,7 +69,10 @@ public class CouponUserDaoImpl implements CouponUserDao {
     @Override
     public int getMyCouponCount(AuthCouponUserListBO authCouponUserListBO) {
         CouponUserExample example = new CouponUserExample();
-        example.createCriteria().andUidEqualTo(authCouponUserListBO.getUserNo());
+        example.createCriteria()
+                .andUidEqualTo(authCouponUserListBO.getUserNo())
+                .andStatusEqualTo(0)
+                .andIsFailEqualTo(1);
         return this.couponUserMapper.countByExample(example);
     }
 }

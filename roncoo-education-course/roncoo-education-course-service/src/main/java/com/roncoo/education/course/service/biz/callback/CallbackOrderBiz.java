@@ -28,8 +28,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 订单信息表
- *
- * @author wujing123
  */
 @Component
 public class CallbackOrderBiz extends BaseBiz {
@@ -49,9 +47,9 @@ public class CallbackOrderBiz extends BaseBiz {
 	/**
 	 * 订单异步通知接口
 	 *
-	 * @param orderInfoPayBO
+	 * @param
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<String> payNotify(OrderInfoPayNotifyBO notifyBO) {
@@ -103,7 +101,7 @@ public class CallbackOrderBiz extends BaseBiz {
 	 * @param orderInfo
 	 * @param orderPay
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private Result<String> course(OrderInfo orderInfo, OrderPay orderPay) {
 		// 根据课程No查找课程信息
@@ -153,7 +151,7 @@ public class CallbackOrderBiz extends BaseBiz {
 	 * @param lecturerExtVO
 	 * @param lecturerProportion
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private OrderInfo countProfit(OrderInfo orderInfo, LecturerExtVO lecturerExtVO, BigDecimal lecturerProportion) {
 		// 讲师收入 = 订单价格x讲师分成比例
@@ -172,7 +170,7 @@ public class CallbackOrderBiz extends BaseBiz {
 	 *
 	 * @param orderInfo
 	 * @param lecturerAccoutVO
-	 * @author wuyun
+	 *
 	 */
 	private void updateLecturerExtVO(OrderInfo orderInfo, LecturerExtVO lecturerExtVO) {
 		LecturerExtQO lecturerExtQO = new LecturerExtQO();

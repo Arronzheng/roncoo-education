@@ -13,9 +13,7 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 课时信息 
- *
- * @author wujing
+ * 课时信息
  */
 @Component
 public class BossCourseChapterPeriodBiz {
@@ -51,14 +49,14 @@ public class BossCourseChapterPeriodBiz {
 
 	/**
 	 * 根据视频编号查询课时正式表信息
-	 * 
+	 *
 	 * @param videoNo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public CourseChapterPeriodVO getByVideoNo(Long videoNo) {
 		CourseChapterPeriod record = dao.getByVideoNo(videoNo);
 		return BeanUtil.copyProperties(record, CourseChapterPeriodVO.class);
 	}
-	
+
 }

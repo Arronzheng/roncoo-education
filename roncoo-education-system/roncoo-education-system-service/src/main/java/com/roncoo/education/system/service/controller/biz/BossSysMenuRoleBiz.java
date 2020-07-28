@@ -15,8 +15,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 菜单角色关联表
- *
- * @author wujing
  */
 @Component
 public class BossSysMenuRoleBiz {

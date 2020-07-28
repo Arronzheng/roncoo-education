@@ -17,7 +17,7 @@ public interface OrderPayDao {
 
     /**
 	 * 根据订单编号查找订单支付信息
-	 * 
+	 *
 	 * @param orderNo
 	 * @return
 	 */
@@ -25,10 +25,10 @@ public interface OrderPayDao {
 
 	/**
 	 * 根据流水编号查找订单支付信息
-	 * 
+	 *
 	 * @param serialNumber
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	OrderPay getBySerialNumber(long serialNumber);
 

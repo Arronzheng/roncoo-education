@@ -12,16 +12,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 角色信息 
- *
- * @author wujing
+ * 角色信息
  */
 @RestController
 public class BossSysRoleController extends BaseController implements BossSysRole{
 
 	@Autowired
 	private BossSysRoleBiz biz;
-	
+
 	@Override
 	public Page<SysRoleVO> listForPage(@RequestBody SysRoleQO qo){
 		return biz.listForPage(qo);
@@ -32,19 +30,19 @@ public class BossSysRoleController extends BaseController implements BossSysRole
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@RequestBody Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody SysRoleQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public SysRoleVO getById(@RequestBody Long id){
 		return biz.getById(id);
 	}
-	
+
 }

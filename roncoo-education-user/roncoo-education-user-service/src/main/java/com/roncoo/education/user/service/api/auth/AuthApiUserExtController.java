@@ -23,8 +23,6 @@ import java.util.List;
 
 /**
  * 用户教育信息
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/user/auth/user/ext")

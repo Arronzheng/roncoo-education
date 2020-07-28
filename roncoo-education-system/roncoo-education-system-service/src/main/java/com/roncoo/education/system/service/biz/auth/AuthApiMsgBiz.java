@@ -14,7 +14,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 /**
  * 站内信息表
  *
- * @author wuyun
+ *
  */
 @Component
 public class AuthApiMsgBiz {

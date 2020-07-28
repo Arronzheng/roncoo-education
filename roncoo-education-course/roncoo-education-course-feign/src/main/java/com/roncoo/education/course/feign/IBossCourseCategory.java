@@ -5,9 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import com.roncoo.education.course.common.interfaces.BossCourseCategory;
 
 /**
- * 课程分类 
- *
- * @author wujing
+ * 课程分类
  */
 @FeignClient(value = "roncoo-education-course-service")
 public interface IBossCourseCategory extends BossCourseCategory {

@@ -9,14 +9,14 @@ import lombok.experimental.Accessors;
 /**
  * 站点导航
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)
 public class WebsiteNavQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

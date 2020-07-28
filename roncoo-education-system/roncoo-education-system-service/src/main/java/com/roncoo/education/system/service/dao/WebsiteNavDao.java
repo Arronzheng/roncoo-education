@@ -19,19 +19,19 @@ public interface WebsiteNavDao {
 
 	/**
 	 * 根据父类ID查找站点导航信息
-	 * 
+	 *
 	 * @param parentId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	List<WebsiteNav> listByParentId(Long id);
 
 	/**
 	 * 根据状态和父ID信息查找站点导航信息
-	 * 
+	 *
 	 * @param statusId
 	 * @param parentId
-	 * @author wuyun
+	 *
 	 */
 	List<WebsiteNav> listByStatusIdAndParentId(Integer statusId, Long parentId);
 }

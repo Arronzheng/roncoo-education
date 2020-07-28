@@ -6,8 +6,6 @@ import com.roncoo.education.user.common.interfaces.BossLecturer;
 
 /**
  * 讲师信息
- *
- * @author wujing
  */
 @FeignClient(value = "roncoo-education-user-service")
 public interface IBossLecturer extends BossLecturer {

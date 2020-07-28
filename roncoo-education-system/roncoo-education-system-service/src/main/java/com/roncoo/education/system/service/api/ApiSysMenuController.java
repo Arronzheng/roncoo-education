@@ -8,8 +8,6 @@ import com.roncoo.education.util.base.BaseController;
 
 /**
  * 菜单信息
- *
- * @author wujing
  */
 @RestController
 public class ApiSysMenuController extends BaseController {

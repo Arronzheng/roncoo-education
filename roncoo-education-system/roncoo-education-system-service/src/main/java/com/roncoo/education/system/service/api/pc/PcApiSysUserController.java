@@ -23,8 +23,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 后台用户信息
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/system/pc/sys/user")

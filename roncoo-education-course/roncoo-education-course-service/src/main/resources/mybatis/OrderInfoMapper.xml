@@ -30,6 +30,9 @@
     <result column="remark_cus" property="remarkCus" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="coupon_user_id" property="couponUserId" jdbcType="BIGINT" />
+    <result column="delivery_name" property="deliveryName" jdbcType="VARCHAR" />
+    <result column="delivery_id" property="deliveryId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -93,7 +96,7 @@
     id, gmt_create, gmt_modified, lecturer_user_no, lecturer_name, user_no, mobile, register_time,
     order_no, course_id, course_name, price_payable, price_discount, price_paid, price_paid_source, platform_profit,
     lecturer_profit, trade_type, pay_type, channel_type, order_status, order_type, is_show_lecturer,
-    is_show_user, shipping_address_id, remark_cus, remark, pay_time
+    is_show_user, shipping_address_id, remark_cus, remark, pay_time, coupon_user_id, delivery_name, delivery_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample" >
     select
@@ -130,14 +133,10 @@
   </delete>
   <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo" >
     insert into order_info (id, gmt_create, gmt_modified,
-      lecturer_user_no, lecturer_name, user_no,
-      mobile, register_time, order_no,
-      course_id, course_name, price_payable,
-      price_discount, price_paid, price_paid_source, platform_profit,
-      lecturer_profit, trade_type, pay_type,
-      channel_type, order_status, order_type, is_show_lecturer,
-      is_show_user, shipping_address_id, remark_cus, remark,
-      pay_time)
+      lecturer_user_no, lecturer_name, user_no, mobile, register_time, order_no,
+      course_id, course_name, price_payable, price_discount, price_paid, price_paid_source, platform_profit,
+      lecturer_profit, trade_type, pay_type, channel_type, order_status, order_type, is_show_lecturer,
+      is_show_user, shipping_address_id, remark_cus, remark, pay_time, coupon_user_id, delivery_name, delivery_id)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP},
       #{lecturerUserNo,jdbcType=BIGINT}, #{lecturerName,jdbcType=VARCHAR}, #{userNo,jdbcType=BIGINT},
       #{mobile,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=BIGINT},
@@ -145,8 +144,8 @@
       #{priceDiscount,jdbcType=DECIMAL}, #{pricePaid,jdbcType=DECIMAL}, #{pricePaidSource,jdbcType=TINYINT} #{platformProfit,jdbcType=DECIMAL},
       #{lecturerProfit,jdbcType=DECIMAL}, #{tradeType,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT},
       #{channelType,jdbcType=TINYINT}, #{orderStatus,jdbcType=TINYINT}, #{orderType,jdbcType=TINYINT}, #{isShowLecturer,jdbcType=TINYINT},
-      #{isShowUser,jdbcType=TINYINT}, #{{shippingAddressId,jdbcType=BIGINT}} #{remarkCus,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-      #{payTime,jdbcType=TIMESTAMP})
+      #{isShowUser,jdbcType=TINYINT}, #{shippingAddressId,jdbcType=BIGINT}, #{remarkCus,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+      #{payTime,jdbcType=TIMESTAMP}, #{couponUserId,jdbcType=BIGINT}, #{deliveryName,jdbcType=VARCHAR}, #{deliveryId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfo" >
     insert into order_info
@@ -235,6 +234,15 @@
       <if test="payTime != null" >
         pay_time,
       </if>
+      <if test="couponUserId != null" >
+        coupon_user_id,
+      </if>
+      <if test="deliveryName != null" >
+        delivery_name,
+      </if>
+      <if test="deliveryId != null" >
+        delivery_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -320,6 +328,15 @@
       </if>
       <if test="payTime != null" >
         #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponUserId != null" >
+        #{couponUserId,jdbcType=BIGINT},
+      </if>
+      <if test="deliveryName != null" >
+        #{deliveryName,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryId != null" >
+        #{deliveryId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -416,6 +433,15 @@
       <if test="record.payTime != null" >
         pay_time = #{record.payTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.couponUserId != null" >
+        coupon_user_id = #{record.couponUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.deliveryName != null" >
+        delivery_name = #{record.deliveryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliveryId != null" >
+        delivery_id = #{record.deliveryId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -450,7 +476,10 @@
       shipping_address_id = #{record.shippingAddressId,jdbcType=BIGINT},
       remark_cus = #{record.remarkCus,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
-      pay_time = #{record.payTime,jdbcType=TIMESTAMP}
+      pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      coupon_user_id = #{record.couponUserId,jdbcType=BIGINT},
+      delivery_name = #{record.deliveryName,jdbcType=VARCHAR},
+      delivery_id = #{record.deliveryId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -539,6 +568,15 @@
       <if test="payTime != null" >
         pay_time = #{payTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="couponUserId != null" >
+        coupon_user_id = #{couponUserId,jdbcType=BIGINT},
+      </if>
+      <if test="deliveryName != null" >
+        delivery_name = #{deliveryName,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryId != null" >
+        delivery_id = #{deliveryId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -570,7 +608,10 @@
       shipping_address_id = #{shippingAddressId,jdbcType=BIGINT},
       remark_cus = #{remarkCus,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      pay_time = #{payTime,jdbcType=TIMESTAMP}
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      coupon_user_id = #{couponUserId,jdbcType=BIGINT},
+      delivery_name = #{deliveryName,jdbcType=VARCHAR},
+      delivery_id = #{deliveryId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

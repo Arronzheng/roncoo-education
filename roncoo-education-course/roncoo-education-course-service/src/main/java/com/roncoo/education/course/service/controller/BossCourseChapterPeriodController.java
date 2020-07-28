@@ -14,8 +14,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课时信息
- *
- * @author wujing
  */
 @RestController
 public class BossCourseChapterPeriodController extends BaseController implements BossCourseChapterPeriod {

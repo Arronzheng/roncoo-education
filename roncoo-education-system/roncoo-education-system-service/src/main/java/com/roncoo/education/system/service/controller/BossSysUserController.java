@@ -12,16 +12,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 后台用户信息 
- *
- * @author wujing
+ * 后台用户信息
  */
 @RestController
 public class BossSysUserController extends BaseController implements BossSysUser{
 
 	@Autowired
 	private BossSysUserBiz biz;
-	
+
 	@Override
 	public Page<SysUserVO> listForPage(@RequestBody SysUserQO qo){
 		return biz.listForPage(qo);
@@ -32,19 +30,19 @@ public class BossSysUserController extends BaseController implements BossSysUser
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@RequestBody Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody SysUserQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public SysUserVO getById(@RequestBody Long id){
 		return biz.getById(id);
 	}
-	
+
 }

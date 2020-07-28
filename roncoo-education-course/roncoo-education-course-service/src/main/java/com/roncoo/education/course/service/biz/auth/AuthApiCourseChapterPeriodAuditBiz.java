@@ -41,8 +41,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 课时信息-审核
- *
- * @author wujing
  */
 @Component
 public class AuthApiCourseChapterPeriodAuditBiz extends BaseBiz {
@@ -58,10 +56,10 @@ public class AuthApiCourseChapterPeriodAuditBiz extends BaseBiz {
 
 	/**
 	 * 课时列出接口
-	 * 
+	 *
 	 * @param authCourseChapterPeriodAuditBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthPeriodAuditListDTO> listByChapterId(AuthCourseChapterPeriodAuditBO authCourseChapterPeriodAuditBO) {
 		if (authCourseChapterPeriodAuditBO.getChapterId() == null) {
@@ -97,10 +95,10 @@ public class AuthApiCourseChapterPeriodAuditBiz extends BaseBiz {
 
 	/**
 	 * 课时查看接口
-	 * 
+	 *
 	 * @param authCourseChapterPeriodAuditViewBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthPeriodAuditViewDTO> view(AuthCourseChapterPeriodAuditViewBO authCourseChapterPeriodAuditViewBO) {
 
@@ -117,10 +115,10 @@ public class AuthApiCourseChapterPeriodAuditBiz extends BaseBiz {
 
 	/**
 	 * 课时删除接口
-	 * 
+	 *
 	 * @param authCourseChapterPeriodAuditDeleteBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> delete(AuthCourseChapterPeriodAuditDeleteBO authCourseChapterPeriodAuditDeleteBO) {
@@ -163,10 +161,10 @@ public class AuthApiCourseChapterPeriodAuditBiz extends BaseBiz {
 
 	/**
 	 * 课时添加接口
-	 * 
+	 *
 	 * @param bo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<AuthCourseChapterPeriodAuditSaveDTO> save(AuthCourseChapterPeriodAuditSaveBO authCourseChapterPeriodAuditSaveBO) {
@@ -219,10 +217,10 @@ public class AuthApiCourseChapterPeriodAuditBiz extends BaseBiz {
 
 	/**
 	 * 课时更新接口
-	 * 
+	 *
 	 * @param bo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> update(AuthCourseChapterPeriodAuditUpdateBO authCourseChapterPeriodAuditUpdateBO) {
@@ -277,10 +275,10 @@ public class AuthApiCourseChapterPeriodAuditBiz extends BaseBiz {
 
 	/**
 	 * 更新课时排序接口
-	 * 
+	 *
 	 * @param bo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> sort(AuthCourseChapterPeriodAuditSortBO authCourseChapterPeriodAuditSortBO) {

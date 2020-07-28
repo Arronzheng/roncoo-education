@@ -19,10 +19,10 @@ public interface WebsiteLinkDao {
 
 	/**
 	 * 根据状态查询友情链接集合
-	 * 
+	 *
 	 * @param statusId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	List<WebsiteLink> listByStatusId(Integer statusId);
 }

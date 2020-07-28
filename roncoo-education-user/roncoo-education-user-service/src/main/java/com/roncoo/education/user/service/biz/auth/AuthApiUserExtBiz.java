@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * 用户教育信息
  *
- * @author wujing
+ *
  */
 @Component
 public class AuthApiUserExtBiz extends BaseBiz {
@@ -60,7 +60,7 @@ public class AuthApiUserExtBiz extends BaseBiz {
 	 * 用户信息查看接口
 	 *
 	 * @param authUserExtViewBO
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthUserExtDTO> view(AuthUserExtViewBO authUserExtViewBO) {
 		if (ObjectUtil.isNull(authUserExtViewBO)) {
@@ -89,7 +89,7 @@ public class AuthApiUserExtBiz extends BaseBiz {
 	 * 用户信息更新接口
 	 *
 	 * @param authUserExtBO
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthUserExtDTO> update(AuthUserExtBO authUserExtBO) {
 		if (authUserExtBO.getId() == null) {

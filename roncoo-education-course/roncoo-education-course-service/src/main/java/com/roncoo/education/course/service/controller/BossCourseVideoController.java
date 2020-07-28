@@ -16,7 +16,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 课程视频信息
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossCourseVideoController extends BaseController implements BossCourseVideo {

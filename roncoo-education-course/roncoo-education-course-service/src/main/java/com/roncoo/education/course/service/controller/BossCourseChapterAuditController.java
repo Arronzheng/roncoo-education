@@ -13,16 +13,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 章节信息-审核 
- *
- * @author wujing
+ * 章节信息-审核
  */
 @RestController
 public class BossCourseChapterAuditController extends BaseController implements BossCourseChapterAudit{
 
 	@Autowired
 	private BossCourseChapterAuditBiz biz;
-	
+
 	@Override
 	public Page<CourseChapterAuditVO> listForPage(@RequestBody CourseChapterAuditQO qo){
 		return biz.listForPage(qo);
@@ -33,19 +31,19 @@ public class BossCourseChapterAuditController extends BaseController implements 
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody CourseChapterAuditQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public CourseChapterAuditVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);
 	}
-	
+
 }

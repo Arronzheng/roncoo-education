@@ -26,6 +26,24 @@ public class IpUtil {
         return Optional.of(ipByNi.get(0));
     }
 
+    public static String getLocalIp4AddressForString(){
+        List<Inet4Address> ipByNi = new ArrayList<>();
+        try {
+            ipByNi = getLocalIp4AddressFromNetworkInterface();
+            if (ipByNi.isEmpty() || ipByNi.size() > 1) {
+                final Optional<Inet4Address> ipBySocketOpt = getIpBySocket();
+                if (ipBySocketOpt.isPresent()) {
+                    return ipBySocketOpt.toString();
+                } else {
+                    return ipByNi.isEmpty() ? "" : ipByNi.get(0).getHostAddress();
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return ipByNi.get(0).getHostAddress();
+    }
+
     private static Optional<Inet4Address> getIpBySocket() throws SocketException {
         try (final DatagramSocket socket = new DatagramSocket()) {
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);

@@ -64,9 +64,9 @@ public class PcApiAdvBiz {
 	}
 
 	/**
-	 * 
+	 *
 	 * 添加轮播广告
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -83,7 +83,7 @@ public class PcApiAdvBiz {
 
 	/**
 	 * 更新广告信息
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -121,7 +121,7 @@ public class PcApiAdvBiz {
 
 	/**
 	 * 删除广告信息
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -133,17 +133,19 @@ public class PcApiAdvBiz {
 		if (ObjectUtil.isNull(adv)) {
 			return Result.error("找不到广告信息");
 		}
-		SysVO sys = bossSys.getSys();
-		if(sys.getFileType().equals(FileTypeEnum.ALIYUN.getCode())){
-			AliyunUtil.delete(adv.getAdvImg(), BeanUtil.copyProperties(sys, Aliyun.class));
-		}else if(sys.getFileType().equals(FileTypeEnum.QINIU.getCode())){
-			try {
-				QiniuUtil.deletePic(adv.getAdvImg(), BeanUtil.copyProperties(sys, Qiniu.class));
-			} catch (QiniuException e) {
-				return Result.error(e.code(),e.response.toString());
+		if (!StringUtils.isEmpty(adv.getAdvImg())) {
+			SysVO sys = bossSys.getSys();
+			if(sys.getFileType().equals(FileTypeEnum.ALIYUN.getCode())){
+				AliyunUtil.delete(adv.getAdvImg(), BeanUtil.copyProperties(sys, Aliyun.class));
+			}else if(sys.getFileType().equals(FileTypeEnum.QINIU.getCode())){
+				try {
+					QiniuUtil.deletePic(adv.getAdvImg(), BeanUtil.copyProperties(sys, Qiniu.class));
+				} catch (QiniuException e) {
+					return Result.error(e.code(),e.response.toString());
+				}
+			}else{
+				TencentUtil.deleteFile(adv.getAdvImg(), BeanUtil.copyProperties(sys, Tencent.class));
 			}
-		}else{
-			TencentUtil.deleteFile(adv.getAdvImg(), BeanUtil.copyProperties(sys, Tencent.class));
 		}
 		int results = dao.deleteById(req.getId());
 		if (results > 0) {
@@ -154,7 +156,7 @@ public class PcApiAdvBiz {
 
 	/**
 	 * 广告信息查看
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */

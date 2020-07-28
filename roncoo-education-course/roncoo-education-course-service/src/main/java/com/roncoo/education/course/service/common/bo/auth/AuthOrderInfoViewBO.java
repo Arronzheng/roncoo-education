@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * 订单信息表
  * </p>
  *
- * @author YZJ
+ *
  */
 @Data
 @Accessors(chain = true)

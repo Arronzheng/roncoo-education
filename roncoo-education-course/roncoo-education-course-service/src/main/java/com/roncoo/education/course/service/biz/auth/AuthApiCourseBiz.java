@@ -40,8 +40,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 课程信息
- *
- * @author wujing
  */
 @Component
 public class AuthApiCourseBiz extends BaseBiz {
@@ -163,6 +161,11 @@ public class AuthApiCourseBiz extends BaseBiz {
 		if (!bargainCourses.isEmpty()) {
 			dto.setBargain(true);
 			dto.setAuthBargainCourseViewDTO(authBargainCourseViewDTO.get(0));
+			if (authBargainCourseViewDTO.get(0).getStock() > 0) {
+				dto.setHasStock(true);
+			} else {
+				dto.setHasStock(false);
+			}
 		} else {
 			dto.setBargain(false);
 		}

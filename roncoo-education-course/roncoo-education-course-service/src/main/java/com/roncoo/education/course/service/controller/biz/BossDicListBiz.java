@@ -14,8 +14,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 数据字典明细表
- *
- * @author wujing
  */
 @Component
 public class BossDicListBiz {

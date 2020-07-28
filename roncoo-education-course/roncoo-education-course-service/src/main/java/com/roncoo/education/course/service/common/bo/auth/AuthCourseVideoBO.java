@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 课程视频信息
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)
@@ -22,5 +22,5 @@ public class AuthCourseVideoBO implements Serializable {
      */
     @ApiModelProperty(value = "章节ID", required = true)
     private Long chapterId;
-    
+
 }

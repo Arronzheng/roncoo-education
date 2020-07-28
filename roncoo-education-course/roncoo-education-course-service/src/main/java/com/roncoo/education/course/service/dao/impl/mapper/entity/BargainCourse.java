@@ -38,6 +38,10 @@ public class BargainCourse implements Serializable {
         private String rule;
         private Integer look;
         private Integer share;
+        private String firstBargainMaxRate;
+        private String firstBargainMinRate;
+        private String bargainMaxRate;
+        private String bargainMinRate;
 
         public Long getId() {
             return id;
@@ -248,6 +252,38 @@ public class BargainCourse implements Serializable {
 
         public void setShare(Integer share) {
             this.share = share;
+        }
+
+        public String getFirstBargainMaxRate() {
+            return firstBargainMaxRate;
+        }
+
+        public void setFirstBargainMaxRate(String firstBargainMaxRate) {
+            this.firstBargainMaxRate = firstBargainMaxRate;
+        }
+
+        public String getFirstBargainMinRate() {
+            return firstBargainMinRate;
+        }
+
+        public void setFirstBargainMinRate(String firstBargainMinRate) {
+            this.firstBargainMinRate = firstBargainMinRate;
+        }
+
+        public String getBargainMaxRate() {
+            return bargainMaxRate;
+        }
+
+        public void setBargainMaxRate(String bargainMaxRate) {
+            this.bargainMaxRate = bargainMaxRate;
+        }
+
+        public String getBargainMinRate() {
+            return bargainMinRate;
+        }
+
+        public void setBargainMinRate(String bargainMinRate) {
+            this.bargainMinRate = bargainMinRate;
         }
 
         @Override

@@ -13,8 +13,8 @@ import com.xiaoleilu.hutool.io.FileUtil;
 
 /**
  * 定时任务-视频处理
- * 
- * @author wuyun
+ *
+ *
  */
 @Component
 public class VideoCrontab extends BaseController {
@@ -41,28 +41,29 @@ public class VideoCrontab extends BaseController {
 
 		int videoSum = 0;
 
-		File file = new File(SystemUtil.VIDEO_STORAGE_PATH);
+//		File file = new File(SystemUtil.VIDEO_STORAGE_PATH);//Windows系统
+		File file = new File(SystemUtil.PERIOD_VIDEO_PATH);//Linux系统
 		if (file.isDirectory()) {// isDirectory是否文件夹
 			File[] files = file.listFiles();// listFiles是获取该目录下所有文件和目录的绝对路径
 			for (File targetFile : files) {
-				
+
 				if (targetFile.isFile() && targetFile.exists()) {
 					if (FileUtil.newerThan(targetFile, (System.currentTimeMillis() - 7200000))) {// 上传两个小时内
-						
+
 						try {
 							bossCourseVideo.handleScheduledTasks(targetFile);
 							videoSum = videoSum + 1;
 						} catch (Exception e) {
 							logger.error("视频定时任务处理失败", e);
 						}
-						
+
 					}
 				}
 			}
 		}
 
 		VideoCrontab.taskFlag = false;
-		
+
 		logger.warn("视频处理-定时任务完成，处理视频数={}", videoSum);
 	}
 

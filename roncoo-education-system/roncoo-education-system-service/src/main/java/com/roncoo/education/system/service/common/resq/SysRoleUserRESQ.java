@@ -11,8 +11,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 角色用户关联表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -26,7 +24,7 @@ public class SysRoleUserRESQ implements Serializable {
 	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 	/**
-	 * 
+	 *
 	 * 状态(1:正常，0:禁用)
 	 */
 	@ApiModelProperty(value = "状态(1:正常，0:禁用)")

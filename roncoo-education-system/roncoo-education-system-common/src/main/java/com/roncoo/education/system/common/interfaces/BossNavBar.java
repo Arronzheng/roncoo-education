@@ -12,7 +12,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 头部导航
  *
- * @author wuyun
+ *
  */
 public interface BossNavBar {
 

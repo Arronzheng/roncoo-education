@@ -24,8 +24,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 课程信息-审核
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/course/auth/course/audit")
@@ -81,8 +79,8 @@ public class AuthApiCourseAuditController extends BaseController {
 
 	/**
 	 * 讲师课程信息删除接口
-	 * 
-	 * @author wuyun
+	 *
+	 *
 	 */
 	@ApiOperation(value = "删除接口", notes = "讲师课程信息删除接口")
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)

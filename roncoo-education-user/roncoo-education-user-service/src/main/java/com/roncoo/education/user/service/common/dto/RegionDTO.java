@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 /**
  * 行政区域表
  *
- * @author wujing
+ *
  */
 @Data
 @Accessors(chain = true)

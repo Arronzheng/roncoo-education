@@ -5,8 +5,6 @@ import lombok.Getter;
 
 /**
  * 缓存前缀
- *
- * @author wujing
  */
 @Getter
 @AllArgsConstructor

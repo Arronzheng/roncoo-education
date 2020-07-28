@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 用ThreadLocal来存储Session,以便实现Session any where.
  *
- * @author wujing
+ *
  */
 public class ThreadLocalUtil {
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());

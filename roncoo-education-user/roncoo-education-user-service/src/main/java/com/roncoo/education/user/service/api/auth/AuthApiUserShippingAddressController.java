@@ -66,4 +66,13 @@ public class AuthApiUserShippingAddressController extends BaseController {
         return biz.delete(authUserShippingAddressDelBO);
     }
 
+    /**
+     * 获取默认收货地址接口
+     */
+    @ApiOperation(value = "获取默认收货地址接口", notes = "获取默认收货地址接口")
+    @RequestMapping(value = "/defaultAddress", method =  RequestMethod.POST)
+    public Result<AuthUserShippingAddressDTO> defaultAddress(@RequestBody AuthUserShippingAddressdefaultBO authUserShippingAddressdefaultBO){
+        return biz.defaultAddress(authUserShippingAddressdefaultBO);
+    }
+
 }

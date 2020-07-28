@@ -42,6 +42,9 @@ public class BargainUserViewRESQ implements Serializable {
         @ApiModelProperty(value = "参与时间")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private Date addTime;
+        @ApiModelProperty(value = "地址id")
+        @JsonSerialize(using = ToStringSerializer.class)
+        private Long addressId;
         @ApiModelProperty(value = "是否取消")
         private Integer isDel;
 }

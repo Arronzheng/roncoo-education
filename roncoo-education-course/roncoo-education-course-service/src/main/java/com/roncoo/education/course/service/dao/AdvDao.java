@@ -23,7 +23,7 @@ public interface AdvDao {
 	 *
 	 * @param platShow
 	 * @param statusId
-	 * @author wuyun
+	 *
 	 */
 	List<Adv> listByPlatShowAndStatusIdAndBeginTimeAndEndTime(Integer platShow, Integer statusId, Date beginTime, Date endTime);
 }

@@ -1,6 +1,7 @@
 
 package com.roncoo.education.course.service.dao.impl;
 
+import com.roncoo.education.course.service.common.bo.AssembleIngBO;
 import com.roncoo.education.course.service.dao.AssembleDao;
 import com.roncoo.education.course.service.dao.impl.mapper.AssembleMapper;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.Assemble;
@@ -9,9 +10,11 @@ import com.roncoo.education.course.service.dao.impl.mapper.entity.AssembleExampl
 import com.roncoo.education.util.base.Page;
 import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.IdWorker;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,7 +73,7 @@ public class AssembleDaoImpl implements AssembleDao {
     public List<Assemble> getByAssembleId(Long id) {
         AssembleExample example = new AssembleExample();
         AssembleExample.Criteria c = example.createCriteria();
-        c.andAssembleIdEqualTo(id);
+        c.andAssembleIdEqualTo(id).andStatusEqualTo(1);
         return this.assembleMapper.selectByExample(example);
     }
 
@@ -78,7 +81,7 @@ public class AssembleDaoImpl implements AssembleDao {
     public List<Assemble> getByCid(Long id, Long UserNo) {
         AssembleExample example = new AssembleExample();
         AssembleExample.Criteria c = example.createCriteria();
-        c.andCidEqualTo(id).andStatusEqualTo(1).andIsAsmerEqualTo(1).andUidNotEqualTo(UserNo);
+        c.andCidEqualTo(id).andStatusEqualTo(1).andIsAsmerEqualTo(1);
         return this.assembleMapper.selectByExample(example);
     }
 
@@ -88,5 +91,34 @@ public class AssembleDaoImpl implements AssembleDao {
         AssembleExample.Criteria c = example.createCriteria();
         c.andUidEqualTo(userNo);
         return this.assembleMapper.selectByExample(example);
+    }
+
+    @Override
+    public Assemble getOrderId(Long orderNo) {
+        AssembleExample example = new AssembleExample();
+        AssembleExample.Criteria c = example.createCriteria();
+        c.andOrderIdEqualTo(orderNo);
+        List<Assemble> assembleList = this.assembleMapper.selectByExample(example);
+        if (CollectionUtil.isNotEmpty(assembleList)) {
+            return assembleList.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Assemble getByUserNoAndPidAndStatus(AssembleIngBO assembleIngBO) {
+        AssembleExample example = new AssembleExample();
+        AssembleExample.Criteria c = example.createCriteria();
+        List<Integer> status = new ArrayList<>();
+        status.add(1);
+        status.add(4);
+        c.andUidEqualTo(assembleIngBO.getUserNo()).andPidEqualTo(assembleIngBO.getPid())
+                .andStatusIn(status);
+        example.setOrderByClause("add_time desc");
+        List<Assemble> assembleList = this.assembleMapper.selectByExample(example);
+        if (CollectionUtil.isNotEmpty(assembleList)) {
+            return assembleList.get(0);
+        }
+        return null;
     }
 }

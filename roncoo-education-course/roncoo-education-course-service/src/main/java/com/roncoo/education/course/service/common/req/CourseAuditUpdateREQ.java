@@ -9,8 +9,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息-审核-更新
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -98,5 +96,15 @@ public class CourseAuditUpdateREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "课程介绍", required = false)
 	private String introduce;
+	/**
+	 * 是否有教具（1没有，2有）
+	 */
+	@ApiModelProperty(value = "是否有教具（1没有，2有）")
+	private Integer hasTrainaid;
+	/**
+	 * 课程简介
+	 */
+	@ApiModelProperty(value = "课程简介")
+	private String courseShortIntroduce;
 
 }

@@ -47,6 +47,10 @@ public class BargainUserSaveREQ implements Serializable {
         @ApiModelProperty(value = "参与时间")
         private Date addTime;
 
+        @ApiModelProperty(value = "地址id")
+        @JsonSerialize(using = ToStringSerializer.class)
+        private Long addressId;
+
         @ApiModelProperty(value = "是否取消")
         private Integer isDel;
 

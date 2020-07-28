@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 消息模板
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossMsgTemplateController extends BaseController implements BossMsgTemplate {

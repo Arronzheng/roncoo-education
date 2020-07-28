@@ -22,12 +22,12 @@ public interface UserDao {
 
 	/**
 	 * 分页缓存用户信息，站内信发送用
-	 * 
+	 *
 	 * @param statusId
 	 * @param pageCurrent
 	 * @param pageSize
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	Page<UserExtMsgVO> pageByStatusIdForMsg(Integer statusId, int pageCurrent, int pageSize);
 

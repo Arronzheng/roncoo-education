@@ -26,8 +26,6 @@ import com.roncoo.education.util.tools.DateUtil;
 
 /**
  * 课程用户学习日志
- *
- * @author wujing
  */
 @Component
 public class BossCourseUserStudyLogBiz {

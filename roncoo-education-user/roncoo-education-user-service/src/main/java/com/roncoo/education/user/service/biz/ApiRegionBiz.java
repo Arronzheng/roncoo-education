@@ -19,7 +19,7 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 /**
  * 行政区域表
  *
- * @author wujing
+ *
  */
 @Component
 public class ApiRegionBiz {

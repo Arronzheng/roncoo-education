@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * MD5加密，使用UTF-8编码
  *
- * @author wujing
+ *
  */
 public final class SHA1Util {
 

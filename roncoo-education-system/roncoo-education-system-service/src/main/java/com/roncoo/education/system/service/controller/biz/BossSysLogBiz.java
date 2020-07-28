@@ -15,8 +15,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 后台操作日志表
- *
- * @author wujing
  */
 @Component
 public class BossSysLogBiz {

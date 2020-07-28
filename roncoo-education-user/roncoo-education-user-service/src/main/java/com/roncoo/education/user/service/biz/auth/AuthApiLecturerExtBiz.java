@@ -25,7 +25,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 讲师账户信息表
  *
- * @author wujing
+ *
  */
 @Component
 public class AuthApiLecturerExtBiz {
@@ -40,9 +40,9 @@ public class AuthApiLecturerExtBiz {
 
 	/**
 	 * 账户信息详情接口
-	 * 
+	 *
 	 * @param authUserExtViewBO
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthLecturerExtViewDTO> view(AuthLecturerExtViewBO uthLecturerExtViewBO) {
 		UserExt userExt = userExtDao.getByUserNo(uthLecturerExtViewBO.getLecturerUserNo());
@@ -71,9 +71,9 @@ public class AuthApiLecturerExtBiz {
 
 	/**
 	 * 更新用户银行卡信息
-	 * 
+	 *
 	 * @param authUserExtBankBO
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> updateBackInfo(AuthUserExtBankBO authUserExtBankBO) {

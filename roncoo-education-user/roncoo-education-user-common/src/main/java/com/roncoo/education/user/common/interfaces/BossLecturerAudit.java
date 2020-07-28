@@ -11,8 +11,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 讲师信息-审核
- *
- * @author wujing
  */
 public interface BossLecturerAudit {
 
@@ -33,7 +31,7 @@ public interface BossLecturerAudit {
 
 	/**
 	 * 审核
-	 * 
+	 *
 	 * @param lecturerAccoutQO
 	 * @return
 	 */
@@ -42,7 +40,7 @@ public interface BossLecturerAudit {
 
 	/**
 	 * 讲师添加时候的手机号码校验
-	 * 
+	 *
 	 * @param LecturerAuditQO
 	 * @return
 	 */

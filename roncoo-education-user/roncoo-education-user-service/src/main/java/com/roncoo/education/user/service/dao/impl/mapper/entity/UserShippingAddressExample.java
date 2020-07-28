@@ -830,63 +830,63 @@ public class UserShippingAddressExample implements Serializable {
         }
 
         public Criteria andIsTolerationIsNull(){
-            addCriterion("is_default is null");
+            addCriterion("is_toleration is null");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationIsNotNull(){
-            addCriterion("is_default is not null");
+            addCriterion("is_toleration is not null");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationEqualTo(Integer value) {
-            addCriterion("is_default =", value, "isToleration");
+            addCriterion("is_toleration =", value, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationNotEqualTo(Integer value) {
-            addCriterion("is_default <>", value, "isToleration");
+            addCriterion("is_toleration <>", value, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationGreaterThan(Integer value) {
-            addCriterion("is_default >", value, "isToleration");
+            addCriterion("is_toleration >", value, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationGreaterThanOrEqualTo(Integer value) {
-            addCriterion("is_default >=", value, "isToleration");
+            addCriterion("is_toleration >=", value, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationLessThan(Integer value) {
-            addCriterion("is_default <", value, "isToleration");
+            addCriterion("is_toleration <", value, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationLessThanOrEqualTo(Integer value) {
-            addCriterion("is_default <=", value, "isToleration");
+            addCriterion("is_toleration <=", value, "isToleration");
             return (Criteria) this;
         }
 
 
         public Criteria andIsTolerationIn(List<Integer> values) {
-            addCriterion("is_default in", values, "isToleration");
+            addCriterion("is_toleration in", values, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationNotIn(List<Integer> values) {
-            addCriterion("is_default not in", values, "isToleration");
+            addCriterion("is_toleration not in", values, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationBetween(Integer value1, Integer value2) {
-            addCriterion("is_default between", value1, value2, "isToleration");
+            addCriterion("is_toleration between", value1, value2, "isToleration");
             return (Criteria) this;
         }
 
         public Criteria andIsTolerationNotBetween(Integer value1, Integer value2) {
-            addCriterion("is_default not between", value1, value2, "isToleration");
+            addCriterion("is_toleration not between", value1, value2, "isToleration");
             return (Criteria) this;
         }
 

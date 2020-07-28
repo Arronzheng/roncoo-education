@@ -71,4 +71,14 @@ public class AuthCourseAuditSaveBO implements Serializable{
 	 */
 	@ApiModelProperty(value = "是否免费：1免费，0收费", required = true)
 	private Integer isFree;
+	/**
+	 * 是否有教具（1没有，2有）
+	 */
+	@ApiModelProperty(value = "是否有教具（1没有，2有）")
+	private Integer hasTrainaid;
+	/**
+	 * 课程简介
+	 */
+	@ApiModelProperty(value = "课程简介")
+	private String courseShortIntroduce;
 }

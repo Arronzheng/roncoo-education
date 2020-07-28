@@ -16,7 +16,7 @@ import com.xiaoleilu.hutool.date.DateTime;
 /**
  * 日期处理工具类
  *
- * @author wujing
+ *
  */
 public final class DateUtil {
 

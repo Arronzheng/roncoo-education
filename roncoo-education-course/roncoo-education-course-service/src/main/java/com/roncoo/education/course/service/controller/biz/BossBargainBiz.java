@@ -1,6 +1,8 @@
 package com.roncoo.education.course.service.controller.biz;
 
+import com.roncoo.education.course.service.dao.BargainCourseDao;
 import com.roncoo.education.course.service.dao.BargainUserDao;
+import com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.BargainUser;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.BargainUserExample;
 import com.roncoo.education.util.base.Page;
@@ -22,6 +24,8 @@ public class BossBargainBiz {
 
     @Autowired
     private BargainUserDao dao;
+    @Autowired
+    private BargainCourseDao bargainCourseDao;
 
     /**
      * 24小时后如果砍价不成功，就标记砍价失败，每次处理50条数据
@@ -42,6 +46,10 @@ public class BossBargainBiz {
                 argBargainUser.setId(bargainUser.getId());
                 argBargainUser.setStatus(2);
                 dao.updateById(argBargainUser);
+                //恢复库存数量
+                BargainCourse bargainCourse = bargainCourseDao.getById(argBargainUser.getBargainId());
+                bargainCourse.setStock(bargainCourse.getStock() + 1);
+                bargainCourseDao.updateById(bargainCourse);
             }
         }
         return 1;

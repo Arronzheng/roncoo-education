@@ -17,20 +17,20 @@ public interface WebsiteNavArticleDao {
 
 	/**
 	 * 根据导航ID查找站点导航文章
-	 * 
+	 *
 	 * @param navId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	WebsiteNavArticle getByNavId(Long id);
 
 	/**
 	 * 根据导航ID和状态信息查找站点导航文章
-	 * 
+	 *
 	 * @param navId
 	 * @param statusId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	WebsiteNavArticle getByNavIdAndStatusId(Long navId, Integer statusId);
 }

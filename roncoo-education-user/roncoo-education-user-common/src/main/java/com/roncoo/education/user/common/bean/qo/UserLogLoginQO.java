@@ -8,15 +8,13 @@ import lombok.experimental.Accessors;
 
 /**
  * 用户错误登录日志
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
 public class UserLogLoginQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

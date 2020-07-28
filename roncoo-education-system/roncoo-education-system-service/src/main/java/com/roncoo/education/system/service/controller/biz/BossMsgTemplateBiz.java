@@ -13,9 +13,9 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 消息模板 
+ * 消息模板
  *
- * @author wuyun
+ *
  */
 @Component
 public class BossMsgTemplateBiz {
@@ -48,5 +48,5 @@ public class BossMsgTemplateBiz {
 	    MsgTemplate record = BeanUtil.copyProperties(qo, MsgTemplate.class);
 		return dao.updateById(record);
 	}
-	
+
 }

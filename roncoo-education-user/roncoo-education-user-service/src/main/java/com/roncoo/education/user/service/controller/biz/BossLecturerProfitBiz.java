@@ -32,7 +32,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 讲师提现日志表
  *
- * @author wujing
+ *
  */
 @Component
 public class BossLecturerProfitBiz extends BaseBiz {

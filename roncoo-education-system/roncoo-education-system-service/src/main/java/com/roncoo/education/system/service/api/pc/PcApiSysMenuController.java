@@ -23,8 +23,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 菜单信息
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/system/pc/menu")
@@ -86,7 +84,7 @@ public class PcApiSysMenuController extends BaseController {
 	public Result<SysMenuUserListRESQ> list(@RequestBody SysMenuUserListREQ sysMenuUserListREQ) {
 		return biz.userList(sysMenuUserListREQ);
 	}
-	
+
 
 	/**
 	 * 用户菜单信息列出信息接口

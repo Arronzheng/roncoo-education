@@ -12,8 +12,6 @@ import com.roncoo.education.gateway.common.FilterPre;
 
 /**
  * 服务网关
- *
- * @author wujing
  */
 @EnableZuulProxy
 @SpringCloudApplication

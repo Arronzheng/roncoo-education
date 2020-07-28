@@ -1,5 +1,6 @@
 package com.roncoo.education.course.service.biz.auth;
 
+import com.roncoo.education.course.service.common.bo.AssembleIngBO;
 import com.roncoo.education.course.service.common.bo.AssemblePageBO;
 import com.roncoo.education.course.service.common.bo.AssembleRecordBO;
 import com.roncoo.education.course.service.common.bo.AssembleViewBO;
@@ -30,6 +31,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -72,18 +74,19 @@ public class AuthApiAssembleBiz {
             result.setPeople(1);
         } else {
             result.setAssembleId(req.getAssembleId());//参团
-            result.setIsAsmer(0);
+            result.setIsAsmer(0); //是否团长（0：否，1：是）
             result.setPeople(1);
         }
 //        result.setOrderId();
         result.setAddTime(new Date());
         result.setStopTime(DateUtil.addDateByhour(result.getAddTime(), assembleCourse.getEffectiveTime()));
-        result.setStatus(1);
-        result.setOrderId(0L);
-        result.setIsRefund(0);
+        result.setStatus(4); // 拼团状态1进行中2已完成3未完成4未开始，未支付是为未开始状态
+        result.setOrderId(req.getOrderId());
+        result.setIsRefund(0); //是否退款 0未退款 1已退款
         int results = dao.save(result);
         if(!StringUtils.isEmpty(req.getAssembleId())){
-            List<Assemble> assembleList = dao.getByAssembleId(req.getAssembleId());
+            List<Assemble> assembleList = dao.getByAssembleId(req.getAssembleId()); // 进行中的拼团
+            //根据同一个拼团id的记录条数判断拼团是否完成
             if (assembleList.size() == assembleCourse.getPeople()) {
                 //拼团成功，修改状态
                 Assemble a = new Assemble();
@@ -131,5 +134,13 @@ public class AuthApiAssembleBiz {
         }
         authAssembleViewDTO.setAssembleViewDTOs(assembleViewDTOs);
         return Result.success(authAssembleViewDTO);
+    }
+
+    public Result<Boolean> isAssemble(AssembleIngBO assembleIngBO) {
+        Assemble assemble = dao.getByUserNoAndPidAndStatus(assembleIngBO);
+        if (ObjectUtils.isEmpty(assemble)) {
+            return Result.success(false);
+        }
+        return Result.success(true);
     }
 }

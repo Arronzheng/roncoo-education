@@ -15,8 +15,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 订单支付信息表
- *
- * @author wujing
  */
 @Component
 public class BossOrderPayBiz {

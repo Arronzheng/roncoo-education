@@ -39,7 +39,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 上传接口
  *
- * @author wuyun
+ *
  */
 @Component
 public class ApiUploadBiz extends BaseBiz {
@@ -59,7 +59,7 @@ public class ApiUploadBiz extends BaseBiz {
 	/**
 	 * 上传视频接口
 	 *
-	 * @author wuyun
+	 *
 	 */
 	public Result<String> uploadVideo(MultipartFile videoFile) {
 		// 视频上传
@@ -86,10 +86,10 @@ public class ApiUploadBiz extends BaseBiz {
 		Long videoNo = IdWorker.getId(); // 当作存储到本地的文件名，方便定时任务的处理
 
 		// 1、上传到本地
-//		File targetFile = new File(
-//				SystemUtil.PERIOD_VIDEO_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Linux系统
 		File targetFile = new File(
-				SystemUtil.VIDEO_STORAGE_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Windows系统
+				SystemUtil.PERIOD_VIDEO_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Linux系统
+//		File targetFile = new File(
+//				SystemUtil.VIDEO_STORAGE_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Windows系统
 		targetFile.setLastModified(System.currentTimeMillis());// 设置最后修改时间
 		// 判断文件目录是否存在，不存在就创建文件目录
 		if (!targetFile.getParentFile().exists()) {
@@ -186,7 +186,7 @@ public class ApiUploadBiz extends BaseBiz {
 	/**
 	 * 上传图片接口
 	 *
-	 * @author wuyun
+	 *
 	 */
 	public Result<String> uploadPic(MultipartFile picFile, String imgUrl) {
 		if (ObjectUtil.isNotNull(picFile)) {
@@ -198,8 +198,10 @@ public class ApiUploadBiz extends BaseBiz {
 			Long fileNo = IdWorker.getId();
 			// 1、上传到本地
 			if (sys.getFileType().equals(FileTypeEnum.LOCAL.getCode())) {
-				File pic = new File(SystemUtil.PIC_STORAGE_PATH + fileNo.toString() + "."
-						+ StrUtil.getSuffix(picFile.getOriginalFilename()));
+//				File pic = new File(SystemUtil.PIC_STORAGE_PATH + fileNo.toString() + "."
+//						+ StrUtil.getSuffix(picFile.getOriginalFilename())); // Windows系统
+				File pic = new File(SystemUtil.PIC_PATH + fileNo.toString() + "."
+						+ StrUtil.getSuffix(picFile.getOriginalFilename()));// linux系统
 				try {
 					// 判断文件目录是否存在，不存在就创建文件目录
 					if (!pic.getParentFile().exists()) {
@@ -235,7 +237,7 @@ public class ApiUploadBiz extends BaseBiz {
 	/**
 	 * 上传文档接口
 	 *
-	 * @author wuyun
+	 *
 	 */
 	public Result<String> uploadDoc(MultipartFile docFile) {
 		if (ObjectUtil.isNotNull(docFile)) {
@@ -247,8 +249,10 @@ public class ApiUploadBiz extends BaseBiz {
 			Long fileNo = IdWorker.getId();
 			// 1、上传到本地
 			if (sys.getFileType().equals(FileTypeEnum.LOCAL.getCode())) {
-				File pic = new File(SystemUtil.DOC_STORAGE_PATH + fileNo.toString() + "."
-						+ StrUtil.getSuffix(docFile.getOriginalFilename()));
+//				File pic = new File(SystemUtil.DOC_STORAGE_PATH + fileNo.toString() + "."
+//						+ StrUtil.getSuffix(docFile.getOriginalFilename()));//windows系统
+				File pic = new File(SystemUtil.DOC_PATH + fileNo.toString() + "."
+						+ StrUtil.getSuffix(docFile.getOriginalFilename()));//linux系统
 				try {
 					// 判断文件目录是否存在，不存在就创建文件目录
 					if (!pic.getParentFile().exists()) {

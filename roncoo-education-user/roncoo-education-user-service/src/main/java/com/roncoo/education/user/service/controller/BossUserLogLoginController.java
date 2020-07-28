@@ -13,16 +13,16 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 用户错误登录日志 
+ * 用户错误登录日志
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossUserLogLoginController extends BaseController implements BossUserLogLogin{
 
 	@Autowired
 	private BossUserLogLoginBiz biz;
-	
+
 	@Override
 	public Page<UserLogLoginVO> listForPage(@RequestBody UserLogLoginQO qo){
 		return biz.listForPage(qo);
@@ -33,19 +33,19 @@ public class BossUserLogLoginController extends BaseController implements BossUs
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody UserLogLoginQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public UserLogLoginVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);
 	}
-	
+
 }

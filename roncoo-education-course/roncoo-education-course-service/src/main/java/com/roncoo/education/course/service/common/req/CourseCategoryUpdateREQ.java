@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程分类-更新
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -26,6 +24,11 @@ public class CourseCategoryUpdateREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "排序", required = false)
 	private Integer sort;
+	/**
+	 * 状态(1:正常，0:禁用)
+	 */
+	@ApiModelProperty(value = "状态(1:正常，0:禁用)", required = false)
+	private Integer statusId;
 	/**
 	 * 分类名称
 	 */

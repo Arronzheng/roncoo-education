@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 /**
  * 站点信息
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)

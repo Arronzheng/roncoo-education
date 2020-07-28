@@ -10,7 +10,7 @@ import java.util.Map;
 
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.roncoo.education.course.service.biz.auth.AuthApiOrderInfoBiz;
-import com.roncoo.education.course.service.dao.CourseAuditDao;
+import com.roncoo.education.course.service.dao.*;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
 import com.roncoo.education.user.common.bean.qo.UserExtQO;
@@ -27,6 +27,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import com.roncoo.education.course.common.bean.qo.OrderEchartsQO;
@@ -36,8 +37,6 @@ import com.roncoo.education.course.common.bean.vo.OrderEchartsVO;
 import com.roncoo.education.course.common.bean.vo.OrderInfoVO;
 import com.roncoo.education.course.common.bean.vo.OrderReportVO;
 import com.roncoo.education.course.service.common.resq.CountIncomeRESQ;
-import com.roncoo.education.course.service.dao.OrderInfoDao;
-import com.roncoo.education.course.service.dao.OrderPayDao;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample.Criteria;
 import com.roncoo.education.util.base.BaseBiz;
 import com.roncoo.education.util.base.Page;
@@ -50,7 +49,7 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 /**
  * 订单信息表
  *
- * @author wujing
+ *
  */
 @Component
 public class BossOrderInfoBiz extends BaseBiz {
@@ -69,6 +68,10 @@ public class BossOrderInfoBiz extends BaseBiz {
 	private IBossUserLogInvite bossUserLogInvite;
 	@Autowired
 	private IBossUserLogCommission bossUserLogCommission;
+	@Autowired
+	private AssembleDao assembleDao;
+	@Autowired
+	private CouponUserDao couponUserDao;
 
 	public Page<OrderInfoVO> listForPage(OrderInfoQO qo) {
 		OrderInfoExample example = new OrderInfoExample();
@@ -146,7 +149,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	 * 订单信息汇总（导出报表）
 	 *
 	 * @param orderInfoQO
-	 * @author wuyun
+	 *
 	 */
 	public List<OrderReportVO> listForReport(OrderInfoQO orderInfoQO) {
 		return dao.listForReport(orderInfoQO);
@@ -157,7 +160,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	 *
 	 * @param orderEchartsQO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public List<OrderEchartsVO> sumByCountOrders(OrderEchartsQO orderEchartsQO) {
 		List<OrderEchartsVO> list = new ArrayList<>();
@@ -177,7 +180,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	 *
 	 * @param orderEchartsQO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public List<OrderEchartsVO> sumByPayTime(OrderEchartsQO orderEchartsQO) {
 		List<OrderEchartsVO> list = new ArrayList<>();
@@ -195,7 +198,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	/**
 	 * 统计订单收入情况
 	 *
-	 * @author wuyun
+	 *
 	 */
 	public CountIncomeVO countIncome(OrderInfoQO qo) {
 		CountIncomeRESQ resq = dao.countIncome(qo);
@@ -260,7 +263,10 @@ public class BossOrderInfoBiz extends BaseBiz {
 									if("SUCCESS".equals(response.get("trade_state"))){
 										//微信已交易成功
 										//处理课程信息
-										course(order, orderPay);
+										// 如果订单状态不是待支付状态证明订单已经处理过,不用再处理
+										if (OrderStatusEnum.WAIT.getCode().equals(order.getOrderStatus())) {
+											course(order, orderPay);
+										}
 									}else{
 										//微信支付失败
 										//更新订单信息
@@ -284,7 +290,10 @@ public class BossOrderInfoBiz extends BaseBiz {
 								if (response.getTradeStatus().equals("TRADE_FINISHED") || response.getTradeStatus().equals("TRADE_SUCCESS")) {
 									//交易结束，不可退款 或 交易支付成功
 									// 处理课程信息
-									course(order, orderPay);
+									// 如果订单状态不是待支付状态证明订单已经处理过,不用再处理
+									if (OrderStatusEnum.WAIT.getCode().equals(order.getOrderStatus())) {
+										course(order, orderPay);
+									}
 								} else if(response.getTradeStatus().equals("WAIT_BUYER_PAY")){
 
 								}else{
@@ -310,7 +319,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	 * @param orderInfo
 	 * @param orderPay
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private void course(OrderInfo orderInfo, OrderPay orderPay) {
 		// 根据课程No查找课程信息
@@ -339,13 +348,52 @@ public class BossOrderInfoBiz extends BaseBiz {
 
 		// 更新订单信息
 		orderInfo.setPayTime(new Date());
-		orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+		if (courseAudit.getHasTrainaid() == 2) {
+			orderInfo.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+			orderPay.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+		} else {
+			orderInfo.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+			orderPay.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+		}
 		dao.updateById(orderInfo);
 
 		// 更新订单支付信息
-		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
 		orderPay.setPayTime(new Date());
 		orderPayDao.updateById(orderPay);
+
+		// 更新拼团信息
+		Assemble assemble = assembleDao.getOrderId(orderInfo.getOrderNo());
+		if (!ObjectUtils.isEmpty(assemble)) {
+			assemble.setStatus(1);
+			assembleDao.updateById(assemble);
+			// 设置为8待拼成状态
+			orderInfo.setOrderStatus(OrderStatusEnum.WAITASSEMBLE.getCode());
+			orderPay.setOrderStatus(OrderStatusEnum.WAITASSEMBLE.getCode());
+		}
+        // 根据拼团id查询状态为1(1表示已支付的拼团)的拼团记录判断拼团是否完成
+        List<Assemble> assembleList = assembleDao.getByAssembleId(assemble.getAssembleId());
+        if (assembleList.size() > 1) {
+            for (Assemble assemble1: assembleList) {
+                assemble1.setStatus(2); //2表示已完成的拼团
+                assembleDao.updateById(assemble1);
+
+				if (courseAudit.getHasTrainaid() == 2) {
+					orderInfo.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+					orderPay.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+				} else {
+					orderInfo.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+					orderPay.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+				}
+            }
+        }
+
+		// 更新优惠券信息
+		if (!StringUtils.isEmpty(orderInfo.getCouponUserId())) {
+			CouponUser record = new CouponUser();
+			record.setId(orderInfo.getCouponUserId());
+			record.setStatus(1);
+			couponUserDao.updateById(record);
+		}
 
 		UserExtVO userExtVO = bossUserExt.getByUserNo(orderInfo.getUserNo());
 		if (!StringUtils.isEmpty(userExtVO.getVipLevel())) {
@@ -381,7 +429,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	 * @param lecturerExtVO
 	 * @param lecturerProportion
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private OrderInfo countProfit(OrderInfo orderInfo, LecturerExtVO lecturerExtVO, BigDecimal lecturerProportion) {
 		// 讲师收入 = 订单价格x讲师分成比例
@@ -400,7 +448,7 @@ public class BossOrderInfoBiz extends BaseBiz {
 	 *
 	 * @param orderInfo
 	 * @param lecturerExtVO
-	 * @author wuyun
+	 *
 	 */
 	private void updateLecturerExtVO(OrderInfo orderInfo, LecturerExtVO lecturerExtVO) {
 		LecturerExtQO lecturerExtQO = new LecturerExtQO();

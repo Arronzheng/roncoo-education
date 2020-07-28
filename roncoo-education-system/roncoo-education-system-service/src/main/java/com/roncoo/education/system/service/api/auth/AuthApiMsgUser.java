@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 站内信用户记录表
  *
- * @author wuyun
+ *
  */
 @RestController
 @RequestMapping(value = "/system/auth/msg/user")
@@ -33,10 +33,10 @@ public class AuthApiMsgUser extends BaseController {
 
 	/**
 	 * 站内信分页列表接口
-	 * 
+	 *
 	 * @param msgUserBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "学员站内信分页列表接口", notes = "分页列出学员站内信信息")
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -46,10 +46,10 @@ public class AuthApiMsgUser extends BaseController {
 
 	/**
 	 * 用户查看站内信内容
-	 * 
+	 *
 	 * @param MsgViewBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "用户查看站内信", notes = "用户查看站内信")
 	@RequestMapping(value = "/read", method = RequestMethod.POST)
@@ -59,10 +59,10 @@ public class AuthApiMsgUser extends BaseController {
 
 	/**
 	 * 用户站内信未读条数
-	 * 
+	 *
 	 * @param msgReadBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "用户站内信未读条数", notes = "用户站内信未读条数")
 	@RequestMapping(value = "/num", method = RequestMethod.POST)

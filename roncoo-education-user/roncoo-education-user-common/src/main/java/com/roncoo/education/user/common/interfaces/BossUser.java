@@ -11,8 +11,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 用户基本信息
- *
- * @author wujing
  */
 public interface BossUser {
 

@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * 讲师提现日志表
  *
- * @author wujing
+ *
  */
 @Data
 @Accessors(chain = true)
@@ -78,7 +78,7 @@ public class LecturerProfitQO implements Serializable {
 	 * 讲师名称
 	 */
 	private String lecturerName;
-	
+
 	private String beginDate;
 	private String endDate;
 }

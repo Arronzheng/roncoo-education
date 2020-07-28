@@ -13,8 +13,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 后台操作日志表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)

@@ -13,8 +13,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 章节信息-审核
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -59,7 +57,7 @@ public class AuthCourseChapterAuditViewDTO implements Serializable {
      */
     @ApiModelProperty(value = "优惠价")
     private BigDecimal chapterDiscount;
-    
+
     /**
      * 课时信息集合
      */

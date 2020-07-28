@@ -18,7 +18,7 @@ import com.roncoo.education.util.tools.SignUtil;
 /**
  * 讲师账户信息表
  *
- * @author wujing
+ *
  */
 @Component
 public class BossLecturerExtBiz extends BaseBiz {
@@ -54,10 +54,10 @@ public class BossLecturerExtBiz extends BaseBiz {
 
 	/**
 	 * 根据讲师编号查找账户信息（订单回调远程调用）
-	 * 
+	 *
 	 * @param lecturerUserNo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public LecturerExtVO getByLecturerUserNo(Long lecturerUserNo) {
 		LecturerExt record = dao.getByLecturerUserNo(lecturerUserNo);
@@ -66,9 +66,9 @@ public class BossLecturerExtBiz extends BaseBiz {
 
 	/**
 	 * 更新账户的金额信息(订单回调远程调用)
-	 * 
+	 *
 	 * @param qo
-	 * @author wuyun
+	 *
 	 */
 	public void updateTotalIncomeByLecturerUserNo(LecturerExtQO qo) {
 		// 查询出讲师账户原来的收入信息

@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 订单继续支付
  *
- * @author YZJ
+ *
  */
 @Data
 @Accessors(chain = true)
@@ -31,5 +31,11 @@ public class AuthOrderInfoContinuePayBO implements Serializable {
      */
     @ApiModelProperty(value = "交易类型：JSAPI -JSAPI支付，NATIVE -Native支付，APP -APP支付", required = true)
     private String tradeType;
+
+    @ApiModelProperty(value = "订单地址id", required = false)
+    private Long shippingAddressId;
+
+    @ApiModelProperty(value = "用户优惠券id", required = false)
+    private Long couponUserId;
 
 }

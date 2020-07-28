@@ -34,6 +34,10 @@
             <result column="rule" property="rule" jdbcType="VARCHAR"/>
             <result column="look" property="look" jdbcType="INTEGER"/>
             <result column="share" property="share" jdbcType="INTEGER"/>
+            <result column="first_bargain_max_rate" property="firstBargainMaxRate" jdbcType="VARCHAR"/>
+            <result column="first_bargain_min_rate" property="firstBargainMinRate" jdbcType="VARCHAR"/>
+            <result column="bargain_max_rate" property="bargainMaxRate" jdbcType="VARCHAR"/>
+            <result column="bargain_min_rate" property="bargainMinRate" jdbcType="VARCHAR"/>
         </resultMap>
 
     <sql id="Example_Where_Clause" >
@@ -96,7 +100,10 @@
     </sql>
         <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_id, title, image, unit_name, stock, sales, images, start_time, stop_time, store_name, price, min_price, num, bargain_max_price, bargain_min_price, bargain_num, status, description, give_integral, info, cost, sort, is_hot, add_time, is_postage, postage, rule, look, share
+        id, product_id, title, image, unit_name, stock, sales, images, start_time, stop_time, store_name, price, min_price,
+        num, bargain_max_price, bargain_min_price, bargain_num, status, description, give_integral, info, cost, sort, is_hot,
+        add_time, is_postage, postage, rule, look, share, first_bargain_max_rate, first_bargain_min_rate, bargain_max_rate,
+        bargain_min_rate
     </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourseExample">
         select
@@ -136,7 +143,10 @@
     <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse" >
         insert into bargain_course
         (
-         id, product_id, title, image, unit_name, stock, sales, images, start_time, stop_time, store_name, price, min_price, num, bargain_max_price, bargain_min_price, bargain_num, status, description, give_integral, info, cost, sort, is_hot, add_time, is_postage, postage, rule, look, share
+         id, product_id, title, image, unit_name, stock, sales, images, start_time, stop_time, store_name, price, min_price,
+         num, bargain_max_price, bargain_min_price, bargain_num, status, description, give_integral, info, cost, sort, is_hot,
+         add_time, is_postage, postage, rule, look, share, first_bargain_max_rate, first_bargain_min_rate, bargain_max_rate,
+        bargain_min_rate
         ) values (
             #{id,jdbcType=BIGINT},
             #{productId,jdbcType=BIGINT},
@@ -168,6 +178,10 @@
             #{rule,jdbcType=VARCHAR},
             #{look,jdbcType=INTEGER},
             #{share,jdbcType=INTEGER},
+            #{firstBargainMaxRate,jdbcType=VARCHAR},
+            #{firstBargainMinRate,jdbcType=VARCHAR},
+            #{bargainMaxRate,jdbcType=VARCHAR},
+            #{bargainMinRate,jdbcType=VARCHAR},
         )
     </insert>
     <insert id="insertSelective" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainCourse" >
@@ -263,6 +277,18 @@
             <if test="share != null" >
                 share,
             </if>
+            <if test="firstBargainMaxRate != null" >
+                first_bargain_max_rate,
+            </if>
+            <if test="firstBargainMinRate != null" >
+                first_bargain_min_rate,
+            </if>
+            <if test="bargainMaxRate != null" >
+                bargain_max_rate,
+            </if>
+            <if test="bargainMinRate != null" >
+                bargain_min_rate,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -354,6 +380,18 @@
             </if>
             <if test="share != null" >
                 #{share,jdbcType=INTEGER},
+            </if>
+            <if test="firstBargainMaxRate != null" >
+                #{firstBargainMaxRate,jdbcType=VARCHAR},
+            </if>
+            <if test="firstBargainMinRate != null" >
+                #{firstBargainMinRate,jdbcType=VARCHAR},
+            </if>
+            <if test="bargainMaxRate != null" >
+                #{bargainMaxRate,jdbcType=VARCHAR},
+            </if>
+            <if test="bargainMinRate != null" >
+                #{bargainMinRate,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -456,6 +494,18 @@
             <if test="record.share != null" >
                 share = #{record.share,jdbcType=INTEGER},
             </if>
+            <if test="record.firstBargainMaxRate != null" >
+                first_bargain_max_rate = #{record.firstBargainMaxRate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.firstBargainMinRate != null" >
+                first_bargain_min_rate = #{record.firstBargainMinRate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bargainMaxRate != null" >
+                bargain_max_rate = #{record.bargainMaxRate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bargainMinRate != null" >
+                bargain_min_rate = #{record.bargainMinRate,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null" >
             <include refid="Update_By_Example_Where_Clause" />
@@ -494,6 +544,10 @@
             rule = #{record.rule,jdbcType=VARCHAR},
             look = #{record.look,jdbcType=INTEGER},
             share = #{record.share,jdbcType=INTEGER},
+            first_bargain_max_rate = #{record.firstBargainMaxRate,jdbcType=VARCHAR},
+            first_bargain_min_rate = #{record.firstBargainMinRate,jdbcType=VARCHAR},
+            bargain_max_rate = #{record.bargainMaxRate,jdbcType=VARCHAR},
+            bargain_min_rate = #{record.bargainMinRate,jdbcType=VARCHAR},
         <if test="_parameter != null" >
             <include refid="Update_By_Example_Where_Clause" />
         </if>
@@ -588,6 +642,18 @@
                 <if test="share != null" >
                     share = #{share,jdbcType=INTEGER},
                 </if>
+                <if test="firstBargainMaxRate != null" >
+                    first_bargain_max_rate = #{firstBargainMaxRate,jdbcType=VARCHAR},
+                </if>
+                <if test="firstBargainMinRate != null" >
+                    first_bargain_min_rate = #{firstBargainMinRate,jdbcType=VARCHAR},
+                </if>
+                <if test="bargainMaxRate != null" >
+                    bargain_max_rate = #{bargainMaxRate,jdbcType=VARCHAR},
+                </if>
+                <if test="bargainMinRate != null" >
+                    bargain_min_rate = #{bargainMinRate,jdbcType=VARCHAR},
+                </if>
         </set>
         where
                 id = #{id,jdbcType=BIGINT}
@@ -624,6 +690,10 @@
                 rule = #{rule,jdbcType=VARCHAR},
                 look = #{look,jdbcType=INTEGER},
                 share = #{share,jdbcType=INTEGER},
+                first_bargain_max_rate = #{firstBargainMaxRate,jdbcType=VARCHAR},
+                first_bargain_min_rate = #{firstBargainMinRate,jdbcType=VARCHAR},
+                bargain_max_rate = #{bargainMaxRate,jdbcType=VARCHAR},
+                bargain_min_rate = #{bargainMinRate,jdbcType=VARCHAR},
         where
         id = #{id,jdbcType=BIGINT}
   </update>

@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 站点信息
  *
- * @author wuyun
+ *
  */
 @RestController
 @RequestMapping(value = "/system/pc/website")
@@ -28,7 +28,7 @@ public class PcApiWebsiteController extends BaseController {
 
 	/**
 	 * 获取站点信息接口
-	 * 
+	 *
 	 * @return 站点信息
 	 */
 	@ApiOperation(value = "获取站点信息接口", notes = "获取站点信息")

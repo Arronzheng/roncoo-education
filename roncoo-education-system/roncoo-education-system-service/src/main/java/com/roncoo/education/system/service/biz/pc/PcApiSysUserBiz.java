@@ -32,8 +32,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 后台用户信息
- *
- * @author wujing
  */
 @Component
 public class PcApiSysUserBiz {

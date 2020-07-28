@@ -1,5 +1,7 @@
 package com.roncoo.education.course.service.api;
 
+import com.roncoo.education.course.service.common.bo.PicToBaseBO;
+import com.roncoo.education.course.service.common.dto.PicToBaseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +23,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 课程信息
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/course/api/course")
@@ -36,7 +36,7 @@ public class ApiCourseController extends BaseController {
 	 *
 	 * @param courseInfoPageBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "课程列表接口", notes = "根据条件分页列出课程信息")
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -66,5 +66,17 @@ public class ApiCourseController extends BaseController {
 	@RequestMapping(value = "/search/list", method = RequestMethod.POST)
 	public Result<Page<CourseInfoSearchPageDTO>> view(@RequestBody CourseInfoSearchBO courseInfoSearchBO) {
 		return biz.searchList(courseInfoSearchBO);
+	}
+
+	/**
+	 * 图片转base64
+	 *
+	 * @param picToBaseBO
+	 * @return
+	 */
+	@ApiOperation(value = "图片转base64", notes = "图片转base64")
+	@RequestMapping(value = "/image_base64", method = RequestMethod.POST)
+	public Result<PicToBaseDTO> toBase(@RequestBody PicToBaseBO picToBaseBO) {
+		return biz.toBase(picToBaseBO);
 	}
 }

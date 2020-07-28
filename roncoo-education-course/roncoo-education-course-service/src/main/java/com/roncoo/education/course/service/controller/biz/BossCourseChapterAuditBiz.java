@@ -13,9 +13,7 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 章节信息-审核 
- *
- * @author wujing
+ * 章节信息-审核
  */
 @Component
 public class BossCourseChapterAuditBiz {
@@ -48,5 +46,5 @@ public class BossCourseChapterAuditBiz {
 	    CourseChapterAudit record = BeanUtil.copyProperties(qo, CourseChapterAudit.class);
 		return dao.updateById(record);
 	}
-	
+
 }

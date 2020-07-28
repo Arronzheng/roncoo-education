@@ -18,8 +18,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 课程分类
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/course/api/course/category")
@@ -31,7 +29,7 @@ public class ApiCourseCategoryController extends BaseController {
 	/**
 	 * 普通课程分类列表接口
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "课程分类列表接口", notes = "课程分类列表")
 	@RequestMapping(value = "/list", method = RequestMethod.POST)

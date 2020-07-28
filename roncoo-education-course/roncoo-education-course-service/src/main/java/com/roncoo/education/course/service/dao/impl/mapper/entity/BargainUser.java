@@ -16,6 +16,7 @@ public class BargainUser implements Serializable {
         private BigDecimal price;
         private Integer status;
         private Date addTime;
+        private Long addressId;
         private Integer isDel;
 
         public Long getId() {
@@ -71,6 +72,14 @@ public class BargainUser implements Serializable {
             return addTime;
         }
 
+        public Long getAddressId() {
+            return addressId;
+        }
+
+        public void setAddressId(Long addressId) {
+            this.addressId = addressId;
+        }
+
         public void setAddTime(Date addTime) {
             this.addTime = addTime;
         }
@@ -96,6 +105,7 @@ public class BargainUser implements Serializable {
             sb.append(", price=").append(price);
             sb.append(", status=").append(status);
             sb.append(", addTime=").append(addTime);
+            sb.append(", addressId=").append(addressId);
             sb.append(", isDel=").append(isDel);
             sb.append(", serialVersionUID=").append(serialVersionUID);
             sb.append("]");

@@ -41,8 +41,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 课程信息-审核
- *
- * @author wujing
  */
 @Component
 public class AuthApiCourseAuditBiz extends BaseBiz {
@@ -60,10 +58,10 @@ public class AuthApiCourseAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师课程分页接口
-	 * 
+	 *
 	 * @param authCourseAuditListBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<Page<AuthCourseAuditListDTO>> listForPage(AuthCourseAuditListBO authCourseAuditListBO) {
 		if (authCourseAuditListBO.getLecturerUserNo() == null) {
@@ -92,10 +90,10 @@ public class AuthApiCourseAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师课程详情接口
-	 * 
+	 *
 	 * @param id
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthCourseAuditViewDTO> view(AuthCourseAuditViewBO authCourseAuditViewBO) {
 		if (StringUtils.isEmpty(authCourseAuditViewBO.getId())) {
@@ -117,10 +115,10 @@ public class AuthApiCourseAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师课程保存接口
-	 * 
+	 *
 	 * @param authCourseAuditSaveBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<AuthCourseAuditSaveDTO> save(AuthCourseAuditSaveBO authCourseAuditSaveBO) {
@@ -165,10 +163,10 @@ public class AuthApiCourseAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师课程更新接口
-	 * 
+	 *
 	 * @param authCourseAuditUpdateBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> update(AuthCourseAuditUpdateBO authCourseAuditUpdateBO) {
@@ -228,10 +226,10 @@ public class AuthApiCourseAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师课程上下架接口
-	 * 
+	 *
 	 * @param authCourseAuditStandBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<Integer> stand(AuthCourseAuditStandBO authCourseAuditStandBO) {
 		if (StringUtils.isEmpty(authCourseAuditStandBO.getId())) {
@@ -258,10 +256,10 @@ public class AuthApiCourseAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师课程删除接口
-	 * 
+	 *
 	 * @param id
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> delete(AuthCourseAuditDeleteBO authCourseAuditDeleteBO) {

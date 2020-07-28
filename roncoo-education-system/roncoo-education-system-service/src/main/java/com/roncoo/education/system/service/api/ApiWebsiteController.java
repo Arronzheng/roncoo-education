@@ -15,7 +15,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 站点信息
  *
- * @author wuyun
+ *
  */
 @RestController
 public class ApiWebsiteController extends BaseController {
@@ -25,9 +25,9 @@ public class ApiWebsiteController extends BaseController {
 
 	/**
 	 * 获取站点信息接口
-	 * 
+	 *
 	 * @return 站点信息
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "获取站点信息接口", notes = "获取站点信息")
 	@RequestMapping(value = "/system/api/website/get", method = RequestMethod.POST)

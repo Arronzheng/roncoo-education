@@ -12,6 +12,7 @@
             <result column="price" property="price" jdbcType="DECIMAL"/>
             <result column="status" property="status" jdbcType="TINYINT"/>
             <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+            <result column="address_id" property="addressId" jdbcType="BIGINT"/>
             <result column="is_del" property="isDel" jdbcType="TINYINT"/>
         </resultMap>
 
@@ -75,7 +76,7 @@
     </sql>
         <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, bargain_id, bargain_price_min, bargain_price, price, status, add_time, is_del
+        id, uid, bargain_id, bargain_price_min, bargain_price, price, status, add_time, address_id, is_del
     </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainUserExample">
         select
@@ -115,7 +116,7 @@
     <insert id="insert" parameterType="com.roncoo.education.course.service.dao.impl.mapper.entity.BargainUser" >
         insert into bargain_user
         (
-         id, uid, bargain_id, bargain_price_min, bargain_price, price, status, add_time, is_del
+         id, uid, bargain_id, bargain_price_min, bargain_price, price, status, add_time, address_id, is_del
         ) values (
             #{id,jdbcType=BIGINT},
             #{uid,jdbcType=BIGINT},
@@ -125,6 +126,7 @@
             #{price,jdbcType=DECIMAL},
             #{status,jdbcType=TINYINT},
             #{addTime,jdbcType=TIMESTAMP},
+            #{addressId,jdbcType=BIGINT},
             #{isDel,jdbcType=TINYINT},
         )
     </insert>
@@ -155,6 +157,9 @@
             <if test="addTime != null" >
                 add_time,
             </if>
+            <if test="addressId != null" >
+                address_id,
+            </if>
             <if test="isDel != null" >
                 is_del,
             </if>
@@ -183,6 +188,9 @@
             </if>
             <if test="addTime != null" >
                 #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addressId != null" >
+                #{addressId,jdbcType=BIGINT},
             </if>
             <if test="isDel != null" >
                 #{isDel,jdbcType=TINYINT},
@@ -222,6 +230,9 @@
             <if test="record.addTime != null" >
                 add_time = #{record.addTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="record.addressId != null" >
+                address_id = #{record.addressId,jdbcType=BIGINT},
+            </if>
             <if test="record.isDel != null" >
                 is_del = #{record.isDel,jdbcType=TINYINT},
             </if>
@@ -241,6 +252,7 @@
             price = #{record.price,jdbcType=DECIMAL},
             status = #{record.status,jdbcType=TINYINT},
             add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            address_id = #{record.addressId,jdbcType=BIGINT},
             is_del = #{record.isDel,jdbcType=TINYINT},
         <if test="_parameter != null" >
             <include refid="Update_By_Example_Where_Clause" />
@@ -270,6 +282,9 @@
                 <if test="addTime != null" >
                     add_time = #{addTime,jdbcType=TIMESTAMP},
                 </if>
+                <if test="addressId != null" >
+                    address_id = #{addressId,jdbcType=BIGINT},
+                </if>
                 <if test="isDel != null" >
                     is_del = #{isDel,jdbcType=TINYINT},
                 </if>
@@ -287,6 +302,7 @@
                 price = #{price,jdbcType=DECIMAL},
                 status = #{status,jdbcType=TINYINT},
                 add_time = #{addTime,jdbcType=TIMESTAMP},
+                address_id = #{addressId,jdbcType=BIGINT},
                 is_del = #{isDel,jdbcType=TINYINT},
         where
         id = #{id,jdbcType=BIGINT}

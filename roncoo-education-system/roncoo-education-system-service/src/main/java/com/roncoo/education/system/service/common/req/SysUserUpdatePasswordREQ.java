@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 后台用户信息-更新密码
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)

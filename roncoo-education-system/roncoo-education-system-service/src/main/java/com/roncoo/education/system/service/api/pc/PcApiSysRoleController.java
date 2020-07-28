@@ -22,8 +22,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 角色信息
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/system/pc/sys/role")

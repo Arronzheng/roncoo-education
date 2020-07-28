@@ -15,9 +15,9 @@ import com.roncoo.education.system.service.dao.impl.mapper.entity.WebsiteLinkExa
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 站点友情链接 
+ * 站点友情链接
  *
- * @author wuyun
+ *
  */
 @Component
 public class BossWebsiteLinkBiz {
@@ -57,5 +57,5 @@ public class BossWebsiteLinkBiz {
 	    WebsiteLink record = BeanUtil.copyProperties(qo, WebsiteLink.class);
 		return dao.updateById(record);
 	}
-	
+
 }

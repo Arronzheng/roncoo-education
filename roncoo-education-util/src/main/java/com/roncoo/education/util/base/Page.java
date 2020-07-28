@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 分页
  *
- * @author wujing
+ *
  * @param <T>
  */
 public class Page<T extends Serializable> implements Serializable {

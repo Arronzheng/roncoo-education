@@ -25,8 +25,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 订单信息表
- *
- * @author wujing123
  */
 @RestController
 public class CallbackOrderController extends BaseController {

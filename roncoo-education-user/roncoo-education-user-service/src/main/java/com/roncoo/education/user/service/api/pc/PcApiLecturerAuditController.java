@@ -18,8 +18,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 讲师信息-审核
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/user/pc/lecturer/audit")
@@ -30,7 +28,7 @@ public class PcApiLecturerAuditController extends BaseController {
 
 	/**
 	 * 讲师信息-审核分页列表接口
-	 * 
+	 *
 	 * @param lecturerAuditPageREQ
 	 */
 	@ApiOperation(value = "讲师信息-审核分页列表接口", notes = "讲师信息-审核分页列表接口")
@@ -41,7 +39,7 @@ public class PcApiLecturerAuditController extends BaseController {
 
 	/**
 	 * 讲师信息-审核添加接口
-	 * 
+	 *
 	 * @param lecturerAuditSaveREQ
 	 */
 	@ApiOperation(value = "讲师信息-审核添加接口", notes = "讲师信息-审核添加接口")
@@ -52,7 +50,7 @@ public class PcApiLecturerAuditController extends BaseController {
 
 	/**
 	 * 讲师信息-审核更新接口
-	 * 
+	 *
 	 * @param lecturerAuditUpdateREQ
 	 */
 	@ApiOperation(value = "讲师信息-审核更新接口", notes = "讲师信息-审核更新接口")
@@ -63,7 +61,7 @@ public class PcApiLecturerAuditController extends BaseController {
 
 	/**
 	 * 讲师信息-审核接口
-	 * 
+	 *
 	 * @param lecturerAuditAuditREQ
 	 */
 	@ApiOperation(value = "讲师信息-审核接口", notes = "讲师信息-审核接口")
@@ -74,7 +72,7 @@ public class PcApiLecturerAuditController extends BaseController {
 
 	/**
 	 * 讲师信息-审核查看接口
-	 * 
+	 *
 	 * @param lecturerAuditViewREQ
 	 */
 	@ApiOperation(value = "讲师信息-审核查看接口", notes = "讲师信息-审核查看接口")

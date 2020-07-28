@@ -20,8 +20,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 订单信息表
- *
- * @author wujing
  */
 @RestController
 public class BossOrderInfoController extends BaseController implements BossOrderInfo {

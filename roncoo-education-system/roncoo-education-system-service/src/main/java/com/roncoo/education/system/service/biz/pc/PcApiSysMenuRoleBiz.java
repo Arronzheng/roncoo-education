@@ -18,8 +18,6 @@ import com.roncoo.education.util.base.Result;
 
 /**
  * 菜单角色关联表
- *
- * @author wujing
  */
 @Component
 public class PcApiSysMenuRoleBiz {
@@ -31,7 +29,7 @@ public class PcApiSysMenuRoleBiz {
 
 	/**
 	 * 列出菜单角色关联信息接口
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */

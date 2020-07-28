@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 头部导航
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossNavBarController extends BaseController implements BossNavBar {

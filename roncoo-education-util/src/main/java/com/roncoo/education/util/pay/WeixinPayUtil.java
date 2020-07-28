@@ -25,14 +25,14 @@ public class WeixinPayUtil {
     */
     public static Map<String, String> weixinPay(String out_trade_no, String body, BigDecimal total_fee, String notify_url, String tradeType, String orderType, String openId) throws Exception {
         WeixinConfig config = new WeixinConfig();
-        WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, true);
+        WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, false);
 
         Map<String, String> data = new HashMap<String, String>();
 //      data.put("sign",getSignKey(config, wxpay));//签名
         data.put("body", body);//商品描述(标题)
         data.put("out_trade_no", out_trade_no);//商户订单号
-        data.put("total_fee", total_fee.stripTrailingZeros().toPlainString());//订单总金额，单位为分
-        data.put("spbill_create_ip", IpUtil.getLocalIp4Address().toString());//用户的客户端IP,Native支付填调用微信支付API的机器IP
+        data.put("total_fee", total_fee.multiply(new BigDecimal("100")).stripTrailingZeros().toPlainString());//订单总金额，单位为分
+        data.put("spbill_create_ip", IpUtil.getLocalIp4AddressForString());//用户的客户端IP,Native支付填调用微信支付API的机器IP
         data.put("notify_url", notify_url);//回调地址
         data.put("trade_type", tradeType);  // 交易类型：JSAPI -JSAPI支付 NATIVE -Native支付 APP -APP支付
         data.put("attach", orderType);  // 附加数据,原样返回
@@ -46,7 +46,7 @@ public class WeixinPayUtil {
      */
     public static Map<String, String> orderQuery(String out_trade_no){
         WeixinConfig config = new WeixinConfig();
-        WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, true);
+        WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, false);
         Map<String, String> data = new HashMap<String, String>();
         data.put("out_trade_no", out_trade_no);
         Map<String, String> resp = null;

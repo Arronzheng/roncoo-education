@@ -13,9 +13,9 @@ import com.roncoo.education.util.base.PageUtil;
 import com.roncoo.education.util.tools.BeanUtil;
 
 /**
- * 用户错误登录日志 
+ * 用户错误登录日志
  *
- * @author wujing
+ *
  */
 @Component
 public class BossUserLogLoginBiz {
@@ -48,5 +48,5 @@ public class BossUserLogLoginBiz {
 	    UserLogLogin record = BeanUtil.copyProperties(qo, UserLogLogin.class);
 		return dao.updateById(record);
 	}
-	
+
 }

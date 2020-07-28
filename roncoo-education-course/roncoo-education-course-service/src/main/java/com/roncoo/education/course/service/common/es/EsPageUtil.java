@@ -14,8 +14,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 分页
- *
- * @author wujing
  * @param <T>
  */
 public final class EsPageUtil<T extends Serializable> implements Serializable {

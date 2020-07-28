@@ -43,9 +43,8 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 /**
- * 类名称：ExtResultMapper 类描述：自定义结果映射类 创建人：WeJan 创建时间：2018-09-13 20:47
- * 
- * http://nullpointer.pw/
+ * 类名称：ExtResultMapper 类描述：自定义结果映射类
+ *
  */
 @Component
 public class ResultMapperExt extends AbstractResultMapper {

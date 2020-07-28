@@ -20,7 +20,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 用户教育信息
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossUserExtController extends BaseController implements BossUserExt {

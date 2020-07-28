@@ -23,7 +23,7 @@ public class AssembleCountDownCrontab extends BaseController {
 	/**
 	 * 定时任务每分钟执行一次
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@Scheduled(fixedRate = 60000)
 	public void pushCancel() {

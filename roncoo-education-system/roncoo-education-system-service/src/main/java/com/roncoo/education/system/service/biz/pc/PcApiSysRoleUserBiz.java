@@ -21,8 +21,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 角色用户关联表
- *
- * @author wujing
  */
 @Component
 public class PcApiSysRoleUserBiz {

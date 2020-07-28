@@ -21,7 +21,7 @@ public class WeixinConfig implements WXPayConfig {
 
     @Override
     public String getKey() {
-        return "b91d31e906321813f7adcf489c3809df";
+        return "y2gJK3bf7r9t35fs8c4W7n1e4V6x8t0q";
     }//API密钥：key为商户平台设置的密钥key
 
     @Override

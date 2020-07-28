@@ -15,7 +15,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 头部导航
  *
- * @author wuyun
+ *
  */
 @RestController
 public class ApiNavBarController extends BaseController {
@@ -25,9 +25,9 @@ public class ApiNavBarController extends BaseController {
 
 	/**
 	 * 获取头部导航信息接口
-	 * 
+	 *
 	 * @return 站点信息
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "获取头部导航信息接口", notes = "获取头部导航信息")
 	@RequestMapping(value = "/system/api/nav/bar/list", method = RequestMethod.POST)

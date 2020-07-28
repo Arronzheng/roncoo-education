@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 站内信息表
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossMsgController extends BaseController implements BossMsg {
@@ -47,7 +47,7 @@ public class BossMsgController extends BaseController implements BossMsg {
 	public MsgVO getById(@RequestBody Long id) {
 		return biz.getById(id);
 	}
-	
+
 	@Override
 	public int push() {
 		return biz.push();

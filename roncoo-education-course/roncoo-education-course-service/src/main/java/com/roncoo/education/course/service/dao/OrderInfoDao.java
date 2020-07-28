@@ -25,7 +25,7 @@ public interface OrderInfoDao {
 
 	/**
 	 * 根据订单编号查找订单信息
-	 * 
+	 *
 	 * @param orderNo
 	 * @return
 	 */
@@ -33,49 +33,51 @@ public interface OrderInfoDao {
 
 	/**
 	 * 统计时间段内该讲师的订单收益
-	 * 
+	 *
 	 * @param lecturerUserNo
 	 * @param date
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	BigDecimal sumLecturerUserNoAndData(Long lecturerUserNo, String date);
 
 	/**
 	 * 统计时间段内的总订单数
-	 * 
+	 *
 	 * @param date
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	Integer sumByCountOrders(String date);
 
 	/**
 	 * 统计时间段的总收入
-	 * 
+	 *
 	 * @param date
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	BigDecimal sumByPayTime(String date);
 
 	/**
 	 * 统计订单收入情况
-	 * 
+	 *
 	 * @param qo
-	 * @author wuyun
+	 *
 	 */
 	CountIncomeRESQ countIncome(OrderInfoQO qo);
 
 	/**
 	 * 订单信息汇总（导出报表）
-	 * 
+	 *
 	 * @param orderInfoQO
-	 * @author wuyun
+	 *
 	 */
 	List<OrderReportVO> listForReport(OrderInfoQO orderInfoQO);
 
     int updateByOrderNo(OrderInfo order);
 
-    OrderInfo getByUserNoAndCourseIdAndOrderStatus(Long userNo, Long courseId);
+    OrderInfo getByUserNoAndCourseIdAndOrderStatus(Long userNo, Long courseId, Integer orderType);
+
+    int getByUserNoForCount(Long userNo, Integer code);
 }

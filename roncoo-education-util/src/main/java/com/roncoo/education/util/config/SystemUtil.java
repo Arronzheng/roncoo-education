@@ -5,8 +5,6 @@ import java.util.Properties;
 
 /**
  * 配置文件读取工具类
- *
- * @author wujing
  */
 public final class SystemUtil {
 
@@ -30,8 +28,10 @@ public final class SystemUtil {
 	public static final String ALIYUN_OSS_ENDPOINT = getProperty("aliyun_oss_endpoint");
 	public static final String ALIYUN_OAS_URL = getProperty("aliyun_oas_url");
 
+	//Linux系统上传本地路径
 	public static final String PERIOD_VIDEO_PATH = getProperty("period_video_path");
 	public static final String PIC_PATH = getProperty("pic_path");
+	public static final String DOC_PATH = getProperty("doc_path");
 
 	// 支付回调配置
 	public static final String RONCOO_PAY_NOTIFY = getProperty("roncoo_pay_notify");
@@ -55,6 +55,7 @@ public final class SystemUtil {
 
 	public static final String TEST_COURSE = getProperty("test_course");
 
+	//window系统上传本地路径
 	public static final String DOC_STORAGE_PATH = getProperty("doc_storage_path");
 	public static final String PIC_STORAGE_PATH = getProperty("pic_storage_path");
 	public static final String VIDEO_STORAGE_PATH = getProperty("video_storage_path");

@@ -19,19 +19,19 @@ public interface NavBarDao {
 
 	/**
 	 * 根据导航链接查找信息
-	 * 
+	 *
 	 * @param navUrl
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	NavBar getByNavUrl(String navUrl);
 
 	/**
 	 * 查找可用的头部导航
-	 * 
+	 *
 	 * @param statusId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	List<NavBar> getByStatusId(Integer statusId);
 }

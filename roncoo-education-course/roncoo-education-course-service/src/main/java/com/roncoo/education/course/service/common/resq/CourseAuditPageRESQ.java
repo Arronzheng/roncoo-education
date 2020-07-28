@@ -12,8 +12,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息-审核-分页列表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -153,4 +151,14 @@ public class CourseAuditPageRESQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "是否已添加活动专区课程(1:存在，0:不存在)")
 	private Integer isAddActivityCourse;
+	/**
+	 * 是否有教具（1没有，2有）
+	 */
+	@ApiModelProperty(value = "是否有教具（1没有，2有）")
+	private Integer hasTrainaid;
+	/**
+	 * 课程简介
+	 */
+	@ApiModelProperty(value = "课程简介")
+	private String courseShortIntroduce;
 }

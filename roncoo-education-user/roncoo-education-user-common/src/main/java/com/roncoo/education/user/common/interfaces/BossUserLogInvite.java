@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 用户错误登录日志
- *
- * @author wujing
  */
 public interface BossUserLogInvite {
 

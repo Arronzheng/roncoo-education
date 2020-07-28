@@ -10,8 +10,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程信息-审核
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -107,10 +105,18 @@ public class AuthCourseAuditDTO implements Serializable {
      * 是否上架(1:上架，0:下架)
      */
     private Integer isPutaway;
-    
+
     /**
      * 章节信息集合
      */
     private List<AuthCourseChapterAuditDTO> authCourseChapterAuditList;
-    
+    /**
+     * 是否有教具（1没有，2有）
+     */
+    private Integer hasTrainaid;
+    /**
+     * 课程简介
+     */
+    private String courseShortIntroduce;
+
 }

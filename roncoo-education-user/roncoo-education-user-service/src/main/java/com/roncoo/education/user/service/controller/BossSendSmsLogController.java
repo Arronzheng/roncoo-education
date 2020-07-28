@@ -14,7 +14,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 用户发送短信日志
  *
- * @author YZJ
+ *
  */
 @RestController
 public class BossSendSmsLogController extends BaseController implements BossSendSmsLog {

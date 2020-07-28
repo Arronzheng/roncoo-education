@@ -20,8 +20,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 课程分类
- *
- * @author wujing
  */
 @Component
 public class BossCourseCategoryBiz {
@@ -54,7 +52,7 @@ public class BossCourseCategoryBiz {
 
 	/**
 	 * 递归展示分类
-	 * 
+	 *
 	 * @author WY
 	 */
 	private List<CourseCategoryVO> recursionList(Long parentId) {

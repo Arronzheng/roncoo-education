@@ -3,7 +3,7 @@ package com.roncoo.education.util.polyv;
 import java.util.List;
 
 /**
- * @author wujing
+ *
  */
 public class UploadFileResult {
 	private List<String>  images_b;

@@ -28,7 +28,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 讲师信息
  *
- * @author wujing
+ *
  */
 @Component
 public class BossLecturerBiz {
@@ -80,7 +80,7 @@ public class BossLecturerBiz {
 
 	/**
 	 * 根据讲师用户编号查找讲师信息
-	 * 
+	 *
 	 * @param lecturerUserNo
 	 * @return
 	 */
@@ -101,7 +101,7 @@ public class BossLecturerBiz {
 
 	/**
 	 * 列出所有讲师信息
-	 * 
+	 *
 	 * @author WY
 	 */
 	public List<LecturerVO> listAllForLecturer() {

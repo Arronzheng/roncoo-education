@@ -19,8 +19,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 广告信息
- *
- * @author wujing
  */
 @Component
 public class BossAdvBiz {

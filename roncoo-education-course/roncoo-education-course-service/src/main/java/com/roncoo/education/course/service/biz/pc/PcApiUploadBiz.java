@@ -65,7 +65,8 @@ public class PcApiUploadBiz extends BaseBiz {
             Long fileNo = IdWorker.getId();
             if (sys.getFileType().equals(FileTypeEnum.LOCAL.getCode())) {
                 // 1、上传到本地
-                File pic = new File(SystemUtil.PIC_STORAGE_PATH + fileNo.toString() + "." + StrUtil.getSuffix(picFile.getOriginalFilename()));
+//                File pic = new File(SystemUtil.PIC_STORAGE_PATH + fileNo.toString() + "." + StrUtil.getSuffix(picFile.getOriginalFilename()));// windows系统
+                File pic = new File(SystemUtil.PIC_PATH + fileNo.toString() + "." + StrUtil.getSuffix(picFile.getOriginalFilename()));// linux系统
                 try {
                     // 判断文件目录是否存在，不存在就创建文件目录
                     if (!pic.getParentFile().exists()) {
@@ -111,7 +112,8 @@ public class PcApiUploadBiz extends BaseBiz {
             Long fileNo = IdWorker.getId();
             // 1、上传到本地
             if (sys.getFileType().equals(FileTypeEnum.LOCAL.getCode())) {
-                File doc = new File(SystemUtil.DOC_STORAGE_PATH + fileNo.toString() + "." + StrUtil.getSuffix(docFile.getOriginalFilename()));
+//                File doc = new File(SystemUtil.DOC_STORAGE_PATH + fileNo.toString() + "." + StrUtil.getSuffix(docFile.getOriginalFilename()));// windows系统
+                File doc = new File(SystemUtil.DOC_PATH + fileNo.toString() + "." + StrUtil.getSuffix(docFile.getOriginalFilename())); // linux系统
                 try {
                     // 判断文件目录是否存在，不存在就创建文件目录
                     if (!doc.getParentFile().exists()) {
@@ -147,7 +149,7 @@ public class PcApiUploadBiz extends BaseBiz {
     /**
      * 上传视频接口
      *
-     * @author wuyun
+     *
      */
     public Result<String> uploadVideo(MultipartFile videoFile, String url) {
         // 视频上传
@@ -182,10 +184,10 @@ public class PcApiUploadBiz extends BaseBiz {
             videoNo = UrlUtil.UrlToKey(url,sys.getAliyunOssUrl());//Long.valueOf(key.indexOf("/") > 0 ? key.substring((key.indexOf("/") + 1), key.indexOf(".")) : key.substring(0, key.indexOf(".")));
         }
         // 1、上传到本地
-//		File targetFile = new File(
-//				SystemUtil.PERIOD_VIDEO_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Linux系统
-        File targetFile = new File(
-                SystemUtil.VIDEO_STORAGE_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Windows系统
+		File targetFile = new File(
+				SystemUtil.PERIOD_VIDEO_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Linux系统
+//        File targetFile = new File(
+//                SystemUtil.VIDEO_STORAGE_PATH + videoNo.toString() + "." + StrUtil.getSuffix(fileName));//Windows系统
         targetFile.setLastModified(System.currentTimeMillis());// 设置最后修改时间
         // 判断文件目录是否存在，不存在就创建文件目录
         if (!targetFile.getParentFile().exists()) {

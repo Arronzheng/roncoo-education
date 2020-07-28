@@ -32,7 +32,7 @@ import com.roncoo.education.util.tools.DateUtil;
 /**
  * 用户教育信息
  *
- * @author wujing
+ *
  */
 @Component
 public class BossUserExtBiz extends BaseBiz {
@@ -95,7 +95,7 @@ public class BossUserExtBiz extends BaseBiz {
 	 *
 	 * @param userExtEchartsQO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public List<UserEchartsVO> sumByCounts(UserExtEchartsQO userExtEchartsQO) {
 		List<UserEchartsVO> list = new ArrayList<>();
@@ -113,7 +113,7 @@ public class BossUserExtBiz extends BaseBiz {
 	/**
 	 * 根据状态，角色获取可用的用户信息的集合
 	 *
-	 * @author wuyun
+	 *
 	 */
 	public void cachUserForMsg() {
 		int pageSize = 1000;

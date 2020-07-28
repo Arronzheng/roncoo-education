@@ -19,7 +19,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 /**
  * 系统配置表
  *
- * @author YZJ
+ *
  */
 @Component
 public class BossSysBiz {

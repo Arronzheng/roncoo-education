@@ -5,7 +5,7 @@ import com.roncoo.education.util.enums.ResultEnum;
 /**
  * 异常处理类
  *
- * @author wujing
+ *
  */
 public class BaseException extends RuntimeException {
 

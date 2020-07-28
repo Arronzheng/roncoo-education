@@ -16,8 +16,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课程用户学习日志
- *
- * @author wujing
  */
 @RestController
 public class BossCourseUserStudyLogController extends BaseController implements BossCourseUserStudyLog {

@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 站内信用户记录表
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)

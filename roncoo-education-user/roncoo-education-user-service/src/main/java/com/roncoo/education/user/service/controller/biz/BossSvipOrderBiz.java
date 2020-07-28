@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * 订单信息表
  *
- * @author wujing
+ *
  */
 @Component
 public class BossSvipOrderBiz extends BaseBiz {

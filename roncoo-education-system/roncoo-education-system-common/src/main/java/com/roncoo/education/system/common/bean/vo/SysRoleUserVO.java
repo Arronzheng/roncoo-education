@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 角色用户关联表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * 专区课程关联表
  *
- * @author wuyun
+ *
  */
 @RestController
 @RequestMapping(value = "/course/api/zone/course")

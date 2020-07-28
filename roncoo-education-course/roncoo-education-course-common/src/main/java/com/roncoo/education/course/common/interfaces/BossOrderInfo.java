@@ -17,8 +17,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 订单信息表
- *
- * @author wujing
  */
 public interface BossOrderInfo {
 
@@ -40,7 +38,7 @@ public interface BossOrderInfo {
 	/**
 	 * 订单信息汇总（导出报表）
 	 *
-	 * @author YZJ
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/listForReport", method = RequestMethod.POST)
 	List<OrderReportVO> listForReport(@RequestBody OrderInfoQO orderInfoQO);
@@ -50,7 +48,7 @@ public interface BossOrderInfo {
 	 *
 	 * @param orderEchartsQO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/sumByCountOrders", method = RequestMethod.POST)
 	List<OrderEchartsVO> sumByCountOrders(@RequestBody OrderEchartsQO orderEchartsQO);
@@ -60,7 +58,7 @@ public interface BossOrderInfo {
 	 *
 	 * @param orderEchartsQO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/sumByPayTime", method = RequestMethod.POST)
 	List<OrderEchartsVO> sumByPayTime(@RequestBody OrderEchartsQO orderEchartsQO);
@@ -68,7 +66,7 @@ public interface BossOrderInfo {
 	/**
 	 * 订单处理定时任务
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/handleScheduledTasks", method = RequestMethod.POST)
 	int handleScheduledTasks();
@@ -76,7 +74,7 @@ public interface BossOrderInfo {
 	/**
 	 * 统计订单收入情况
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/countIncome", method = RequestMethod.POST)
 	CountIncomeVO countIncome(@RequestBody OrderInfoQO qo);

@@ -16,8 +16,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课程分类
- *
- * @author wujing
  */
 @RestController
 public class BossCourseCategoryController extends BaseController implements BossCourseCategory {

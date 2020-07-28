@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
 /**
  * 课程信息
  *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -114,5 +113,15 @@ public class CourseDTO implements Serializable {
 	 */
 	@ApiModelProperty(value = "总课时数")
 	private Integer periodTotal;
+	/**
+	 * 是否有教具（1没有，2有）
+	 */
+	@ApiModelProperty(value = "是否有教具（1没有，2有）")
+	private Integer hasTrainaid;
+	/**
+	 * 课程简介
+	 */
+	@ApiModelProperty(value = "课程简介")
+	private String courseShortIntroduce;
 
 }

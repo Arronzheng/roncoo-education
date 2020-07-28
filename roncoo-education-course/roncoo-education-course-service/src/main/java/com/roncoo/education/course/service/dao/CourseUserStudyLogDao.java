@@ -24,7 +24,7 @@ public interface CourseUserStudyLogDao {
 	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	Page<CourseUserStudyLog> courseList(int pageCurrent, int pageSize, String beginGmtCreate, String endGmtCreate);
 
@@ -33,7 +33,7 @@ public interface CourseUserStudyLogDao {
 	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	List<CourseUserStudyLog> countCourseIdByGmtCreate(String beginGmtCreate, String endGmtCreate);
 
@@ -42,7 +42,7 @@ public interface CourseUserStudyLogDao {
 	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	Page<CourseUserStudyLog> periodList(Long courseId, int pageCurrent, int pageSize, String beginGmtCreate, String endGmtCreate);
 
@@ -51,7 +51,7 @@ public interface CourseUserStudyLogDao {
 	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	List<CourseUserStudyLog> countPeriodNoByCourseIdAndGmtCreate(Long courseId, String beginGmtCreate, String endGmtCreate);
 

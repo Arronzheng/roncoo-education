@@ -21,7 +21,7 @@ public interface CourseChapterAuditDao {
 
 	/**
 	 * 根据章节编号更新章节排序
-	 * 
+	 *
 	 * @param sort
 	 * @param chapterId
 	 * @return
@@ -31,7 +31,7 @@ public interface CourseChapterAuditDao {
 
 	/**
 	 * 根据章节编号更新审核状态
-	 * 
+	 *
 	 * @param auditStatus
 	 * @param chapterId
 	 * @return
@@ -41,19 +41,19 @@ public interface CourseChapterAuditDao {
 
 	/**
 	 * 根据课程编号删除章节信息
-	 * 
+	 *
 	 * @param courseId
 	 * @return int
-	 * @author wuyun
+	 *
 	 */
 	int deleteByCourseId(Long courseId);
 
 	/**
 	 * 根据课程编号查询可用的章节信息集合
-	 * 
+	 *
 	 * @param courseId
 	 * @return statusId
-	 * @author wuyun
+	 *
 	 */
 	List<CourseChapterAudit> listByCourseIdAndStatusId(Long courseId, Integer statusId);
 }

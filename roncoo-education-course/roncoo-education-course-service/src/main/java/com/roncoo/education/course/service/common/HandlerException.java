@@ -16,8 +16,7 @@ import com.roncoo.education.util.tools.JSONUtil;
 import feign.FeignException;
 
 /**
- * 
- * @author wujing
+ *
  */
 @RestControllerAdvice(basePackages = "com.roncoo.education.course.service.controller.gateway")
 public class HandlerException extends BaseController {

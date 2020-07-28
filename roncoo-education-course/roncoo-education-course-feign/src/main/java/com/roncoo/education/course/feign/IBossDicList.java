@@ -5,9 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import com.roncoo.education.course.common.interfaces.BossDicList;
 
 /**
- * 数据字典明细表 
- *
- * @author wujing
+ * 数据字典明细表
  */
 @FeignClient(value = "roncoo-education-course-service")
 public interface IBossDicList extends BossDicList {

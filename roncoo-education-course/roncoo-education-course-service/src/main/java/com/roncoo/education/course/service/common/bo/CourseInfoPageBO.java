@@ -9,7 +9,6 @@ import lombok.experimental.Accessors;
 /**
  * 课程信息
  *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -56,4 +55,14 @@ public class CourseInfoPageBO implements Serializable {
 	 */
 	@ApiModelProperty(value = "是否vip免费(1:免费)")
 	private Integer isVipFree;
+	/**
+	 * 是否有教具（1没有，2有）
+	 */
+	@ApiModelProperty(value = "是否有教具（1没有，2有）")
+	private Integer hasTrainaid;
+	/**
+	 * 课程简介
+	 */
+	@ApiModelProperty(value = "课程简介")
+	private String courseShortIntroduce;
 }

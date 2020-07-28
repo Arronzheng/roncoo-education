@@ -37,7 +37,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 讲师信息-审核
  *
- * @author wujing
+ *
  */
 @Component
 public class AuthApiLecturerAuditBiz extends BaseBiz {
@@ -56,9 +56,9 @@ public class AuthApiLecturerAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师信息修改接口
-	 * 
+	 *
 	 * @param authLecturerAuditBO
-	 * @author wuyun
+	 *
 	 */
 	public Result<Integer> update(AuthLecturerAuditBO authLecturerAuditBO) {
 		LecturerAudit record = BeanUtil.copyProperties(authLecturerAuditBO, LecturerAudit.class);
@@ -73,9 +73,9 @@ public class AuthApiLecturerAuditBiz extends BaseBiz {
 
 	/**
 	 * 讲师信息查看接口
-	 * 
+	 *
 	 * @param authLecturerAuditViewBO
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthLecturerAuditViewDTO> view(AuthLecturerAuditViewBO authLecturerAuditViewBO) {
 		if (null == authLecturerAuditViewBO.getLecturerUserNo()) {
@@ -92,7 +92,7 @@ public class AuthApiLecturerAuditBiz extends BaseBiz {
 	 * 讲师申请接口
 	 *
 	 * @param authLecturerAuditSaveBO
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> save(AuthLecturerAuditSaveBO authLecturerAuditSaveBO) {

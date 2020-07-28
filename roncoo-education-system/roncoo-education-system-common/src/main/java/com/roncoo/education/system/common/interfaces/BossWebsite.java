@@ -12,7 +12,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 站点信息
  *
- * @author wuyun
+ *
  */
 public interface BossWebsite {
 
@@ -34,7 +34,7 @@ public interface BossWebsite {
 	/**
 	 * 获取站点信息
 	 *
-	 * @author wuyun
+	 *
 	 */
 	@RequestMapping(value = "/boss/system/website/getWebsite", method = RequestMethod.GET)
 	WebsiteVO getWebsite();

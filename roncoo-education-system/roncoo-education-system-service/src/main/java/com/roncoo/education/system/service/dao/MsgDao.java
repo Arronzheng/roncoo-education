@@ -20,13 +20,13 @@ public interface MsgDao {
 
 	/**
 	 * 定时发送检索需要发送的站内信
-	 * 
+	 *
 	 * @param statusId
 	 * @param isSend
 	 * @param isTimeSend
 	 * @param sendTime
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	List<Msg> listByStatusIdAndIsSendAndIsTimeSendAndSendTime(Integer statusId, Integer isSend, Integer isTimeSend, Date sendTime);
 }

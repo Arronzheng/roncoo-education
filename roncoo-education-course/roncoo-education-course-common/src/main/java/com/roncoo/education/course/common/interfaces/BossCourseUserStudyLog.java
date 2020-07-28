@@ -13,8 +13,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课程用户学习日志
- *
- * @author wujing
  */
 public interface BossCourseUserStudyLog {
 
@@ -35,40 +33,40 @@ public interface BossCourseUserStudyLog {
 
 	/**
 	 * 分页-课程播放量排行榜
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/courseUserStudyLog/courseList", method = RequestMethod.POST)
 	Page<CourseUserStudyLogVO> courseList(@RequestBody CourseUserStudyLogQO qo);
 
 	/**
 	 * 根据时间取得前五播放量的课程
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/courseUserStudyLog/countCourseIdByGmtCreate", method = RequestMethod.POST)
 	List<CourseUserStudyLogVO> countCourseIdByGmtCreate(@RequestBody CourseUserStudyLogQO qo);
 
 	/**
 	 * 分页-课时播放量排行榜
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/courseUserStudyLog/periodList", method = RequestMethod.POST)
 	Page<CourseUserStudyLogVO> periodList(@RequestBody CourseUserStudyLogQO qo);
 
 	/**
 	 * 根据时间和课程ID取得前五播放量的课时
-	 * 
+	 *
 	 * @param qo
 	 * @return
-	 * @author YZJ
+	 *
 	 */
 	@RequestMapping(value = "/boss/course/courseUserStudyLog/countPeriodNoByCourseIdAndGmtCreate", method = RequestMethod.POST)
 	List<CourseUserStudyLogVO> countPeriodNoByCourseIdAndGmtCreate(@RequestBody CourseUserStudyLogQO qo);

@@ -12,16 +12,16 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 系统配置表 
+ * 系统配置表
  *
- * @author YZJ
+ *
  */
 @RestController
 public class BossSysController extends BaseController implements BossSys{
 
 	@Autowired
 	private BossSysBiz biz;
-	
+
 	@Override
 	public Page<SysVO> listForPage(@RequestBody SysQO qo){
 		return biz.listForPage(qo);
@@ -32,16 +32,16 @@ public class BossSysController extends BaseController implements BossSys{
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@RequestBody Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody SysQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public SysVO getById(@RequestBody Long id){
 		return biz.getById(id);
@@ -51,5 +51,5 @@ public class BossSysController extends BaseController implements BossSys{
 	public SysVO getSys() {
 		return biz.getSys();
 	}
-	
+
 }

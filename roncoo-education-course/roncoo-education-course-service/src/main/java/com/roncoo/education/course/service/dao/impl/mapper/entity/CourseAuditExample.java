@@ -1634,6 +1634,126 @@ public class CourseAuditExample implements Serializable {
             addCriterion("period_total not between", value1, value2, "periodTotal");
             return (Criteria) this;
         }
+        public Criteria andHasTrainaidIsNull(){
+            addCriterion("has_trainaid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidIsNotNull(){
+            addCriterion("has_trainaid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidEqualTo(Integer value) {
+            addCriterion("has_trainaid =", value, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidNotEqualTo(Integer value) {
+            addCriterion("has_trainaid <>", value, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidGreaterThan(Integer value) {
+            addCriterion("has_trainaid >", value, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("has_trainaid >=", value, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidLessThan(Integer value) {
+            addCriterion("has_trainaid <", value, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidLessThanOrEqualTo(Integer value) {
+            addCriterion("has_trainaid <=", value, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andHasTrainaidIn(List<Integer> values) {
+            addCriterion("has_trainaid in", values, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidNotIn(List<Integer> values) {
+            addCriterion("has_trainaid not in", values, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidBetween(Integer value1, Integer value2) {
+            addCriterion("has_trainaid between", value1, value2, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasTrainaidNotBetween(Integer value1, Integer value2) {
+            addCriterion("has_trainaid not between", value1, value2, "hasTrainaid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceIsNull(){
+            addCriterion("course_short_introduce is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceIsNotNull(){
+            addCriterion("course_short_introduce is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceEqualTo(String value) {
+            addCriterion("course_short_introduce =", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceNotEqualTo(String value) {
+            addCriterion("course_short_introduce <>", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceGreaterThan(String value) {
+            addCriterion("course_short_introduce >", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceGreaterThanOrEqualTo(String value) {
+            addCriterion("course_short_introduce >=", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceLessThan(String value) {
+            addCriterion("course_short_introduce <", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceLessThanOrEqualTo(String value) {
+            addCriterion("course_short_introduce <=", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceLike(String value) {
+            addCriterion("course_short_introduce like", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceNotLike(String value) {
+            addCriterion("course_short_introduce not like", value, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceIn(List<String> values) {
+            addCriterion("course_short_introduce in", values, "courseShortIntroduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseShortIntroduceNotIn(List<String> values) {
+            addCriterion("course_short_introduce not in", values, "courseShortIntroduce");
+            return (Criteria) this;
+        }
 
 
     }

@@ -40,7 +40,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 课程视频信息
  *
- * @author wuyun
+ *
  */
 @Component
 public class AuthApiCourseVideoBiz extends BaseBiz {
@@ -59,9 +59,9 @@ public class AuthApiCourseVideoBiz extends BaseBiz {
 
 	/**
 	 * 章节视频库，课时视频库添加接口
-	 * 
+	 *
 	 * @param authCourseVideoSaveBo
-	 * @author wuyun
+	 *
 	 */
 	public Result<Integer> save(AuthCourseVideoSaveBO authCourseVideoSaveBO) {
 		if (authCourseVideoSaveBO.getChapterId().equals(Long.valueOf(0))) {
@@ -99,9 +99,9 @@ public class AuthApiCourseVideoBiz extends BaseBiz {
 
 	/**
 	 * 章节视频库列出
-	 * 
+	 *
 	 * @param chapterId
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthCourseVideoListDTO> listByChapterId(AuthCourseVideoBO authCourseVideoBO) {
 		// 查找该章节下可用的视频信息集合
@@ -116,9 +116,9 @@ public class AuthApiCourseVideoBiz extends BaseBiz {
 
 	/**
 	 * 课时视频列出
-	 * 
+	 *
 	 * @param periodId
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthCourseVideoListDTO> listByPeriodId(AuthPeriodIdVideoBO authCourseVideoBO) {
 		List<CourseVideo> courseVideoList = dao.listByPeriodIdAndStatusId(authCourseVideoBO.getPeriodId(), StatusIdEnum.YES.getCode());
@@ -132,9 +132,9 @@ public class AuthApiCourseVideoBiz extends BaseBiz {
 
 	/**
 	 * 课时视频更新接口
-	 * 
+	 *
 	 * @param authCourseVideoUpdateBo
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> update(AuthCourseVideoUpdateBO authCourseVideoUpdateBO) {
@@ -223,9 +223,9 @@ public class AuthApiCourseVideoBiz extends BaseBiz {
 
 	/**
 	 * 视频删除
-	 * 
+	 *
 	 * @param bo
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> udpateById(AuthCourseVideoDeleteBO authCourseVideoDeleteBO) {

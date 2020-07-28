@@ -18,16 +18,16 @@ public interface WebsiteDao {
 	/**
 	 * 获取站点信息
 	 *
-	 * @author wuyun
+	 *
 	 */
 	Website getWebsite();
 
 	/**
 	 * 根据状态信息查找站点信息
-	 * 
+	 *
 	 * @param statusId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	Website getByStatusId(Integer statusId);
 }

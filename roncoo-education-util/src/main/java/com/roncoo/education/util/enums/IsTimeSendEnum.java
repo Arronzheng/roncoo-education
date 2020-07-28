@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 是否定时发送
  *
- * @author wuyun
+ *
  *
  */
 @Getter

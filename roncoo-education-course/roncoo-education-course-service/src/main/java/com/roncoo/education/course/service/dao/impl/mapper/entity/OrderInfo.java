@@ -61,6 +61,12 @@ public class OrderInfo implements Serializable {
 
     private Date payTime;
 
+    private Long couponUserId;
+
+    private String deliveryName;
+
+    private String deliveryId;
+
 	private static final long serialVersionUID = 1L;
 
     public Integer getOrderType() {
@@ -285,6 +291,30 @@ public class OrderInfo implements Serializable {
 
     public void setPayTime(Date payTime) {
         this.payTime = payTime;
+    }
+
+    public Long getCouponUserId() {
+        return couponUserId;
+    }
+
+    public void setCouponUserId(Long couponUserId) {
+        this.couponUserId = couponUserId;
+    }
+
+    public String getDeliveryName() {
+        return deliveryName;
+    }
+
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName;
+    }
+
+    public String getDeliveryId() {
+        return deliveryId;
+    }
+
+    public void setDeliveryId(String deliveryId) {
+        this.deliveryId = deliveryId;
     }
 
     @Override

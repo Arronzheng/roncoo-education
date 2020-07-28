@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 用户基本信息
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossVipController extends BaseController implements BossVip {

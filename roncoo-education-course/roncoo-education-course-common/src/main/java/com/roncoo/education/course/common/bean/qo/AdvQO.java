@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 广告信息
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -77,7 +75,7 @@ public class AdvQO implements Serializable {
 	 * 位置(0电脑端，1微信端)
 	 */
 	private Integer platShow;
-	
+
 	private String beginTimeString;
 	private String endTimeString;
 }

@@ -19,8 +19,6 @@ import java.util.List;
 
 /**
  * 讲师信息-审核
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/user/auth/lecturer")
@@ -31,9 +29,9 @@ public class AuthApiLecturerController extends BaseController {
 
 	/**
 	 * 讲师信息查看接口
-	 * 
+	 *
 	 * @param lecturerUserNo
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "讲师查看接口", notes = "根据讲师用户编号查看讲师信息")
 	@RequestMapping(value = "/view", method = RequestMethod.POST)

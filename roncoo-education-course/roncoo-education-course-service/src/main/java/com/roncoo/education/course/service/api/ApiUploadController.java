@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 上传接口
  *
- * @author wuyun
+ *
  */
 @RestController
 @RequestMapping(value = "/course/api/upload")
@@ -29,7 +29,7 @@ public class ApiUploadController extends BaseController {
 	 * 上传视频接口
 	 *
 	 * @param videoFile
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "上传视频接口", notes = "上传视频")
 	@RequestMapping(value = "/video", method = RequestMethod.POST)
@@ -41,7 +41,7 @@ public class ApiUploadController extends BaseController {
 	 * 上传图片接口
 	 *
 	 * @param picFile
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "上传图片接口", notes = "上传图片")
 	@RequestMapping(value = "/pic", method = RequestMethod.POST)
@@ -55,7 +55,7 @@ public class ApiUploadController extends BaseController {
 	 *
 	 * @param docFile
 	 * @param periodUploadDoc
-	 * @author wuyun
+	 *
 	 */
 	@ApiOperation(value = "上传文档接口", notes = "上传文档")
 	@RequestMapping(value = "/doc", method = RequestMethod.POST)

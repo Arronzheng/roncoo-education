@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 /**
  * 广告信息-删除
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)

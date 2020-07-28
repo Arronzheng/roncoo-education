@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 平台信息
  *
- * @author wujing
+ *
  */
 @RestController
 public class BossPlatformController extends BaseController implements BossPlatform {

@@ -11,8 +11,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 平台信息
- *
- * @author wujing
  */
 public interface BossPlatform {
 

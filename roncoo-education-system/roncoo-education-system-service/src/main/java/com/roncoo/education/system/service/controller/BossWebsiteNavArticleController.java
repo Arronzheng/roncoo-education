@@ -15,7 +15,7 @@ import com.roncoo.education.util.base.Page;
 /**
  * 站点导航文章
  *
- * @author wuyun
+ *
  */
 @RestController
 public class BossWebsiteNavArticleController extends BaseController implements BossWebsiteNavArticle {

@@ -22,8 +22,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 平台信息
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/user/pc/platform")
@@ -34,7 +32,7 @@ public class PcApiPlatformController extends BaseController {
 
 	/**
 	 * 平台信息分页列表接口
-	 * 
+	 *
 	 * @param lecturerViewPageREQ
 	 */
 	@ApiOperation(value = "平台信息分页列表接口", notes = "平台信息分页列表接口")
@@ -45,17 +43,17 @@ public class PcApiPlatformController extends BaseController {
 
 	/**
 	 * 保存平台信息接口
-	 * 
+	 *
 	 */
 	@ApiOperation(value = "保存平台信息接口", notes = "保存平台信息接口")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Result<Integer> save(@RequestBody PlatformSaveREQ platformSaveREQ) {
 		return biz.save(platformSaveREQ);
 	}
-	
+
 	/**
 	 * 删除平台信息接口
-	 * 
+	 *
 	 */
 	@ApiOperation(value = "删除平台信息接口", notes = "删除平台信息接口")
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -65,7 +63,7 @@ public class PcApiPlatformController extends BaseController {
 
 	/**
 	 * 更新平台信息接口
-	 * 
+	 *
 	 */
 	@ApiOperation(value = "更新平台信息接口", notes = "更新平台信息接口")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -75,7 +73,7 @@ public class PcApiPlatformController extends BaseController {
 
 	/**
 	 * 平台信息信息查看接口
-	 * 
+	 *
 	 * @param lecturerViewREQ
 	 */
 	@ApiOperation(value = "平台信息查看接口", notes = "根据平台信息用户编号查看平台信息信息")

@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * 站点信息
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)
@@ -122,5 +122,5 @@ public class WebsiteVO implements Serializable {
      * 会员价格
      */
     private BigDecimal vipPrice;
-    
+
 }

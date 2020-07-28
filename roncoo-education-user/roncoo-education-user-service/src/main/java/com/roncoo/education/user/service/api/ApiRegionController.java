@@ -18,8 +18,6 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 行政区域表
- *
- * @author wujing
  */
 @RestController
 @RequestMapping(value = "/user/api/region/")

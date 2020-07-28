@@ -43,4 +43,6 @@ public class BargainUserHelpSaveDTO implements Serializable {
         private Date addTime;
         @ApiModelProperty(value = "用户信息")
         private UserExtVO userExtVO;
+        @ApiModelProperty(value = "是否成功")
+        private Boolean isSuccess;
 }

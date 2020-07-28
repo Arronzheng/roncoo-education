@@ -8,8 +8,6 @@ import com.roncoo.education.util.base.BaseController;
 
 /**
  * 角色信息
- *
- * @author wujing
  */
 @RestController
 public class ApiSysRoleController extends BaseController {

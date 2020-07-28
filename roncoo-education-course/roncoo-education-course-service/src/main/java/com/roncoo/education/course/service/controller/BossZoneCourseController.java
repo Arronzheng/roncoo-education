@@ -13,16 +13,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 专区课程关联表 
- *
- * @author wujing
+ * 专区课程关联表
  */
 @RestController
 public class BossZoneCourseController extends BaseController implements BossZoneCourse{
 
 	@Autowired
 	private BossZoneCourseBiz biz;
-	
+
 	@Override
 	public Page<ZoneCourseVO> listForPage(@RequestBody ZoneCourseQO qo){
 		return biz.listForPage(qo);
@@ -33,19 +31,19 @@ public class BossZoneCourseController extends BaseController implements BossZone
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody ZoneCourseQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public ZoneCourseVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);
 	}
-	
+
 }

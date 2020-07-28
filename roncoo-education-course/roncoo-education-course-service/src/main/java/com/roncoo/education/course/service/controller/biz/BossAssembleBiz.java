@@ -35,7 +35,7 @@ public class BossAssembleBiz {
      * @return
      */
     public int handleScheduledTasks() throws Exception {
-        // 1.拼团信息的处理
+        // 1.拼团信息的处理，将支付成功状态为1的修改成拼团失败并退款
         AssembleExample example = new AssembleExample();
         AssembleExample.Criteria c = example.createCriteria();
         c.andStatusEqualTo(1);

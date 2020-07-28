@@ -34,6 +34,8 @@ public class CourseAudit implements Serializable {
         private Integer countBuy;
         private Integer countStudy;
         private Integer periodTotal;
+        private Integer hasTrainaid;
+        private String courseShortIntroduce;
 
         public Long getId() {
             return id;
@@ -243,6 +245,22 @@ public class CourseAudit implements Serializable {
             this.periodTotal = periodTotal;
         }
 
+        public Integer getHasTrainaid() {
+            return hasTrainaid;
+        }
+
+        public void setHasTrainaid(Integer hasTrainaid) {
+            this.hasTrainaid = hasTrainaid;
+        }
+
+        public String getCourseShortIntroduce() {
+            return courseShortIntroduce;
+        }
+
+        public void setCourseShortIntroduce(String courseShortIntroduce) {
+            this.courseShortIntroduce = courseShortIntroduce;
+        }
+
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
@@ -275,6 +293,8 @@ public class CourseAudit implements Serializable {
             sb.append(", countBuy=").append(countBuy);
             sb.append(", countStudy=").append(countStudy);
             sb.append(", periodTotal=").append(periodTotal);
+            sb.append(", hasTrainaid=").append(hasTrainaid);
+            sb.append(", courseShortIntroduce=").append(courseShortIntroduce);
             sb.append(", serialVersionUID=").append(serialVersionUID);
             sb.append("]");
             return sb.toString();

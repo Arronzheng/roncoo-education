@@ -45,8 +45,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 章节信息-审核
- *
- * @author wujing
  */
 @Component
 public class AuthApiCourseChapterAuditBiz extends BaseBiz {
@@ -67,10 +65,10 @@ public class AuthApiCourseChapterAuditBiz extends BaseBiz {
 
 	/**
 	 * 章节查看接口
-	 * 
+	 *
 	 * @param id
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthCourseChapterAuditViewDTO> view(AuthCourseChapterAuditViewBO authCourseChapterAuditViewBO) {
 
@@ -97,10 +95,10 @@ public class AuthApiCourseChapterAuditBiz extends BaseBiz {
 
 	/**
 	 * 章节删除接口
-	 * 
+	 *
 	 * @param id
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> delete(AuthCourseChapterAuditDeleteBO authCourseChapterAuditDeleteBO) {
@@ -144,10 +142,10 @@ public class AuthApiCourseChapterAuditBiz extends BaseBiz {
 
 	/**
 	 * 章节列出接口
-	 * 
+	 *
 	 * @param courseId
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<AuthCourseChapterAuditListDTO> listByCourseNo(AuthCourseChapterAuditBO authCourseChapterAuditBO) {
 
@@ -175,10 +173,10 @@ public class AuthApiCourseChapterAuditBiz extends BaseBiz {
 
 	/**
 	 * 章节添加接口
-	 * 
+	 *
 	 * @param bo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<AuthCourseChapterAuditSaveDTO> save(AuthCourseChapterAuditSaveBO authCourseChapterAuditSaveBO) {
@@ -222,10 +220,10 @@ public class AuthApiCourseChapterAuditBiz extends BaseBiz {
 
 	/**
 	 * 章节更新接口
-	 * 
+	 *
 	 * @param bo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<AuthCourseChapterAuditUpdateDTO> update(AuthCourseChapterAuditUpdateBO authCourseChapterAuditUpdateBO) {
@@ -273,10 +271,10 @@ public class AuthApiCourseChapterAuditBiz extends BaseBiz {
 
 	/**
 	 * 更新章节排序接口
-	 * 
+	 *
 	 * @param bo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	@Transactional
 	public Result<Integer> sort(AuthCourseChapterAuditSortBO authCourseChapterAuditSortBO) {

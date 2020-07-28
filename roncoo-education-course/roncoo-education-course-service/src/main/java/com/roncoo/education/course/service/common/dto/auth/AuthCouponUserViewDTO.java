@@ -1,6 +1,8 @@
 package com.roncoo.education.course.service.common.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,9 +25,14 @@ public class AuthCouponUserViewDTO implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
+        @ApiModelProperty(value = "用户优惠券id")
+        @JsonSerialize(using = ToStringSerializer.class)
+        private Long id;
         @ApiModelProperty(value = "兑换的项目id")
+        @JsonSerialize(using = ToStringSerializer.class)
         private Long cid;
         @ApiModelProperty(value = "优惠券所属用户")
+        @JsonSerialize(using = ToStringSerializer.class)
         private Long uid;
         @ApiModelProperty(value = "优惠券名称")
         private String couponTitle;

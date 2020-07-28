@@ -6,12 +6,14 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 
 import com.xiaoleilu.hutool.exceptions.UtilException;
+import sun.misc.BASE64Encoder;
 
 public final class ImgUtil {
 
@@ -21,9 +23,9 @@ public final class ImgUtil {
 
 	/**
 	 * 右下角打水印
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 * @see https://blog.csdn.net/u011627980/article/details/50318271
 	 */
 	public final static void pressImage(File pressImgFile, File srcImageFile, File destImageFile, Integer x, Integer y) throws IOException {
@@ -46,7 +48,7 @@ public final class ImgUtil {
 
 	/**
 	 * 给图片添加文字水印
-	 * 
+	 *
 	 * @param pressText
 	 *            水印文字
 	 * @param srcImageFile
@@ -84,7 +86,7 @@ public final class ImgUtil {
 
 	/**
 	 * 计算text的长度（一个中文算两个字符）
-	 * 
+	 *
 	 * @param text
 	 *            文本
 	 * @return 字符长度，如：text="中国",返回 2；text="test",返回 2；text="中国ABC",返回 4.
@@ -99,5 +101,38 @@ public final class ImgUtil {
 			}
 		}
 		return length / 2;
+	}
+
+	/**
+	 * 将图片转换成Base64编码
+	 * @param imgFile 待处理图片
+	 * @return
+	 */
+	public static String getImgBase(String imgFile) {
+		ByteArrayOutputStream outPut = new ByteArrayOutputStream();
+		byte[] data = new byte[1024];
+		try {
+			// 创建URL
+			URL url = new URL(imgFile);
+			// 创建链接
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setConnectTimeout(10 * 1000);
+
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				return "获取图片失败";//连接失败/链接失效/图片不存在
+			}
+			InputStream inStream = conn.getInputStream();
+			int len = -1;
+			while ((len = inStream.read(data)) != -1) {
+				outPut.write(data, 0, len);
+			}
+			inStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// 对字节数组Base64编码
+		BASE64Encoder encoder = new BASE64Encoder();
+		return "data:image/jpeg;base64," + encoder.encode(outPut.toByteArray());
 	}
 }

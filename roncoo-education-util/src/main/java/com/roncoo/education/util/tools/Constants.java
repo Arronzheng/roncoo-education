@@ -3,7 +3,7 @@ package com.roncoo.education.util.tools;
 /**
  * 常量工具类
  *
- * @author wujing
+ *
  */
 public final class Constants {
 
@@ -17,7 +17,7 @@ public final class Constants {
 	/**
 	 * session
 	 *
-	 * @author wujing
+	 *
 	 */
 	public interface Session {
 		public final static String BOSS_MENU = "BOSS_MENU";//
@@ -29,7 +29,7 @@ public final class Constants {
 	/**
 	 * cookie
 	 *
-	 * @author wujing
+	 *
 	 */
 	public interface Cookie {
 		public final static String USER_TOKEN = "USERTOKEN";
@@ -38,7 +38,7 @@ public final class Constants {
 	/**
 	 * 日期类型
 	 *
-	 * @author wujing
+	 *
 	 */
 	public interface DATE {
 		public final static String YYYYMMDD = "yyyyMMdd";

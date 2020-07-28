@@ -27,8 +27,6 @@ import com.roncoo.education.util.tools.MD5Util;
 
 /**
  * 课时信息-审核
- *
- * @author wujing123
  */
 @Component
 public class CallbackPolyvBiz extends BaseBiz {
@@ -50,7 +48,7 @@ public class CallbackPolyvBiz extends BaseBiz {
 	 *
 	 * @param polyvVideo
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public String video(PolyvVideo polyvVideo) {
 		if (checkSign(polyvVideo.getSign(), polyvVideo.getType(), polyvVideo.getVid(), polyvVideo.getSecretkey())) {
@@ -67,7 +65,7 @@ public class CallbackPolyvBiz extends BaseBiz {
 	 *
 	 * @param polyvAuth
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public String auth(PolyvAuth polyvAuth) {
 		logger.warn("保利威视，播放授权回调接口，接收参数={}", polyvAuth);

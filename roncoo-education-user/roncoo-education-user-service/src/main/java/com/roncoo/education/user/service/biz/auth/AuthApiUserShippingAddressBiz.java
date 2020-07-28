@@ -106,4 +106,14 @@ public class AuthApiUserShippingAddressBiz extends BaseBiz {
             }
         }
     }
+
+    public Result<AuthUserShippingAddressDTO> defaultAddress(AuthUserShippingAddressdefaultBO authUserShippingAddressdefaultBO) {
+        UserShippingAddress userShippingAddress = dao.getByUserNoAndIsToleration(authUserShippingAddressdefaultBO.getUserNo(), 1);
+        if (ObjectUtils.isEmpty(userShippingAddress)) {
+            return Result.success(null);
+        } else {
+            AuthUserShippingAddressDTO authUserShippingAddressDTO = BeanUtil.copyProperties(userShippingAddress, AuthUserShippingAddressDTO.class);
+            return Result.success(authUserShippingAddressDTO);
+        }
+    }
 }

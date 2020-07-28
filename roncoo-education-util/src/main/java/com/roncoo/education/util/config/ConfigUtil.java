@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 配置文件读取工具类
  *
- * @author wujing
+ *
  */
 @Slf4j
 public final class ConfigUtil {

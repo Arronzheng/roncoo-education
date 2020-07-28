@@ -23,7 +23,7 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 /**
  * 课程推荐
  *
- * @author wujing
+ *
  */
 @Component
 public class BossCourseRecommendBiz {

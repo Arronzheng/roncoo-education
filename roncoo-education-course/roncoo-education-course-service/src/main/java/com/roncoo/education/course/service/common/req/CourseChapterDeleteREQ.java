@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * 专区课程-删除
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)

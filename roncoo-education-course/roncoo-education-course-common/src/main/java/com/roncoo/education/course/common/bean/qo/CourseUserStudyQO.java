@@ -8,15 +8,13 @@ import lombok.experimental.Accessors;
 
 /**
  * 课程用户关联表
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
 public class CourseUserStudyQO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * 当前页
      */

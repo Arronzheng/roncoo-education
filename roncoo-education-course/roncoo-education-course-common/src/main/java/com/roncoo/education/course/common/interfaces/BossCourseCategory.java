@@ -13,8 +13,6 @@ import com.roncoo.education.util.base.Page;
 
 /**
  * 课程分类
- *
- * @author wujing
  */
 public interface BossCourseCategory {
 
@@ -35,7 +33,7 @@ public interface BossCourseCategory {
 
 	/**
 	 * 根据ID列出分类信息
-	 * 
+	 *
 	 * @author WY
 	 */
 	@RequestMapping(value = "/boss/course/courseCategory/listByParentId/{parentId}", method = RequestMethod.GET)
@@ -43,7 +41,7 @@ public interface BossCourseCategory {
 
 	/**
 	 * 根据层级列出分类信息
-	 * 
+	 *
 	 * @author WY
 	 */
 	@RequestMapping(value = "/boss/course/courseCategory/listByFloor/{floor}", method = RequestMethod.GET)
@@ -51,7 +49,7 @@ public interface BossCourseCategory {
 
 	/**
 	 * 根据层级、父分类ID列出分类信息
-	 * 
+	 *
 	 * @author WY
 	 */
 	@RequestMapping(value = "/boss/course/courseCategory/listByFloorAndCategoryId", method = RequestMethod.POST)

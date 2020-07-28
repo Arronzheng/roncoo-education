@@ -14,8 +14,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 分页
- *
- * @author wujing
  * @param <T>
  */
 public final class PageUtil<T extends Serializable> implements Serializable {

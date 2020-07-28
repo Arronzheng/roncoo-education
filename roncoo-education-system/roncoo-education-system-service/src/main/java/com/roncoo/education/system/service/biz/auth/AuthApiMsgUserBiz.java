@@ -26,7 +26,7 @@ import com.roncoo.education.util.tools.BeanUtil;
 /**
  * 站内信用户记录表
  *
- * @author wuyun
+ *
  */
 @Component
 public class AuthApiMsgUserBiz {
@@ -38,10 +38,10 @@ public class AuthApiMsgUserBiz {
 
 	/**
 	 * 站内信分页列表接口
-	 * 
+	 *
 	 * @param msgUserBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<Page<MsgUserDTO>> list(MsgUserBO bo) {
 		if (bo.getUserNo() == null) {
@@ -62,10 +62,10 @@ public class AuthApiMsgUserBiz {
 
 	/**
 	 * 用户查看站内信内容
-	 * 
+	 *
 	 * @param MsgViewBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<MsgDTO> readMsg(MsgViewBO bo) {
 		if (bo.getId() == null) {
@@ -90,10 +90,10 @@ public class AuthApiMsgUserBiz {
 
 	/**
 	 * 用户站内信未读条数
-	 * 
+	 *
 	 * @param msgReadBO
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	public Result<MsgReadDTO> getNumOfUnReadMsg(MsgReadBO bo) {
 		if (bo.getUserNo() == null) {

@@ -6,10 +6,13 @@ import java.util.*;
 
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.github.wxpay.sdk.WXPay;
+import com.github.wxpay.sdk.WXPayConfig;
 import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.roncoo.education.course.service.common.bo.auth.*;
-import com.roncoo.education.course.service.dao.CourseAuditDao;
+import com.roncoo.education.course.service.common.dto.auth.*;
+import com.roncoo.education.course.service.dao.*;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.*;
 import com.roncoo.education.user.common.bean.qo.LecturerExtQO;
 import com.roncoo.education.user.common.bean.vo.*;
@@ -18,6 +21,7 @@ import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.pay.AlipayUtil;
 import com.roncoo.education.util.pay.WeixinConfig;
 import com.roncoo.education.util.pay.WeixinPayUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +39,6 @@ import com.github.abel533.echarts.code.Trigger;
 import com.github.abel533.echarts.feature.MagicType;
 import com.github.abel533.echarts.series.Line;
 import com.roncoo.education.course.service.common.bo.OrderInfoCloseBO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoLecturerIncomeDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoListDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderInfoListForLecturerDTO;
-import com.roncoo.education.course.service.common.dto.auth.AuthOrderPayDTO;
-import com.roncoo.education.course.service.dao.CourseDao;
-import com.roncoo.education.course.service.dao.OrderInfoDao;
-import com.roncoo.education.course.service.dao.OrderPayDao;
 import com.roncoo.education.course.service.dao.impl.mapper.entity.OrderInfoExample.Criteria;
 import com.roncoo.education.system.common.bean.vo.SysVO;
 import com.roncoo.education.system.feign.IBossSys;
@@ -60,8 +56,6 @@ import com.xiaoleilu.hutool.util.ObjectUtil;
 
 /**
  * 订单信息表
- *
- * @author wujing
  */
 @Component
 public class AuthApiOrderInfoBiz extends BaseBiz {
@@ -72,7 +66,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	private OrderPayDao orderPayDao;
 	@Autowired
 	private CourseAuditDao courseAuditDao;
-
+	@Autowired
+	private CouponUserDao couponUserDao;
 	@Autowired
 	private IBossSys bossSys;
 	@Autowired
@@ -85,6 +80,12 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	private IBossVip bossVip;
 	@Autowired
 	private IBossLecturerExt bossLecturerExt;
+	@Autowired
+	private IBossShipAddress bossShipAddress;
+	@Autowired
+	private AuthApiAssembleBiz authApiAssembleBiz;
+	@Autowired
+	private AssembleDao assembleDao;
 
 	/**
 	 * 订单列表接口
@@ -117,8 +118,17 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			CourseAudit courseAudit = courseAuditDao.getById(dto.getCourseId());
 			dto.setCourseLogo(courseAudit.getCourseLogo());
 			dto.setCourseId(courseAudit.getId());
+			if (!StringUtils.isEmpty(dto.getShippingAddressId())) {
+				UserShippingAddressVO userShippingAddressVO = bossShipAddress.getById(dto.getShippingAddressId());
+				dto.setShippingAddressVO(userShippingAddressVO);
+			}
+			if (!StringUtils.isEmpty(dto.getCouponUserId())) {
+				CouponUser couponUser = couponUserDao.getById(dto.getCouponUserId());
+				dto.setCouponUser(couponUser);
+			}
 		}
 		return Result.success(dtopage);
+
 	}
 
 	/**
@@ -150,10 +160,10 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		// 判断所要购买的课程是否已经购买------(如果课程为测试支付课程，可以重复下单，不提示已经购买，去掉后面一截判断即可正常使用)
-		if (!checkOrderInfo(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId())) {
+		if (!checkOrderInfo(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId()) && !SystemUtil.TEST_COURSE.equals(authOrderPayBO.getCourseId().toString())) {
 			return Result.error("已经购买该课程，请勿重复购买");
 		}
-		OrderInfo orderInfo = orderInfoDao.getByUserNoAndCourseIdAndOrderStatus(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId());
+		OrderInfo orderInfo = orderInfoDao.getByUserNoAndCourseIdAndOrderStatus(authOrderPayBO.getUserNo(), authOrderPayBO.getCourseId(), authOrderPayBO.getOrderType());
 		OrderPay orderPay = null;
 		if (ObjectUtil.isNull(orderInfo)) {
 			// 创建订单信息
@@ -161,7 +171,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			// 创建支付订单
 			orderPay = createOrderPay(orderInfo);
 		}else{
-			if (OrderStatusEnum.SUCCESS.getCode().equals(orderInfo.getOrderStatus())) {
+			if (OrderStatusEnum.SUCCESS.getCode().equals(orderInfo.getOrderStatus()) && !SystemUtil.TEST_COURSE.equals(authOrderPayBO.getCourseId().toString())) {
 				return Result.error("已经购买该课程，请勿重复购买");
 			}
 			orderPay = orderPayDao.getByOrderNo(orderInfo.getOrderNo());
@@ -178,6 +188,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			// 更新订单信息
 			orderInfo.setPayType(authOrderPayBO.getPayType());
 			orderInfo.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+			orderInfo.setShippingAddressId(authOrderPayBO.getShippingAddressId());
 			orderInfo.setGmtCreate(new Date());
 			orderInfo.setGmtModified(new Date());
 			orderInfoDao.updateById(orderInfo);
@@ -188,6 +199,21 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			orderPay.setSerialNumber(NOUtil.getSerialNumber());
 			orderPay.setGmtCreate(new Date());
 			orderPayDao.updateById(orderPay);
+		}
+		// 如果有拼团信息则不生成
+		Assemble assemble = assembleDao.getOrderId(orderInfo.getOrderNo());
+		if (ObjectUtils.isEmpty(assemble)) {
+			if (!ObjectUtils.isEmpty(authOrderPayBO.getAssembleSaveREQ())) {
+				//生成拼团信息
+				authOrderPayBO.getAssembleSaveREQ().setOrderId(orderInfo.getOrderNo());
+				authApiAssembleBiz.save(authOrderPayBO.getAssembleSaveREQ());
+			}
+		}
+
+		if (authOrderPayBO.getPricePaid().compareTo(new BigDecimal("0")) == 0) {
+			//直接处理成功
+			course(orderInfo, orderPay);
+			return Result.error(202, orderInfo.getOrderNo()+""); // 不用支付，直接成功
 		}
 
 		// 查找系统配置信息
@@ -200,7 +226,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		}
 
 		if(authOrderPayBO.getPayType() == 1){
-			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), orderInfo.getPricePaid(), sys.getNotifyUrl(), authOrderPayBO.getTradeType(), "course", userVO.getOpenId());
+			Map<String, String> response = WeixinPayUtil.weixinPay(String.valueOf(orderPay.getSerialNumber()), orderInfo.getCourseName(), authOrderPayBO.getPricePaid(), sys.getNotifyUrl(), authOrderPayBO.getTradeType(), "course", userVO.getOpenId());
 			if(null == response){
 				return Result.error("调用微信支付失败，请联系商家");
 			}
@@ -213,18 +239,19 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 					return Result.error("调用微信支付失败，请联系商家");
 				}
 				if ("JSAPI".equals(authOrderPayBO.getTradeType())) {
+					String timeStamp = String.valueOf(System.currentTimeMillis());
 					WeixinConfig config = new WeixinConfig();
 					dto.setAppId(config.getAppID());
 					dto.setPrepayId(response.get("prepay_id"));
-					dto.setTimeStamp(System.currentTimeMillis() + "");
-					dto.setNonceStr(WXPayUtil.generateNonceStr());
+					dto.setTimeStamp(timeStamp);
+					dto.setNonceStr(response.get("nonce_str"));
 					dto.setSignType(WXPayConstants.MD5);
 					Map<String,String> data = new HashMap<>();
 					data.put("appId", config.getAppID());
-					data.put("timeStamp", System.currentTimeMillis() + "");
-					data.put("nonceStr", WXPayUtil.generateNonceStr());
+					data.put("timeStamp", timeStamp);
+					data.put("nonceStr", response.get("nonce_str"));
 					data.put("signType", WXPayConstants.MD5);
-					data.put("package", response.get("prepay_id"));
+					data.put("package", "prepay_id=" + response.get("prepay_id"));
 					dto.setPaySign(WXPayUtil.generateSignature(data, config.getKey()));
 				}
 				dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
@@ -277,9 +304,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		if (ObjectUtil.isNull(orderInfo)) {
 			return Result.error("orderNo不正确，没有找到订单信息");
 		}
-		if (!checkOrderInfo(orderInfo.getUserNo(), orderInfo.getCourseId())) {
-			return Result.error("已经购买该课程，请勿重复购买");
-		}
+
 
 		OrderPay orderPay = orderPayDao.getByOrderNo(orderInfo.getOrderNo());
 		if (ObjectUtil.isNull(orderPay)) {
@@ -290,6 +315,9 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		CourseAudit courseAudit = courseAuditDao.getByCourseIdAndStatusId(orderInfo.getCourseId(), StatusIdEnum.YES.getCode());
 		if (StringUtils.isEmpty(courseAudit) || !StatusIdEnum.YES.getCode().equals(courseAudit.getStatusId())) {
 			return Result.error("根据订单的课程编号没找到对应的课程信息!");
+		}
+		if (OrderStatusEnum.SUCCESS.getCode().equals(orderInfo.getOrderStatus()) && !SystemUtil.TEST_COURSE.equals(courseAudit.getId().toString())) {
+			return Result.error("已经购买该课程，请勿重复购买");
 		}
 		// 根据用户编号查找用户信息
 		UserVO userVO = bossUser.getByUserNo(orderInfo.getUserNo());
@@ -363,8 +391,19 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 				}
 				if ("JSAPI".equals(authOrderInfoContinuePayBO.getTradeType())) {
 					WeixinConfig config = new WeixinConfig();
+					String timeStamp = String.valueOf(System.currentTimeMillis());
 					dto.setAppId(config.getAppID());
 					dto.setPrepayId(response.get("prepay_id"));
+					dto.setTimeStamp(timeStamp);
+					dto.setNonceStr(response.get("nonce_str"));
+					dto.setSignType(WXPayConstants.MD5);
+					Map<String,String> data = new HashMap<>();
+					data.put("appId", config.getAppID());
+					data.put("timeStamp", timeStamp);
+					data.put("nonceStr", response.get("nonce_str"));
+					data.put("signType", WXPayConstants.MD5);
+					data.put("package", "prepay_id=" + response.get("prepay_id"));
+					dto.setPaySign(WXPayUtil.generateSignature(data, config.getKey()));
 				}
 				dto.setOrderNo(String.valueOf(orderInfo.getOrderNo()));
 				dto.setSerialNumber(String.valueOf(orderPay.getSerialNumber()));
@@ -423,13 +462,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 					if("SUCCESS".equals(response.get("result_code"))){
 						if("SUCCESS".equals(response.get("trade_state"))){
 							//微信已交易成功,商户系统显示未交易成功，则修改商户系统订单状态
-							if(!OrderStatusEnum.SUCCESS.getCode().equals(orderPay.getOrderStatus())){
-								orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-								orderInfo.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
-								orderPay.setPayTime(DateUtil.parseDate(response.get("time_end"), "yyyy-MM-dd HH:mm:ss"));
-								orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-								orderInfoDao.updateById(orderInfo);
-								orderPayDao.updateById(orderPay);
+							if (OrderStatusEnum.WAIT.getCode().equals(orderInfo.getOrderStatus())) {
+								course(orderInfo, orderPay);
 							}
 							return Result.error("订单已交易成功，不需要再处理");
 						}
@@ -443,13 +477,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 					//支付宝已交易成功
 					if("TRADE_SUCCESS".equals(response.getTradeStatus()) || "TRADE_FINISHED".equals(response.getTradeStatus())){
 						//商户系统显示未交易成功，则修改商户系统订单状态
-						if(!OrderStatusEnum.SUCCESS.getCode().equals(orderPay.getOrderStatus())){
-							orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-							orderInfo.setPayTime(response.getSendPayDate());
-							orderPay.setPayTime(response.getSendPayDate());
-							orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-							orderInfoDao.updateById(orderInfo);
-							orderPayDao.updateById(orderPay);
+						if (OrderStatusEnum.WAIT.getCode().equals(orderInfo.getOrderStatus())) {
+							course(orderInfo, orderPay);
 						}
 						return Result.error("订单已交易成功，不需要再处理");
 					}
@@ -489,9 +518,9 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		if (StringUtils.isEmpty(authOrderInfoViewBO.getOrderNo())) {
 			return Result.error("订单号不能为空");
 		}
-		if (StringUtils.isEmpty(authOrderInfoViewBO.getSerialNumber())) {
-			return Result.error("流水号不能为空");
-		}
+//		if (StringUtils.isEmpty(authOrderInfoViewBO.getSerialNumber())) {
+//			return Result.error("流水号不能为空");
+//		}
 
 //		OrderInfo orderInfo = orderInfoDao.getByOrderNo(authOrderInfoViewBO.getOrderNo());
 
@@ -515,8 +544,8 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			}
 		}
 
-		if(authOrderInfoViewBO.getPayType() == 1){
-			Map<String, String> response = WeixinPayUtil.orderQuery(String.valueOf(authOrderInfoViewBO.getSerialNumber()));
+		if(order.getPayType() == 1){
+			Map<String, String> response = WeixinPayUtil.orderQuery(String.valueOf(orderPay.getSerialNumber()));
 			if(!CollectionUtils.isEmpty(response)){
 				if("SUCCESS".equals(response.get("return_code"))){
 					if("SUCCESS".equals(response.get("result_code"))){
@@ -524,7 +553,10 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 							if("SUCCESS".equals(response.get("trade_state"))){
 								//微信已交易成功
 								//处理课程信息
-								course(order, orderPay);
+								// 如果订单状态不是待支付状态证明订单已经处理过,不用再处理
+								if (OrderStatusEnum.WAIT.getCode().equals(order.getOrderStatus())) {
+									course(order, orderPay);
+								}
 							}else{
 								//微信支付失败
 								//更新订单信息
@@ -540,7 +572,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			}
 		}else{
 			//查询支付宝交易结果
-			AlipayTradeQueryResponse response = AlipayUtil.queryOrder(String.valueOf(authOrderInfoViewBO.getSerialNumber()),null);
+			AlipayTradeQueryResponse response = AlipayUtil.queryOrder(String.valueOf(orderPay.getSerialNumber()),null);
 			if(null != response){
 				if(response.isSuccess()){
 					if(!response.getTradeStatus().equals("WAIT_BUYER_PAY")){
@@ -548,7 +580,10 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 						if (response.getTradeStatus().equals("TRADE_FINISHED") || response.getTradeStatus().equals("TRADE_SUCCESS")) {
 							//交易结束，不可退款 或 交易支付成功
 							// 处理课程信息
-							course(order, orderPay);
+							// 如果订单状态不是待支付状态证明订单已经处理过,不用再处理
+							if (OrderStatusEnum.WAIT.getCode().equals(order.getOrderStatus())) {
+								course(order, orderPay);
+							}
 						}else{
 							// 更新订单信息
 							order.setOrderStatus(OrderStatusEnum.FAIL.getCode());
@@ -561,7 +596,16 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 				}
 			}
 		}
-		return Result.success(BeanUtil.copyProperties(order, AuthOrderInfoDTO.class));
+        AuthOrderInfoDTO authOrderInfoDTO = BeanUtil.copyProperties(order, AuthOrderInfoDTO.class);
+		//获取课程信息
+        CourseAudit courseAudit = courseAuditDao.getByCourseIdAndStatusId(order.getCourseId(),  StatusIdEnum.YES.getCode());
+        authOrderInfoDTO.setCourseAudit(courseAudit);
+		if (courseAudit.getHasTrainaid() == 2) {
+        //根据是否有实物获取用户收货地址信息
+			UserShippingAddressVO userShippingAddressVO = bossShipAddress.getById(order.getShippingAddressId());
+			authOrderInfoDTO.setShippingAddress(userShippingAddressVO);
+		}
+		return Result.success(authOrderInfoDTO);
 	}
 
 	/**
@@ -717,13 +761,13 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		orderInfo.setCourseName(courseAudit.getCourseName());
 		orderInfo.setCourseId(courseAudit.getId());
 		if(ObjectUtil.isNull(svipVO)){
-			orderInfo.setPricePaid(courseAudit.getCourseOriginal());
+			orderInfo.setPricePaid(authOrderPayBO.getPricePaid());
 			orderInfo.setPricePaidSource(PricePaidSourceEnum.ORIGINAL.getCode());
 		}else{
-			orderInfo.setPricePaid(courseAudit.getCourseSvipDiscount());
+			orderInfo.setPricePaid(authOrderPayBO.getPricePaid());
 			orderInfo.setPricePaidSource(PricePaidSourceEnum.VIP.getCode());
 		}
-		orderInfo.setPricePayable(courseAudit.getCourseOriginal());
+		orderInfo.setPricePayable(authOrderPayBO.getPricePaid());
 		orderInfo.setLecturerUserNo(lecturervo.getLecturerUserNo());
 		orderInfo.setLecturerName(lecturervo.getLecturerName());
 		orderInfo.setUserNo(userVO.getUserNo());
@@ -741,6 +785,9 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		orderInfo.setChannelType(authOrderPayBO.getChannelType());
 		orderInfo.setRemarkCus(authOrderPayBO.getRemarkCus());
 		orderInfo.setOrderStatus(OrderStatusEnum.WAIT.getCode());
+		orderInfo.setOrderType(authOrderPayBO.getOrderType());
+		orderInfo.setCouponUserId(authOrderPayBO.getCouponUserId());
+		orderInfo.setShippingAddressId(authOrderPayBO.getShippingAddressId());
 		orderInfoDao.save(orderInfo);
 		return orderInfo;
 	}
@@ -760,6 +807,27 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		OrderInfo orderInfo = BeanUtil.copyProperties(authOrderInfoUpdateBO, OrderInfo.class);
 		int result = orderInfoDao.updateByOrderNo(orderInfo);
 		return Result.success(result);
+	}
+
+	/**
+	 *统计各订单数量
+	 */
+	public Result<AuthOrderInfoDataDTO> getData(AuthOrderInfoDataBO authOrderInfoDataBO) {
+		if (StringUtils.isEmpty(authOrderInfoDataBO.getUserNo())) {
+			return Result.error("用户编号不能为空！");
+		}
+		int unPaid = orderInfoDao.getByUserNoForCount(authOrderInfoDataBO.getUserNo(), OrderStatusEnum.WAIT.getCode());
+		int unDeliver = orderInfoDao.getByUserNoForCount(authOrderInfoDataBO.getUserNo(), OrderStatusEnum.UNDELIVER.getCode());
+		int delivered = orderInfoDao.getByUserNoForCount(authOrderInfoDataBO.getUserNo(), OrderStatusEnum.DELIVERED.getCode());
+		int complete = orderInfoDao.getByUserNoForCount(authOrderInfoDataBO.getUserNo(), OrderStatusEnum.COMPLETE.getCode());
+		int unAssemble = orderInfoDao.getByUserNoForCount(authOrderInfoDataBO.getUserNo(), OrderStatusEnum.WAITASSEMBLE.getCode());
+		AuthOrderInfoDataDTO authOrderInfoDataDTO = new AuthOrderInfoDataDTO();
+		authOrderInfoDataDTO.setCompleteCount(complete);
+		authOrderInfoDataDTO.setReceivedCount(delivered);
+		authOrderInfoDataDTO.setUnshippedCount(unDeliver);
+		authOrderInfoDataDTO.setUnpaidCount(unPaid);
+		authOrderInfoDataDTO.setUnAssembleCount(unAssemble);
+		return Result.success(authOrderInfoDataDTO);
 	}
 
 	class updateCount implements Runnable {
@@ -785,7 +853,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	 * @param orderInfo
 	 * @param orderPay
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private void course(OrderInfo orderInfo, OrderPay orderPay) {
 		// 根据课程No查找课程信息
@@ -794,17 +862,6 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 			return;
 		}
 
-		// 根据讲师编号和机构编号查找讲师账户信息
-//		LecturerExtVO lecturerExtVO = bossLecturerExt.getByLecturerUserNo(courseAudit.getLecturerUserNo());
-//		if (StringUtils.isEmpty(lecturerExtVO)) {
-//			return;
-//		}
-
-//		LecturerVO lecturerVO = bossLecturer.getByLecturerUserNo(courseAudit.getLecturerUserNo());
-//		if (ObjectUtil.isNull(lecturerVO)) {
-//			return;
-//		}
-
 		// 更新课程信息的购买人数
 		courseAudit.setCountBuy(courseAudit.getCountBuy() + 1);
 		courseAuditDao.updateById(courseAudit);
@@ -812,18 +869,47 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 		// 计算讲师分润
 //		orderInfo = countProfit(orderInfo, lecturerExtVO, lecturerVO.getLecturerProportion());
 		orderInfo.setPayTime(new Date());
-		orderInfo.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
 
-		// 更新讲师账户信息
-//		updateLecturerExtVO(orderInfo, lecturerExtVO);
+		// 更新拼团信息
+		Assemble assemble = assembleDao.getOrderId(orderInfo.getOrderNo());
+		if (!ObjectUtils.isEmpty(assemble)) {
+			assemble.setStatus(1);
+			assembleDao.updateById(assemble);
+			// 设置为8待拼成状态
+			orderInfo.setOrderStatus(OrderStatusEnum.WAITASSEMBLE.getCode());
+			orderPay.setOrderStatus(OrderStatusEnum.WAITASSEMBLE.getCode());
+		}
+		// 根据拼团id查询状态为1(1表示已支付的拼团)的拼团记录判断拼团是否完成
+		List<Assemble> assembleList = assembleDao.getByAssembleId(assemble.getAssembleId());
+		if (assembleList.size() > 1) {
+			for (Assemble assemble1: assembleList) {
+				assemble1.setStatus(2); //2表示已完成的拼团
+				assembleDao.updateById(assemble1);
+
+				if (courseAudit.getHasTrainaid() == 2) {
+					orderInfo.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+					orderPay.setOrderStatus(OrderStatusEnum.UNDELIVER.getCode());
+				} else {
+					orderInfo.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+					orderPay.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+				}
+			}
+		}
 
 		// 更新订单信息
 		orderInfoDao.updateById(orderInfo);
 
 		// 更新订单支付信息
-		orderPay.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
 		orderPay.setPayTime(new Date());
 		orderPayDao.updateById(orderPay);
+
+		// 更新优惠券信息
+		if (!StringUtils.isEmpty(orderInfo.getCouponUserId())) {
+			CouponUser record = new CouponUser();
+			record.setId(orderInfo.getCouponUserId());
+			record.setStatus(1);
+			couponUserDao.updateById(record);
+		}
 	}
 
 	/**
@@ -833,7 +919,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	 * @param lecturerExtVO
 	 * @param lecturerProportion
 	 * @return
-	 * @author wuyun
+	 *
 	 */
 	private OrderInfo countProfit(OrderInfo orderInfo, LecturerExtVO lecturerExtVO, BigDecimal lecturerProportion) {
 		// 讲师收入 = 订单价格x讲师分成比例
@@ -852,7 +938,7 @@ public class AuthApiOrderInfoBiz extends BaseBiz {
 	 *
 	 * @param orderInfo
 	 * @param lecturerExtVO
-	 * @author wuyun
+	 *
 	 */
 	private void updateLecturerExtVO(OrderInfo orderInfo, LecturerExtVO lecturerExtVO) {
 		LecturerExtQO lecturerExtQO = new LecturerExtQO();

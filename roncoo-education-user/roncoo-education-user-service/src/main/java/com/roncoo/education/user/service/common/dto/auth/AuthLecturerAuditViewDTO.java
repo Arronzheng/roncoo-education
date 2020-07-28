@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
  * 讲师信息-审核 -查看接口
  * </p>
  *
- * @author wuyun
+ *
  */
 @Data
 @Accessors(chain = true)

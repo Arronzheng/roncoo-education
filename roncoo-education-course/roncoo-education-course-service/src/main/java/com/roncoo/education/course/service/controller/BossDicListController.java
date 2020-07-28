@@ -13,16 +13,14 @@ import com.roncoo.education.util.base.BaseController;
 import com.roncoo.education.util.base.Page;
 
 /**
- * 数据字典明细表 
- *
- * @author wujing
+ * 数据字典明细表
  */
 @RestController
 public class BossDicListController extends BaseController implements BossDicList{
 
 	@Autowired
 	private BossDicListBiz biz;
-	
+
 	@Override
 	public Page<DicListVO> listForPage(@RequestBody DicListQO qo){
 		return biz.listForPage(qo);
@@ -33,19 +31,19 @@ public class BossDicListController extends BaseController implements BossDicList
 		return biz.save(qo);
 	}
 
-    @Override	
+    @Override
 	public int deleteById(@PathVariable(value = "id") Long id){
 		return biz.deleteById(id);
 	}
-	
-    @Override	
+
+    @Override
 	public int updateById(@RequestBody DicListQO qo){
 		return biz.updateById(qo);
 	}
-	
+
     @Override
 	public DicListVO getById(@PathVariable(value = "id") Long id){
 		return biz.getById(id);
 	}
-	
+
 }

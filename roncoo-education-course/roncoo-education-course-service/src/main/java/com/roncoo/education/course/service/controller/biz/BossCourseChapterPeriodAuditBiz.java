@@ -14,8 +14,6 @@ import com.roncoo.education.util.tools.BeanUtil;
 
 /**
  * 课时信息-审核
- *
- * @author wujing
  */
 @Component
 public class BossCourseChapterPeriodAuditBiz {

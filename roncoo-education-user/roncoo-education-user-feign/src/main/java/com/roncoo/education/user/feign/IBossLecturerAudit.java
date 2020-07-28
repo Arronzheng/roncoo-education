@@ -5,9 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import com.roncoo.education.user.common.interfaces.BossLecturerAudit;
 
 /**
- * 讲师信息-审核 
- *
- * @author wujing
+ * 讲师信息-审核
  */
 @FeignClient(value = "roncoo-education-user-service")
 public interface IBossLecturerAudit extends BossLecturerAudit {

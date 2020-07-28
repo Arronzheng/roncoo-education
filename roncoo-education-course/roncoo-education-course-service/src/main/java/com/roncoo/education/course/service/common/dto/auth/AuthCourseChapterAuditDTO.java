@@ -12,8 +12,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 章节信息-审核
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -63,5 +61,5 @@ public class AuthCourseChapterAuditDTO implements Serializable {
 	 */
     @ApiModelProperty(value = "课时数量")
 	private Integer periodNum;
-    
+
 }

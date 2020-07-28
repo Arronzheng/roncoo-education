@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 广告信息-添加
- *
- * @author wujing
  */
 @Data
 @Accessors(chain = true)
@@ -22,7 +20,7 @@ public class AdvUpdateREQ implements Serializable {
 	 */
 	@ApiModelProperty(value = "主键", required = true)
 	private Long id;
-	
+
 	/**
 	 * 状态
 	 */

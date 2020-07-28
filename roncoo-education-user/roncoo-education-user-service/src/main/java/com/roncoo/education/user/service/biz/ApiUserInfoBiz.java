@@ -17,6 +17,7 @@ import com.roncoo.education.util.enums.*;
 import com.roncoo.education.util.tencentcloud.Tencent;
 import com.roncoo.education.util.tencentcloud.TencentUtil;
 import com.roncoo.education.util.tools.*;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -52,8 +53,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户基本信息
- *
- * @author wujing
  */
 @Component
 public class ApiUserInfoBiz extends BaseBiz {
@@ -374,65 +373,86 @@ public class ApiUserInfoBiz extends BaseBiz {
 //		String url = request.getScheme() +"://" + request.getServerName();
 
 //		String url = "http://bify8t.natappfree.cc";
-		JssdkConfigDTO ret = WeChatUtil.sign(getJsapiTicket(), url);
-		System.out.println(ret);
-		return Result.success(ret);
+		if (getJsapiTicket().getCode() == 200) {
+			JssdkConfigDTO ret = WeChatUtil.sign(getJsapiTicket().getData().toString(), url);
+			System.out.println(ret);
+			return Result.success(ret);
+		} else {
+			return Result.error(getJsapiTicket().getMsg());
+		}
+
 	}
 
 	/**
 	 * 向外暴露的获取ticket的方法
 	 * @return
 	 */
-	public String getJsapiTicket() {
+	public Result getJsapiTicket() {
 		String jt = null;
 		if (redisTemplate.hasKey("ticket")) {
 			jt = redisTemplate.opsForValue().get("ticket");
 		}
 		System.out.println("缓存获取ticket：" + jt);
 		if (StringUtils.isEmpty(jt)) {
-			jt = getTicket();
+			if (getTicket().getCode() == 200) {
+				jt = getTicket().getData().toString();
+			} else {
+				return Result.error(getTicket().getMsg());
+			}
 		}
-		return jt;
+		return Result.success(jt);
 	}
 
 	/**
 	 * 从微信获取jsapi_ticket并保存
 	 */
-	private String getTicket() {
-		String url = SystemUtil.JSAPI_TICKET_URL.replace("ACCESS_TOKEN", getAccessToken());
-		Map<String, Object> resultMap = HttpUtil.doGet(url);
-		JsapiTicket jt = new JsapiTicket(resultMap.get("ticket").toString(), resultMap.get("expires_in").toString());
-		System.out.println("微信获取ticket：" + jt);
-		redisTemplate.opsForValue().set("ticket", jt.getTicket(), Long.valueOf(jt.getExpireIn()), TimeUnit.SECONDS);
-		return jt.getTicket();
+	private Result getTicket() {
+		if (getAccessToken().getCode() == 200) {
+			String url = SystemUtil.JSAPI_TICKET_URL.replace("ACCESS_TOKEN", getAccessToken().getData().toString());
+			Map<String, Object> resultMap = HttpUtil.doGet(url);
+			JsapiTicket jt = new JsapiTicket(resultMap.get("ticket").toString(), resultMap.get("expires_in").toString());
+			System.out.println("微信获取ticket：" + jt);
+			redisTemplate.opsForValue().set("ticket", jt.getTicket(), Long.valueOf(jt.getExpireIn()), TimeUnit.SECONDS);
+			return Result.success(jt.getTicket());
+		} else {
+			return Result.error(getAccessToken().getMsg());
+		}
 	}
 
 	/**
 	 * 向外暴露的获取token的方法
 	 * @return
 	 */
-	public String getAccessToken() {
+	public Result getAccessToken() {
 		String at = null;
 		if (redisTemplate.hasKey("access_token")) {
 			at = redisTemplate.opsForValue().get("access_token");
 		}
 		System.out.println("缓存获取token：" + at);
 		if (StringUtils.isEmpty(at)) {
-			at = getToken();
+			if (getToken().getCode() == 200) {
+				at = getToken().getData().toString();
+			} else {
+				return Result.error(getToken().getMsg());
+			}
 		}
-		return at;
+		return Result.success(at);
 	}
 
 	/**
 	 * 从微信获取普通AccessToken并保存
 	 */
-	private String getToken() {
+	private Result getToken() {
 		String url = SystemUtil.ACCESS_TOKEN_URL.replace("APPID", SystemUtil.APP_ID).replace("APPSECRET", SystemUtil.APP_SECRET);
 		Map<String, Object> resultMap = HttpUtil.doGet(url);
-		AccessToken at = new AccessToken(resultMap.get("access_token").toString(), resultMap.get("expires_in").toString());
-		System.out.println("微信获取token：" + at.getAccessToken());
-		redisTemplate.opsForValue().set("access_token", at.getAccessToken(), Long.valueOf(at.getExpireIn()), TimeUnit.SECONDS);
-		return at.getAccessToken();
+		if (resultMap.containsKey("access_token")) {
+			AccessToken at = new AccessToken(resultMap.get("access_token").toString(), resultMap.get("expires_in").toString());
+			System.out.println("微信获取token：" + at.getAccessToken());
+			redisTemplate.opsForValue().set("access_token", at.getAccessToken(), Long.valueOf(at.getExpireIn()), TimeUnit.SECONDS);
+			return Result.success(at.getAccessToken());
+		} else {
+			return Result.error(resultMap.get("errmsg").toString());
+		}
 	}
 
 	public Result<UserLoginDTO> getCode(WeChatCodeBO weChatCodeBO) {
@@ -497,6 +517,7 @@ public class ApiUserInfoBiz extends BaseBiz {
 		userExt.setUserNo(NOUtil.getUserNo());
 		userExt.setSex(sex);
 		userExt.setGmtCreate(new Date());
+		userExt.setInviteCode(StrUtil.getCode());
 		userExtDao.save(userExt);
 		user = new User();
 		user.setUserNo(userExt.getUserNo());

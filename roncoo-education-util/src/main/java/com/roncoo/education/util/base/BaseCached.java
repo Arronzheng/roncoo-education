@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 缓存基本支撑类
- * 
- * @author wujing
  * @param <K>
  * @param <V>
  */
@@ -34,7 +32,7 @@ public abstract class BaseCached<K, V> {
 	protected final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
 	/**
-	 * 
+	 *
 	 * @param initialDelay
 	 *            开始更新的时间，单位秒
 	 * @param period

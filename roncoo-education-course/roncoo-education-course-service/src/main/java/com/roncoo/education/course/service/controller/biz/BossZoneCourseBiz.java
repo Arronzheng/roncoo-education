@@ -26,7 +26,7 @@ import com.roncoo.education.course.service.dao.impl.mapper.entity.ZoneCourseExam
 /**
  * 专区课程关联表
  *
- * @author wujing
+ *
  */
 @Component
 public class BossZoneCourseBiz {
