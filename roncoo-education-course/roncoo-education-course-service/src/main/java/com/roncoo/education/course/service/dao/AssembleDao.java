@@ -37,4 +37,6 @@ public interface AssembleDao {
             Assemble getOrderId(Long orderNo);
 
             Assemble getByUserNoAndPidAndStatus(AssembleIngBO assembleIngBO);
+
+            void updateByOrderId(Assemble assemble);
 }

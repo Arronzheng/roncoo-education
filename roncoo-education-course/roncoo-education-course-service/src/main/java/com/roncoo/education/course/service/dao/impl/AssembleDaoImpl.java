@@ -98,6 +98,7 @@ public class AssembleDaoImpl implements AssembleDao {
         AssembleExample example = new AssembleExample();
         AssembleExample.Criteria c = example.createCriteria();
         c.andOrderIdEqualTo(orderNo);
+        example.setOrderByClause("add_time desc");
         List<Assemble> assembleList = this.assembleMapper.selectByExample(example);
         if (CollectionUtil.isNotEmpty(assembleList)) {
             return assembleList.get(0);
@@ -120,5 +121,13 @@ public class AssembleDaoImpl implements AssembleDao {
             return assembleList.get(0);
         }
         return null;
+    }
+
+    @Override
+    public void updateByOrderId(Assemble assemble) {
+        AssembleExample example = new AssembleExample();
+        AssembleExample.Criteria c = example.createCriteria();
+        c.andOrderIdEqualTo(assemble.getOrderId());
+        this.assembleMapper.updateByExampleSelective(assemble, example);
     }
 }

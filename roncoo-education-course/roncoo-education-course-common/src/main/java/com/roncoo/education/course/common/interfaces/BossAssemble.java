@@ -12,6 +12,6 @@ public interface BossAssemble {
 	 * 拼团倒计时定时任务
 	 */
 	@RequestMapping(value = "/boss/course/assemble/handleScheduledTasks", method = RequestMethod.POST)
-	int handleScheduledTasks() throws Exception;
+	int handleScheduledTasks();
 
 }

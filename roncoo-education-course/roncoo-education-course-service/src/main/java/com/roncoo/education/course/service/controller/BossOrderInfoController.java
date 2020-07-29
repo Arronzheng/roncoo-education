@@ -68,7 +68,7 @@ public class BossOrderInfoController extends BaseController implements BossOrder
 	}
 
 	@Override
-	public int handleScheduledTasks() {
+	public int handleScheduledTasks() throws Exception {
 		return biz.handleScheduledTasks();
 	}
 

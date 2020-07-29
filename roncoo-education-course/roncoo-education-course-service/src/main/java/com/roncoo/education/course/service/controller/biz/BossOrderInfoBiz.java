@@ -210,26 +210,71 @@ public class BossOrderInfoBiz extends BaseBiz {
 	 *
 	 * @return
 	 */
-	public int handleScheduledTasks() {
+	public int handleScheduledTasks() throws Exception {
 		// 1.订单信息的处理
 		OrderInfoExample example = new OrderInfoExample();
 		Criteria c = example.createCriteria();
 		List<Integer> list = new ArrayList<Integer>();
 		list.add(OrderStatusEnum.WAIT.getCode());
 		list.add(OrderStatusEnum.FAIL.getCode());//
+        list.add(OrderStatusEnum.WAITASSEMBLE.getCode());
 		c.andOrderStatusIn(list);
 		c.andGmtCreateLessThan(new Date(System.currentTimeMillis() - 1800000L));
 		example.setOrderByClause(" id desc ");
 		Page<OrderInfo> page = dao.listForPage(1, 10, example);
 		if (CollectionUtil.isNotEmpty(page.getList())) {
 			for (OrderInfo orderInfo : page.getList()) {
-				OrderInfo argOrderInfo = new OrderInfo();
-				argOrderInfo.setId(orderInfo.getId());
-				argOrderInfo.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
-				argOrderInfo.setRemark("系统自动关闭该订单");
-				dao.updateById(argOrderInfo);
+                OrderInfo argOrderInfo = new OrderInfo();
+                argOrderInfo.setId(orderInfo.getId());
+                argOrderInfo.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+                argOrderInfo.setRemark("系统自动关闭该订单");
+                dao.updateById(argOrderInfo);
+                Assemble assemble = new Assemble();
+                assemble.setOrderId(orderInfo.getOrderNo());
+                assemble.setStatus(3); // 未支付或支付失败的拼团随着订单关闭而关闭
+                assembleDao.updateByOrderId(assemble);
 			}
 		}
+
+		// 处理待拼成的订单
+        OrderInfoExample example1 = new OrderInfoExample();
+        Criteria c1 = example1.createCriteria();
+        c1.andOrderStatusEqualTo(OrderStatusEnum.WAITASSEMBLE.getCode());
+        example1.setOrderByClause(" id desc ");
+        Page<OrderInfo> page1 = dao.listForPage(1, 10, example1);
+        if (CollectionUtil.isNotEmpty(page1.getList())) {
+            for (OrderInfo orderInfo : page1.getList()) {
+                Assemble assemble = assembleDao.getOrderId(orderInfo.getOrderNo());
+                if (assemble.getStatus() == 3) {
+                    // 关闭订单并退款
+                    OrderInfo argOrderInfo = new OrderInfo();
+                    argOrderInfo.setId(orderInfo.getId());
+                    argOrderInfo.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+                    argOrderInfo.setRemark("系统自动关闭该订单");
+                    dao.updateById(argOrderInfo);
+                    OrderPay orderPay = orderPayDao.getByOrderNo(orderInfo.getOrderNo());
+                    WeixinPayUtil.refund(orderPay.getSerialNumber().toString(), orderInfo.getPricePaid(), orderInfo.getPricePaid());
+                }
+            }
+        }
+
+        // 处理待收货的订单,14天后自动收货
+        OrderInfoExample example2 = new OrderInfoExample();
+        Criteria c2 = example2.createCriteria();
+        c2.andOrderStatusEqualTo(OrderStatusEnum.DELIVERED.getCode());
+        c2.andGmtModifiedLessThan(new Date(System.currentTimeMillis() - 1209600000L)); // 修改时间小于当前时间-14天
+        example2.setOrderByClause(" id desc ");
+        Page<OrderInfo> page2 = dao.listForPage(1, 10, example2);
+        if (CollectionUtil.isNotEmpty(page2.getList())) {
+            for (OrderInfo orderInfo : page2.getList()) {
+                // 修改订单状态为已完成
+                OrderInfo argOrderInfo = new OrderInfo();
+                argOrderInfo.setId(orderInfo.getId());
+                argOrderInfo.setOrderStatus(OrderStatusEnum.COMPLETE.getCode());
+                argOrderInfo.setRemark("系统自动确认收货订单");
+                dao.updateById(argOrderInfo);
+            }
+        }
 
 		// 2.订单支付的处理
 		OrderPayExample orderPayExample = new OrderPayExample();

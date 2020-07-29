@@ -34,7 +34,7 @@ public class BossAssembleBiz {
      *
      * @return
      */
-    public int handleScheduledTasks() throws Exception {
+    public int handleScheduledTasks(){
         // 1.拼团信息的处理，将支付成功状态为1的修改成拼团失败并退款
         AssembleExample example = new AssembleExample();
         AssembleExample.Criteria c = example.createCriteria();
@@ -48,10 +48,10 @@ public class BossAssembleBiz {
                 argAssemble.setId(assemble.getId());
                 argAssemble.setStatus(3);
                 dao.updateById(argAssemble);
-                // 退款
-                OrderInfo orderInfo = orderInfoDao.getById(assemble.getOrderId());
-                OrderPay orderPay = orderPayDao.getByOrderNo(orderInfo.getOrderNo());
-                WeixinPayUtil.refund(orderPay.getSerialNumber().toString(), orderInfo.getPricePaid(), orderInfo.getPricePaid());
+                // 退款操作放到订单任务执行
+//                OrderInfo orderInfo = orderInfoDao.getById(assemble.getOrderId());
+//                OrderPay orderPay = orderPayDao.getByOrderNo(orderInfo.getOrderNo());
+//                WeixinPayUtil.refund(orderPay.getSerialNumber().toString(), orderInfo.getPricePaid(), orderInfo.getPricePaid());
             }
         }
         return 1;

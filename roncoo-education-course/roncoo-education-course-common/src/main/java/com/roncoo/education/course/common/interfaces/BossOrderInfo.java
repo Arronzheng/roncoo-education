@@ -69,7 +69,7 @@ public interface BossOrderInfo {
 	 *
 	 */
 	@RequestMapping(value = "/boss/course/orderInfo/handleScheduledTasks", method = RequestMethod.POST)
-	int handleScheduledTasks();
+	int handleScheduledTasks() throws Exception;
 
 	/**
 	 * 统计订单收入情况

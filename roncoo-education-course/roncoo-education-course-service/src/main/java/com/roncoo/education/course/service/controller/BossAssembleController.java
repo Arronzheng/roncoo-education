@@ -16,7 +16,7 @@ public class BossAssembleController extends BaseController implements BossAssemb
 	private BossAssembleBiz biz;
 
 	@Override
-	public int handleScheduledTasks() throws Exception {
+	public int handleScheduledTasks() {
 		return biz.handleScheduledTasks();
 	}
 
